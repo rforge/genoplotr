@@ -1,0 +1,13 @@
+Package: genoPlotR
+Type: Package
+Title: Plot gene and genome maps with publication quality
+Version: 0.1
+Date: 2009-12-08
+Author: Lionel Guy <lionel.guy@ebc.uu.se>
+Depends: R (>= 2.10.0), methods, grid, ade4, RColorBrewer
+Maintainer: Lionel Guy <lionel.guy@ebc.uu.se>
+Description: genoPlotR draws gene or genome maps and comparisons between 
+    these, in a publication-grade manner. Starting from simple, common files,
+    it will draw postscript or pdf files that can be sent as such to journals
+License: GPL (>= 2)
+LazyLoad: yes
