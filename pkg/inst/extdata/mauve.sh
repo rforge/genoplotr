@@ -6,5 +6,5 @@ wget $FTP/Bartonella_henselae_Houston-1/NC_005956.gbk -O BH.gbk
 wget $FTP/Bartonella_quintana_Toulouse/NC_005955.gbk -O BQ.gbk
 
 # run mauve: this supposes that you have progressiveMauve available in 
-# your path.
+# your path. Mauve version used was 2.3.1
 progressiveMauve --output=barto.xmfa --output-guide-tree=barto.guide_tree --backbone-output=barto.backbone --hmm-identity=0.8 --island-gap-size=10000 BB.gbk BG.gbk BH.gbk BQ.gbk

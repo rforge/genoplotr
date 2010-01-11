@@ -131,16 +131,16 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
   http://asap.ahabs.wisc.edu/mauve-aligner/mauve-user-guide/mauve-output-file-formats.html
   for more info on the file format. Normally, the function should be
   able to read both \code{progressiveMauve} and \code{mauveAligner}
-  outputs. A bash script to obtain the same file as in the example is
-  available in the \code{extdata} folder of the package. Find its
-  location by running 
-  \code{system.file('extdata/mauve.sh', package = 'genoPlotR')}. 
+  outputs. The function returns both the blocks as \code{dna_seg}s and
+  the links between the blocks as \code{comparison}s.
+
 }
 \value{
   \code{read_dna_seg_from_tab} and \code{read_dna_seg_from_ptt} return
   \code{dna_seg} objects. \code{read_comparison_from_tab} and
   \code{read_comparison_from_blast} return \code{comparison}
-  objects. \code{read_mauve_backbone} returns a list of \code{dna_seg}
+  objects. \code{read_mauve_backbone} returns a list containing a list
+  of \code{dna_seg}s and \code{comparison}s.
   objects. 
 }
 \references{
@@ -204,22 +204,33 @@ plot_gene_map(dna_segs=bbone$dna_segs, comparisons=bbone$comparisons,
 ## From ptt files
 ##
 ## From a file
-ptt_file <- system.file('extdata/BQ.ptt', package = 'genoPlotR')
-bq_ptt_from_file <- read_dna_seg_from_ptt(ptt_file)
+bq_ptt_file <- system.file('extdata/BQ.ptt', package = 'genoPlotR')
+bq <- read_dna_seg_from_ptt(bq_ptt_file)
 ## Read directly from NCBI ftp site:
 url <- "ftp://ftp.ncbi.nih.gov/genomes/Bacteria/Bartonella_henselae_Houston-1/NC_005956.ptt"
 attempt <- 0
 while (attempt < 5){
   attempt <- attempt + 1
-  bh_ptt_from_url <- try(read_dna_seg_from_ptt(url))
-  if (!inherits(dna_seg, "try-error")) {
+  bh <- try(read_dna_seg_from_ptt(url))
+  if (!inherits(bh, "try-error")) {
     attempt <- 99
   } else {
+    print(paste("Tried", attempt, "times, retrying in 5s"))
     Sys.sleep(5)
   }
 }
 
 ##
+## Read from blast
+##
+bh_vs_bq_file <- system.file('extdata/BH_vs_BQ.blastn.tab',
+                             package = 'genoPlotR')
+bh_vs_bq <- read_comparison_from_blast(bh_vs_bq_file, color_scheme="grey")
+
+## Plot
+plot_gene_map(dna_segs=list(BH=bh, BQ=bq), comparisons=list(bh_vs_bq),
+              xlims=data.frame(x0=c(1,1), x1=c(50000, 50000)))
+
 
 }
 \keyword{file}
