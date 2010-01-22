@@ -21,6 +21,7 @@ plot_gene_map <- function(dna_segs,
                           main_pos="centre", # centre, left, right
                           dna_seg_labels=NULL,
                           gene_type=NULL, # if not null, resets gene_type
+                          dna_seg_line=TRUE,
                           scale=TRUE,
                           plot_new=TRUE,
                           debug=0){
@@ -92,7 +93,19 @@ plot_gene_map <- function(dna_segs,
   } else {
     stop("main_pos should be one of centre, left, right")
   }
-  
+
+  # check dna_seg_line
+  if (is.logical(dna_seg_line)) {
+    dna_seg_line <- as.character(dna_seg_line)
+    dna_seg_line[dna_seg_line == "TRUE"] <- "black"
+  }
+  if (!is.character(dna_seg_line ))
+    stop("dna_seg_line should be eiher a logical or charcater giving color")
+  if (length(dna_seg_line) == 1){
+    dna_seg_line <- rep(dna_seg_line, n_dna_segs)
+  } else if (length(dna_seg_line) != n_dna_segs){
+    stop("dna_seg_line should be of length 1 or same length as dna_segs")
+  }
   
   # check gene_type
   if (!is.null(gene_type) && !(gene_type %in% gene_types()))
@@ -295,11 +308,13 @@ plot_gene_map <- function(dna_segs,
                             xlims[i,1]+max_length-offsets[i]),
                           name = paste("dna_seg", i, sep="_")))
     # draw segment line
-    grid.segments(x0=unit(xlims$x0[i], "native"),
-                  y0=unit(0.5, "native"),
-                  x1=unit(xlims$x1[i], "native"),
-                  y1=unit(0.5, "native"),
-                  gp=gpar(col="black"))
+    if (!dna_seg_line[i]=="FALSE"){
+      grid.segments(x0=unit(xlims$x0[i], "native"),
+                    y0=unit(0.5, "native"),
+                    x1=unit(xlims$x1[i], "native"),
+                    y1=unit(0.5, "native"),
+                    gp=gpar(col=dna_seg_line[i]))
+    }
     #grid.xaxis()
     # draw dna_seg grobs
     grid.draw(dna_seg_grobs[[i]])

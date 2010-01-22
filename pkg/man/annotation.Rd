@@ -12,8 +12,8 @@
 }
 \usage{
 annotation(x1, x2 = NA, text, rot = 0, col = "black")
-\method{as}{annotation}(df, x2 = NA, rot = 0, col = "black")
-\method{is}{annotation}(annotation)
+as.annotation(df, x2 = NA, rot = 0, col = "black")
+is.annotation(annotation)
 }
 \arguments{
   \item{x1}{

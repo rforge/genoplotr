@@ -1,4 +1,3 @@
-importFrom(methods, is, as)
 export(
   plot_gene_map,
 
@@ -31,20 +30,13 @@ export(
   trim,
   reverse
 )
-S3method(is, dna_seg)
-S3method(as, dna_seg)
 S3method(c, dna_seg)
 S3method(range, dna_seg)
 S3method(trim, dna_seg)
 S3method(reverse, dna_seg)
 
-S3method(is, comparison)
-S3method(as, comparison)
 S3method(trim, comparison)
 S3method(reverse, comparison)
-
-S3method(is, annotation)
-S3method(as, annotation)
 
 S3method(trim, default)
 S3method(reverse, default)

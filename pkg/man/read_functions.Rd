@@ -219,6 +219,11 @@ while (attempt < 5){
     Sys.sleep(5)
   }
 }
+## If attempt to connect to internet fails
+if (!is.dna_seg(bh)){
+  data(barto)
+  bh <- barto$dna_segs[[3]]
+}
 
 ##
 ## Read from blast

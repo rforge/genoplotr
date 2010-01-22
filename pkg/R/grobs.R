@@ -6,6 +6,7 @@ gene_grob <- function(gene){
   if (!is.dna_seg(gene)) stop("A dna_seg object is required")
   if (nrow(gene) > 1) stop ("gene must be single-row")
   # arrows
+  mid <- (gene$start + gene$end)/2
   if (gene$gene_type == "arrows"){
     arrow <- arrow_coord(x1=gene$start, x2=gene$end,
                          y=0.5, strand=gene$strand, head_len=100)
@@ -28,7 +29,6 @@ gene_grob <- function(gene){
   }
   # bars
   else if (gene$gene_type == "bars" || gene$gene_type == "side_bars") {
-    mid <- (gene$start + gene$end)/2
     if (gene$gene_type == "side_bars"){
       y0 <- 0.5; y1 <- 0.5+gene$strand/2
     }
@@ -41,7 +41,6 @@ gene_grob <- function(gene){
   }
   # points
   else if (gene$gene_type == "points" || gene$gene_type == "side_points") {
-    mid <- (gene$start + gene$end)/2
     if (gene$gene_type == "side_points"){
       y <- 0.5+gene$strand/4
     }
@@ -51,6 +50,18 @@ gene_grob <- function(gene){
     grob <- pointsGrob(x=mid, y=y, pch=gene$pch, size=unit(gene$cex/2, "char"),
                        gp=gpar(col=gene$col),
                        default.units="native")
+  }
+  # text
+  else if (gene$gene_type == "text" || gene$gene_type == "side_text") {
+    if (gene$gene_type == "side_text"){
+      just <- c("centre", c("top", "bottom")[gene$strand/2 + 1.5])
+    }
+    else {
+      just <- c("centre", "centre")
+    }
+    grob <- textGrob(label=gene$name, x=mid, y=0.5, just=just,
+                     gp=gpar(col=gene$col, cex=gene$cex),
+                     default.units="native")
   }
   else {
     stop(paste("Invalid gene_type:",  gene$gene_type))

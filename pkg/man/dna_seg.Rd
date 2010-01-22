@@ -12,8 +12,8 @@
 }
 \usage{
 dna_seg(x, ...)
-\method{as}{dna_seg}(df, col = "blue", lty = 1, lwd = 1, pch = 8, cex = 1, gene_type = "arrows")
-\method{is}{dna_seg}(dna_seg)
+as.dna_seg(df, col = "blue", lty = 1, lwd = 1, pch = 8, cex = 1, gene_type = "arrows")
+is.dna_seg(dna_seg)
 }
 \arguments{
   \item{x}{

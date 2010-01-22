@@ -25,6 +25,7 @@ plot_gene_map(dna_segs,
               main_pos = "centre", 
               dna_seg_labels = NULL, 
               gene_type = NULL, 
+              dna_seg_line=TRUE,
               scale = TRUE, 
               plot_new=TRUE,
               debug = 0
@@ -88,6 +89,13 @@ plot_gene_map(dna_segs,
   \item{gene_type}{
     A character. Describes the type of representation of genes or
     \code{dna_seg} elements. See details.
+  }
+  \item{dna_seg_line}{
+    A vector, either logical or giving colors, of length 1 or of same
+    length as \code{dna_segs}. Should the line in the middle of the
+    segments be drawn, and if yes, in what color. \code{TRUE} by
+    default, which gives black lines. \code{FALSE} (logical, or as a
+    string) results in no plotting.
   }
   \item{scale}{
     A logical. Should the scale be displayed on the plot. \code{TRUE} by
@@ -192,8 +200,57 @@ plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               dna_seg_labels=c("Huey", "Dewey", "Louie"))
 
+## dna_seg_line
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
+              dna_seg_line=c("FALSE", "red", grey(0.6)))
+
 ## gene_type
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               gene_type="side_blocks")
+
+##
+## plot genoPlotR logo
+##
+col <- brewer.pal(8, "RdBu")
+cex <- 2.3
+## First segment 
+start1 <- c(150, 390, 570)
+end1   <- c(  1, 490, 690)
+genoR <- c(270, 530)
+## Second segment
+start2 <- c(100, 520, 550)
+end2   <- c(240, 420, 650)
+Plot <- c(330)
+## dna_segs
+ds1 <- as.dna_seg(data.frame(name=c("", "", ""),
+                             start=start1, end=end1, strand=rep(1, 3),
+                             col=col[c(2, 6, 1)], stringsAsFactor=FALSE))
+ds_genoR <- as.dna_seg(data.frame(name=c("geno", "R"),
+                             start=genoR, end=genoR, strand=rep(1, 2),
+                             col=c(col[8], "black"),
+                             stringsAsFactor=FALSE), cex=cex, gene_type="text")
+ds2 <- as.dna_seg(data.frame(name=c("", "", ""),
+                             start=start2, end=end2, strand=rep(1, 3),
+                             col=col[c(5, 3, 7)],
+                             stringsAsFactor=FALSE))
+ds_Plot <- as.dna_seg(data.frame(name="Plot",
+                             start=Plot, end=Plot, strand=1,
+                             col=col[c(1)],
+                             stringsAsFactor=FALSE), cex=cex, gene_type="text")
+## comparison
+c1 <- as.comparison(data.frame(start1=start1, end1=end1,
+                               start2=start2, end2=end2,
+                               col=grey(c(0.6, 0.8, 0.5))))
+## Generate genoPlotR logo
+\dontrun{
+cairo_pdf("logo.pdf", h=0.7, w=3)
+}
+plot_gene_map(dna_segs=list(c(ds1, ds_genoR), c(ds2, ds_Plot)),
+              comparisons=list(c1), scale=FALSE,
+              dna_seg_line=grey(0.7), offsets=c(-20,160))
+\dontrun{
+dev.off()
+}
+
 }
 \keyword{ hplot }

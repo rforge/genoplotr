@@ -1,9 +1,11 @@
 ################################################################################
 # Plot helpers: list and determine gene "types"
 ################################################################################
-gene_types <- function(){
-  c("auto", "arrows", "blocks", "bars", "points", "side_blocks",
-    "side_bars", "side_points")
+gene_types <- function(auto=TRUE){
+  types <- c("arrows", "blocks", "bars", "points", "side_blocks",
+             "side_bars", "side_points", "text", "side_text")
+  if (auto) types <- c("auto", types)
+  types
 }
 auto_gene_type <- function(n_genes){
   if (max(n_genes) > 1000){

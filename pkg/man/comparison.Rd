@@ -12,8 +12,8 @@
 }
 \usage{
 comparison(x)
-\method{as}{comparison}(df, col="grey")
-\method{is}{comparison}(comparison)
+as.comparison(df, col="grey")
+is.comparison(comparison)
 }
 \arguments{
   \item{x}{

@@ -7,7 +7,12 @@
   Returns a vector containing the available gene types.
 }
 \usage{
-gene_types()
+gene_types(auto = TRUE)
+}
+\arguments{
+  \item{auto}{
+    Logical. Should type "auto" be added?
+  }
 }
 \value{
   A character vector.
@@ -20,5 +25,19 @@ gene_types()
 }
 \examples{
 gene_types()
+
+## Load data
+data(barto)
+n <- length(gene_types(auto=FALSE))
+
+## Get a small subset from the barto dataset
+dna_seg <- barto$dna_segs[[3]][1:n,]
+plot_gene_map(list(dna_seg))
+
+# Change gene_types and plot again
+dna_seg$gene_type <- gene_types(auto=FALSE)
+dna_seg$col <- rainbow(n)
+plot_gene_map(list(dna_seg))
+
 }
 \keyword{ data }
