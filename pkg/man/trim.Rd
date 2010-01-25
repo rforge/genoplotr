@@ -15,7 +15,7 @@
 trim(x, ...)
 \method{trim}{default}(x, xlim = NULL, ...)
 \method{trim}{dna_seg}(x, xlim = NULL, ...)
-\method{trim}{comparison}(x, xlim1 = NULL, xlim2 = NULL, ...)
+\method{trim}{comparison}(x, xlim1 = c(-Inf, Inf), xlim2 = c(-Inf, Inf), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -50,14 +50,25 @@ trim(x, ...)
 
 }
 \examples{
-## load data
-data(three_genes)
+## Load
+data(barto)
+xlim_ref <- c(10000, 45000)
+## Seg 2 (ref)
+barto$dna_segs[[2]] <- trim(barto$dna_segs[[2]], xlim=xlim_ref)
+## Seg 1
+barto$comparisons[[1]] <- trim(barto$comparisons[[1]], xlim2=xlim_ref)
+xlim1 <- range(barto$comparisons[[1]], overall=FALSE)$xlim1
+barto$dna_segs[[1]] <- trim(barto$dna_segs[[1]], xlim=xlim1)
+## Seg 3
+barto$comparisons[[2]] <- trim(barto$comparisons[[2]], xlim1=xlim_ref)
+xlim3 <- range(barto$comparisons[[2]], overall=FALSE)$xlim2
+barto$dna_segs[[3]] <- trim(barto$dna_segs[[3]], xlim=xlim3)
+## Seg 4
+barto$comparisons[[3]] <- trim(barto$comparisons[[3]], xlim1=xlim3)
+xlim4 <- range(barto$comparisons[[3]], overall=FALSE)$xlim2
+barto$dna_segs[[4]] <- trim(barto$dna_segs[[4]], xlim=xlim4)
+## Plot
+plot_gene_map(barto$dna_segs, barto$comparisons)
 
-## on dna_seg
-dna_segs[[1]]
-range(dna_segs[[1]])
-## on comparison
-comparisons[[2]]
-range(comparisons[[2]])
 }
 \keyword{ data }

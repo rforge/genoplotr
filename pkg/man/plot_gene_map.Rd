@@ -143,6 +143,7 @@ plot_gene_map(dna_segs,
   \code{\link{gene_types}} for \code{gene_type} argument;
 }
 \examples{
+old.par <- par(no.readonly=TRUE)
 data("three_genes")
 
 ## segments only
@@ -245,12 +246,13 @@ c1 <- as.comparison(data.frame(start1=start1, end1=end1,
 \dontrun{
 cairo_pdf("logo.pdf", h=0.7, w=3)
 }
+par(fin=c(0.7, 3))
 plot_gene_map(dna_segs=list(c(ds1, ds_genoR), c(ds2, ds_Plot)),
               comparisons=list(c1), scale=FALSE,
               dna_seg_line=grey(0.7), offsets=c(-20,160))
 \dontrun{
 dev.off()
 }
-
+par(old.par)
 }
 \keyword{ hplot }

@@ -44,13 +44,20 @@ is.comparison <- function(comparison){
   inherits(comparison, "comparison")
 }
 # gives the range of a comparison
-range.comparison <- function(x, ...){
+range.comparison <- function(x, overall=TRUE, ...){
   comparison <- x
-  range(comparison$start1, comparison$start2,
-        comparison$end1, comparison$end1, na.rm=FALSE)
+  if (overall){
+    range <- range(comparison$start1, comparison$end1,
+                   comparison$start2, comparison$end2, na.rm=FALSE)
+  } else {
+    xlim1 <- range(comparison$start1, comparison$end1, na.rm=FALSE)
+    xlim2 <- range(comparison$start2, comparison$end2, na.rm=FALSE)
+    range <- data.frame(xlim1=xlim1, xlim2=xlim2)
+  }
+  range
 }
 # trim comparison given x limits
-trim.comparison <- function(x, xlim1=NULL, xlim2=NULL, ...){
+trim.comparison <- function(x, xlim1=c(-Inf, Inf), xlim2=c(-Inf, Inf), ...){
   comparison <- x
   if (!is.null(xlim1) && !is.null(xlim2)){
     if (!is.numeric(xlim1) || !is.numeric(xlim2)) stop("xlims must be numeric")
