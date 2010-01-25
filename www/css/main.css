@@ -1,0 +1,24 @@
+body {
+	font-family: Verdana}
+table {
+	border: none
+}
+h1 {text-align: center}
+th {padding: 0.1cm}
+td {padding: 0.1cm}
+td.num {text-align: right}
+td.lin {text-align: center}
+td.note {font-size: x-small}
+td.frame1 {
+	background-color: #D1E5F0;
+	text-align: center;
+	background-position: center;
+	vertical-align: middle;
+}
+td.frame2 {
+	background-color: #D1E5F0;
+	text-align: left;
+	background-position: top;
+	vertical-align: top;
+	
+}
