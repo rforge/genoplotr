@@ -1,7 +1,7 @@
 Package: genoPlotR
 Type: Package
-Title: Plot gene and genome maps with publication quality
-Version: 0.1
+Title: Plot publication-grade gene and genome maps 
+Version: 0.2
 Date: 2009-12-08
 Author: Lionel Guy <lionel.guy@ebc.uu.se>
 Depends: R (>= 2.10.0), methods, grid, ade4, RColorBrewer
