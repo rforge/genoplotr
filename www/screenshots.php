@@ -41,7 +41,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           <code style="white-space:nowrap">
             <?php
               $str= file_get_contents("code/three_genes.R");
-              $str = nl2br($str, true);
+              $str = nl2br($str);
               echo $str; 
             ?>
           </code>
@@ -59,7 +59,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           <code style="white-space:nowrap">
             <?php
               $str= file_get_contents("code/barto_seg1.R");
-              $str = nl2br($str, true);
+              $str = nl2br($str);
               echo $str; 
             ?>
           </code>
