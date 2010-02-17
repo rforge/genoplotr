@@ -1,18 +1,24 @@
 \name{read_functions}
 \alias{read_functions}
 \alias{read_dna_seg_from_tab}
+\alias{read_dna_seg_from_file}
+\alias{read_dna_seg_from_embl}
+\alias{read_dna_seg_from_genbank}
 \alias{read_dna_seg_from_ptt}
 \alias{read_comparison_from_tab}
 \alias{read_comparison_from_blast}
 \alias{read_mauve_backbone}
 \title{Reading functions}
 \description{
-  Functions to parse dna_seg objects from tab or ptt files or
+  Functions to parse dna_seg objects from tab, embl, genbank, ptt files or
   from mauve backbone files, and comparison objects from tab or blast
   files.
 }
 \usage{
 read_dna_seg_from_tab(file, header = TRUE, ...)
+read_dna_seg_from_file(file, tagsToParse=c("CDS"), fileType = "detect", meta_lines = 2, header = TRUE, ...)
+read_dna_seg_from_embl(file, tagsToParse=c("CDS"), ...)
+read_dna_seg_from_genbank(file, tagsToParse=c("CDS"), ...)
 read_dna_seg_from_ptt(file, meta_lines = 2, header = TRUE, ...)
 read_comparison_from_tab(file, header = TRUE, ...)
 read_comparison_from_blast(file, color_from = "per_id",
@@ -26,6 +32,15 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
   }
   \item{header}{
     Logical. Does the tab file has headers (column names)?
+  }
+  \item{tagsToParse}{
+    Character vector. Tags to parse in embl or genbank files.
+    Common tags are 'CDS', 'gene', 'misc_feature'.
+  }
+  \item{fileType}{
+    Character string. Select file type, could be 'detect' for automatic
+    detection, 'embl' for embl files, 'genbank' for genbank files or
+    'ptt' for ptt files.
   }
   \item{meta_lines}{
     The number of lines in the ptt file that represent "meta" data, not
@@ -78,6 +93,16 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
     feat1C  2101    2932    -1      grey
     feat1D  2800    3120    1       green
   }
+
+  Embl and Genbank files are two commonly used file types. These file types
+  often contain a great variety of information. To properly extract data from
+  these files, the user has to choose which features to extract. Commonly 'CDS'
+  features are of interest, but other feature tags such as 'gene' or 'misc_feature'
+  may be of interest. Should a feature contain an inner "pseudo" tag indicating this
+  CDS or gene is a pseudo gene, this will be presented as a 'CDS_pseudo' or a 'gene_pseudo'
+  feature type respectively in the resulting table. Certain constraints apply to these
+  file types, of which some are: embl files must contain one and only one ID tag;
+  genbank files may only contain one and only one locus tag.
 
   Ptt (or protein table) files are a tabular format giving a bunch of
   information on each protein of a genome (or plasmid, or virus,
@@ -136,7 +161,8 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
 
 }
 \value{
-  \code{read_dna_seg_from_tab} and \code{read_dna_seg_from_ptt} return
+  \code{read_dna_seg_from_tab}, \code{read_dna_seg_from_file}, \code{read_dna_seg_from_embl},
+  \code{read_dna_seg_from_genbank} and \code{read_dna_seg_from_ptt} return
   \code{dna_seg} objects. \code{read_comparison_from_tab} and
   \code{read_comparison_from_blast} return \code{comparison}
   objects. \code{read_mauve_backbone} returns a list containing a list
@@ -148,7 +174,7 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
   For Mauve: http://asap.ahabs.wisc.edu/mauve/
 }
 \author{
-  Lionel Guy
+  Lionel Guy, Jens Roat Kultima
 }
 \note{
   Formats are changing and it maybe that some functions are temporarily
@@ -199,6 +225,18 @@ tree <- newick2phylog(tree_str)
 ## Plot
 plot_gene_map(dna_segs=bbone$dna_segs, comparisons=bbone$comparisons,
               tree=tree)
+
+##
+## From embl file
+##
+bq_embl_file <- system.file('extdata/BG_plasmid.embl', package = 'genoPlotR')
+bq <- read_dna_seg_from_embl(bq_embl_file)
+
+##
+## From genbank file
+##
+bq_genbank_file <- system.file('extdata/BG_plasmid.gbk', package = 'genoPlotR')
+bq <- read_dna_seg_from_file(bq_genbank_file, fileType="detect")
 
 ##
 ## From ptt files

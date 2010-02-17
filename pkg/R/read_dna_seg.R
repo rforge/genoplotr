@@ -3,25 +3,54 @@
 ################################################################################
 
 
+
+
+
+
 # SUPPORT FUNCTIONS FOR READ_DNA_SEG_FROM_GENBANK
-# Get start position for a currentFeature Object
+# Get start and end position for a currentFeature Object
+# Please note, the function makes sure that only start and end of the following two types are ok:
+# 'XXX (numeric)..(numeric)' or 'XXX complement((numeric)..(numeric))', where XXX may contain a-Z, 0-9 and
+# also ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~.
 get_start <- function(line){
-  as.numeric(gsub("[[:blank:]]|[[:alpha:]]|\\(|\\)|\\.\\..*", "", line))
+  ifelse (length(grep("complement", line)) > 0,
+          start <- as.numeric(gsub("_|[[:blank:]]|[[:alpha:]]|\\(|\\)|\\.\\..*", "",
+                   grep("^[[:graph:]]+ complement\\([[:digit:]]+\\.\\.[[:digit:]]+\\)$",
+                   line, value=TRUE))),
+          start <- as.numeric(gsub("_|[[:blank:]]|[[:alpha:]]|\\(|\\)|\\.\\..*", "",
+                   grep("^[[:graph:]]+ [[:digit:]]+\\.\\.[[:digit:]]+$", line, value=TRUE))))
+  start
 }
 get_end <- function(line){
-  as.numeric(gsub("[[:blank:]]|[[:alpha:]]|\\(|\\)|.*\\.\\.", "", line))
+  ifelse(length(grep("complement", line)) > 0,
+         end <- as.numeric(gsub("_|[[:blank:]]|[[:alpha:]]|\\(|\\)|.*\\.\\.", "",
+                 grep("^[[:graph:]]+ complement\\([[:digit:]]+\\.\\.[[:digit:]]+\\)$",
+                 line, value=TRUE))),
+         
+         end <- as.numeric(gsub("_|[[:blank:]]|[[:alpha:]]|\\(|\\)|.*\\.\\.", "",
+                grep("^[[:graph:]]+ [[:digit:]]+\\.\\.[[:digit:]]+$", line, value=TRUE))))
+  end
 }
+# Extracts data from feature lines.
 extract_data <- function(extract, cF){
-  extract <- gsub(extract, "", grep(extract, cF, value=TRUE))
+  extract <- gsub(extract, "", grep(paste("^",extract,sep=""), cF, value=TRUE))
   if (length(extract) == 0) { extract <- "NA" }
-  extract
+  extract[1]
+}
+# Added for support, to run an embl file directly
+read_dna_seg_from_embl <- function(file, tagsToParse=c("CDS"), ...){
+  read_dna_seg_from_file(file, tagsToParse, fileType="embl", ...)
+}
+# Added for support, to run an genbank file directly
+read_dna_seg_from_genbank <- function(file, tagsToParse=c("CDS"), ...){
+  read_dna_seg_from_file(file, tagsToParse, fileType="genbank", ...)
 }
 
 # Read genes from a GenBank file
-read_dna_seg_from_file <- function(file, fileType="detect", ...){
+read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"), fileType="detect", meta_lines=2, header=TRUE, ...){
   # Import data from file into variable
   importedData <- readLines(file)
-
+  
   # Find file type
   TYPE <- "Unknown"
   if (fileType == "detect" || fileType == "Detect" || fileType == "DETECT") {
@@ -34,168 +63,216 @@ read_dna_seg_from_file <- function(file, fileType="detect", ...){
   if (fileType == "Genbank" || fileType == "GENBANK" || fileType == "genbank") {
     TYPE <- "Genbank"
   }
+  if (fileType == "Ptt" || fileType == "PTT" || fileType == "ptt") {
+    TYPE <- "PTT"
+  }
   if (TYPE == "Unknown") {
-    stop("fileType has to be either 'detect', 'embl' or 'genbank'.")
+    stop("fileType has to be either 'detect', 'embl', 'genbank' or 'ptt'. Note if file type is .ptt, please specify this rather than using 'detect'.")
   }
   
-  # Extarct and name main segments
-  if(TYPE == "Genbank") {
-    mainSegments <- grep("^[[:alnum:]]", importedData)
-    names(mainSegments) <- gsub("*| .*", "", grep("^[[:alnum:]]", importedData, value=TRUE))
+  # If type is PTT, call already made function
+  if(TYPE == "PTT") {
+    dna_seg <- read_dna_seg_from_ptt(file, meta_lines, header, ...)
+    return(dna_seg)
   }
-
-  # SIMPLE ERROR HANDLING
-  if(TYPE == "Genbank") {
-    if(length(grep("FEATURES|DEFINITION", names(mainSegments))) < 2){
-      stop("FEATURES or DEFINITION segment missing in GBK File.")
+  
+   # If type isn't PTT do everything else...
+  if(TYPE != "PTT") {
+    
+   # Extarct and name main segments
+    if(TYPE == "Genbank") {
+      mainSegments <- grep("^[[:alnum:]]", importedData)
+      names(mainSegments) <- gsub("*| .*", "", grep("^[[:alnum:]]", importedData, value=TRUE))
     }
-    if(length(grep("LOCUS", names(mainSegments))) != 1) {
-      stop("Number of LOCUS should be 1.")
+    
+   # SIMPLE ERROR HANDLING
+    if(TYPE == "Genbank") {
+      if(length(grep("FEATURES|DEFINITION", names(mainSegments))) < 2) {
+        stop("FEATURES or DEFINITION segment missing in GBK File.")
+      }
+      if(length(grep("LOCUS", names(mainSegments))) != 1) {
+        stop("Number of LOCUS should be 1.")
+      }
     }
-  }
-  
-  # Extract META data
-  if(TYPE == "EMBL") {
-    seg_name <- gsub("^DE[[:blank:]]+", "", grep("^DE", importedData, value=T))
-  }
-  if(TYPE == "Genbank") {
-    seg_name <- gsub("DEFINITION {1,}", "", importedData[mainSegments["DEFINITION"]])
-  }
- 
-  # Extract features only, handles whether FEATURES is the last (or not) entry in GBK file
-  if(TYPE == "Genbank") {
-    ifelse (which(names(mainSegments) == "FEATURES") == length(mainSegments),
-            dataFeatures <- importedData[mainSegments["FEATURES"]:(length(importedData) - 1)],
-            dataFeatures <- importedData[mainSegments["FEATURES"]:
-            (mainSegments[which(names(mainSegments) == "FEATURES")+1] - 1)])
-  }
-  if(TYPE == "EMBL") {
-    dataFeatures <- grep("^FT", importedData, value=T)
-  }
-
-  # SIMPLE ERROR HANDLING
-  if(TYPE == "Genbank") {
-    if(length(dataFeatures) < 2){ stop("No FEATURES in GBK file.") }
-  }
-  if(TYPE == "EMBL") {
-    if(length(dataFeatures) < 1){ stop("No FEATURES in GBK file.") }
-  }
-
- 
-  # Extract each start line for each feature
-  if(TYPE == "Genbank") {
-    startLineOfFeature <- c(1:length(dataFeatures))[- grep("^ {6,}", dataFeatures)]
-  }  
-  if(TYPE == "EMBL") {
-    startLineOfFeature <- grep("FT   [[:alnum:]]", dataFeatures)
-  }
-  startLineOfFeature <- c(startLineOfFeature, length(dataFeatures))
-  
-
-  # Define variables for storage
-  nF <- length(startLineOfFeature)-1
-  name=character()
-  start=numeric()
-  end=numeric()
-  strand=numeric()
-  length=numeric()
-  pid=character()
-  gene=character()
-  synonym=character()
-  product=character()
-  proteinid=character()
-  
-  # Loop over all features                     
-  for(counter in 1:nF){
-
-    # Get feature, normally 20ish lines... Choses to clean up first after identification of feature.
-    currentFeature <- (dataFeatures[ startLineOfFeature[counter] : (startLineOfFeature[counter+1]-1) ])
-
-    # If feature is of GENE type  
-    if(length(grep(" gene ", currentFeature)) > 0){
-      # If GENE, do something.
+    if(TYPE == "EMBL") {
+      if(length(grep("^ID|^FH", importedData)) < 2){
+        stop("ID or FH segment missing in EMBL File.")
+      }
+      if(length(grep("^ID", importedData)) != 1) {
+        stop("Number of ID lines should be 1.")
+      }
     }
-
-    # If feature is of CDS type
-    if(length(grep(" CDS ", currentFeature)) > 0){
-
-      # Clean up feature, decreases number of lines etc.
+    
+   # Extract META data
+    if(TYPE == "EMBL") {
+      seg_name <- gsub("^DE[[:blank:]]+", "", grep("^DE", importedData, value=T))
+    }
+    if(TYPE == "Genbank") {
+      seg_name <- gsub("DEFINITION {1,}", "", importedData[mainSegments["DEFINITION"]])
+    }
+    
+   # Extract features only, handles whether FEATURES is the last (or not) entry in GBK file
+    if(TYPE == "Genbank") {
+      ifelse (which(names(mainSegments) == "FEATURES") == length(mainSegments),
+              dataFeatures <- importedData[mainSegments["FEATURES"]:(length(importedData) - 1)],
+              dataFeatures <- importedData[mainSegments["FEATURES"]:
+                              (mainSegments[which(names(mainSegments) == "FEATURES")+1] - 1)])
+    }
+    if(TYPE == "EMBL") {
+      dataFeatures <- grep("^FT", importedData, value=T)
+    }
+    
+   # SIMPLE ERROR HANDLING
+    if(TYPE == "Genbank") {
+      if(length(dataFeatures) < 2){ stop("No FEATURES in GBK file.") }
+    }
+    if(TYPE == "EMBL") {
+      if(length(dataFeatures) < 1){ stop("No FEATURES in GBK file.") }
+    }
+    
+    
+   # Extract each start line for each feature
+    if(TYPE == "Genbank") {
+      startLineOfFeature <- c(1:length(dataFeatures))[- grep("^ {6,}", dataFeatures)]
+    }  
+    if(TYPE == "EMBL") {
+      startLineOfFeature <- grep("FT   [[:alnum:]]", dataFeatures)
+    }
+    startLineOfFeature <- c(startLineOfFeature, length(dataFeatures))
+    
+    
+   # Define variables for storage
+    nF <- length(startLineOfFeature)-1
+    name=character()
+    start=numeric()
+    end=numeric()
+    strand=numeric()
+    length=numeric()
+    pid=character()
+    gene=character()
+    synonym=character()
+    product=character()
+    proteinid=character()
+    feature=character()
+    
+   # Loop over all features                     
+    for(counter in 1:nF){
+      
+   # Get feature, normally 20ish lines.
+      currentFeature <- (dataFeatures[ startLineOfFeature[counter] : (startLineOfFeature[counter+1]-1) ])
+      
+   # Clean up feature, decreases number of lines etc.
       if(TYPE == "Genbank") {
         currentFeature <- gsub("^ |:|\"| $", "", gsub("[[:blank:]]+|[[:space:]]+",
-        " ", strsplit(paste(currentFeature, collapse=""), "   /")[[1]]))  
+                           " ", strsplit(paste(currentFeature, collapse=""), "   /")[[1]]))  
       }
       if(TYPE == "EMBL") {
         currentFeature <- gsub("^ |:|\"| $", "", gsub("[[:blank:]]+|[[:space:]]+",
-        " ", strsplit(paste(gsub("FT", "", currentFeature), collapse=""), "   /")[[1]]))
+                          " ", strsplit(paste(gsub("FT", "", currentFeature), collapse=""),
+                          "   /")[[1]]))
       }
       
-      # Extract gene name or ID
-      ifelse(length(grep("gene=", currentFeature)) > 0,
-        name <- c(name, extract_data("gene=", currentFeature)),
-        name <- c(name, extract_data("locus_tag=", currentFeature)))
-
-      # Extract start and end and length
-      start <- c(start, get_start(currentFeature[1]))
-      end <- c(end, get_end(currentFeature[1]))
-      length <- c(length, (get_end(currentFeature[1]) - get_start(currentFeature[1]) + 1)/3 - 1)
-
-      # Set strand to 1 or -1
-      ifelse (length(grep("complement", currentFeature[1])) > 0,
-        strand <- c(strand, -1), strand <- c(strand, 1))
-
-      # Extract PID
-      if (TYPE == "Genbank") {
-        pid <- c(pid, extract_data("db_xref=GI", currentFeature))
-      }
-      if (TYPE == "EMBL") {
-        pidTEMP <- extract_data("db_xref=UniProtKB/Swiss-Prot", currentFeature)
-        if (pidTEMP == "NA"){
-          pidTEMP <- extract_data("db_xref=UniProtKB/TrEMBL", currentFeature)
+   # If feature is of a type to parse. Default is only CDS tags.
+      if(length(grep(gsub(" [[:print:]]+", "", currentFeature[1]), tagsToParse)) > 0){
+        
+   # SIMPLE ERROR HANDLING AND Only continue parsing if start and stop is valid...
+   # Extract gene name or ID AND start and end, THEN, check if it's ok.
+        ifelse(length(grep("gene=", currentFeature)) > 0,
+               nameTEMP <- extract_data("gene=", currentFeature),
+               nameTEMP <- extract_data("locus_tag=", currentFeature))
+        startTEMP <-get_start(currentFeature[1])
+        endTEMP <- get_end(currentFeature[1])
+        if(length(startTEMP) == 0 || length(endTEMP) == 0) {
+          warning(paste("Start and stop position invalid for "),
+                  nameTEMP, ". This entry has been excluded.", sep="") }
+        
+   # Continue if start and end is ok... Otherwise, skip this feature
+        if (length(startTEMP) > 0 && length(endTEMP) > 0) {
+          
+   # Save name, start, end, length
+          name <- c(name, nameTEMP)
+          start <- c(start, startTEMP)
+          end <- c(end, endTEMP)
+          length <- c(length, (get_end(currentFeature[1]) - get_start(currentFeature[1]) + 1)/3 - 1)
+          
+   # Set strand to 1 or -1
+          ifelse (length(grep("complement", currentFeature[1])) > 0,
+                  strand <- c(strand, -1), strand <- c(strand, 1))
+          
+   # Extract PID
+          if (TYPE == "Genbank") {
+            pid <- c(pid, extract_data("db_xref=GI", currentFeature))
           }
-        pid <- c(pid, pidTEMP)
+          if (TYPE == "EMBL") {
+            pidTEMP <- extract_data("db_xref=UniProtKB/Swiss-Prot", currentFeature)
+            if (pidTEMP == "NA"){
+              pidTEMP <- extract_data("db_xref=UniProtKB/TrEMBL", currentFeature)
+            }
+            pid <- c(pid, pidTEMP)
+          }
+          
+   # Extract gene
+          ifelse(length(grep("gene=", currentFeature)) > 0,
+                 gene <- c(gene, extract_data("gene=", currentFeature)), gene <- c(gene, "-"))
+          
+   # Extract synonym
+          synonym <- c(synonym, extract_data("locus_tag=", currentFeature))
+          
+   # Extract protein ID
+          proteinid <- c(proteinid, extract_data("protein_id=", currentFeature))
+          
+   # Extract product
+          product <- c(product, extract_data("product=", currentFeature))
+          
+   # Return tag feature info, with or without added _pseudo tag
+          if (length(grep("^pseudo", currentFeature)) > 0) {
+            feature <- c(feature, paste(gsub(" [[:print:]]+", "", currentFeature[1]), "_pseudo", sep=""))
+          }
+          if (length(grep("^pseudo", currentFeature)) == 0) {
+            feature <- c(feature, gsub(" [[:print:]]+", "", currentFeature[1]))
+          }
+          
+   # SIMPLE ERROR HANDLING
+          if(is.numeric(start) == FALSE) { stop("Start is not numeric.") }
+          if(is.numeric(end) == FALSE) { stop("End is not numeric.") }
+          if(is.numeric(length) == FALSE) { stop("Length is not numeric.") }
+          if(is.numeric(strand) == FALSE) { stop("Strand is not numeric.") }
+          if(is.character(pid) == FALSE) { stop("PID is not character.") }
+          if(is.character(name) == FALSE) { stop("Name is not character.") }
+          if(is.character(gene) == FALSE) { stop("Gene is not character.") }
+          if(is.character(synonym) == FALSE) { stop("Synonym is not character.") }
+          if(is.character(product) == FALSE) { stop("Product is not character.") }
+          if(is.character(proteinid) == FALSE) { stop("Protein ID is not character.") }
+          if(is.character(feature) == FALSE) { stop("Feature is not character.") }
+          
+   # end of parse if start and end ok
+        }
+        
+   # End of CDS loop
       }
       
-      # Extract gene
-      ifelse(length(grep("gene=", currentFeature)) > 0,
-        gene <- c(gene, extract_data("gene=", currentFeature)), gene <- c(gene, "-"))
-
-      # Extract synonym
-      synonym <- c(synonym, extract_data("locus_tag=", currentFeature))
-
-      # Extract protein ID
-      proteinid <- c(proteinid, extract_data("protein_id=", currentFeature))
-
-      # Extract product
-      product <- c(product, extract_data("product=", currentFeature))
-
-      # SIMPLE ERROR HANDLING
-      if(is.numeric(start) == FALSE) { stop("Start is not numeric.") }
-      if(is.numeric(end) == FALSE) { stop("End is not numeric.") }
-      if(is.numeric(length) == FALSE) { stop("Length is not numeric.") }
-      if(is.numeric(strand) == FALSE) { stop("Strand is not numeric.") }
-      if(is.character(pid) == FALSE) { stop("PID is not character.") }
-      if(is.character(name) == FALSE) { stop("Name is not character.") }
-      if(is.character(gene) == FALSE) { stop("Gene is not character.") }
-      if(is.character(synonym) == FALSE) { stop("Synonym is not character.") }
-      if(is.character(product) == FALSE) { stop("Product is not character.") }
-      if(is.character(proteinid) == FALSE) { stop("Protein ID is not character.") }
- 
-      # End of CDS loop
+   # End of loop over all features
     }
-
-  # End of loop over all features
+    
+   # Cut table to include only added features
+    table <- data.frame(name=name, start=start, end=end, strand=strand,
+                        length=length, pid=pid, gene=gene, synonym=synonym,
+                        product=product, proteinid=proteinid, feature, stringsAsFactors=FALSE)
+    
+   # SIMPLE ERROR HANDLING
+    if (dim(table)[1] == 0) { stop("Nothing to return in table. I.e. no features extracted.") }
+    
+   # Go to next function
+    .read_dna_seg(table, seg_name, ...)
+    
+   # End of not PTT
   }
   
-  # Cut table to include only added features
-  table <- data.frame(name=name, start=start, end=end, strand=strand,
-    length=length, pid=pid, gene=gene, synonym=synonym,
-    product=product, proteinid=proteinid, stringsAsFactors=FALSE)
-
-  # Go to next function
-  .read_dna_seg(table, seg_name, ...)
-
-  # End of genbank to dna_seg
+   # End of genbank to dna_seg
 }
+
+
+
 
 
 
