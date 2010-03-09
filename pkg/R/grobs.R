@@ -39,6 +39,16 @@ gene_grob <- function(gene){
                          gp=gpar(col=gene$col, lwd=gene$lwd, lty=gene$lty),
                          default.units="native")
   }
+
+  # introns
+  else if (gene$gene_type == "intron") {
+    gM <- gene$start + (gene$end - gene$start) / 2
+    intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end), y0=c(1,1.5), y1=c(1.5, 1))
+    grob <- segmentsGrob(x0=intron$x0, y0=intron$y0, x1=intron$x1, y1=intron$y1, name=gene$name,
+                        gp=gpar(lty=gene$lty, lwd=gene$lwd),
+                        default.units="native")
+  }
+  
   # points
   else if (gene$gene_type == "points" || gene$gene_type == "side_points") {
     if (gene$gene_type == "side_points"){

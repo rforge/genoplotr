@@ -16,7 +16,7 @@
 }
 \usage{
 read_dna_seg_from_tab(file, header = TRUE, ...)
-read_dna_seg_from_file(file, tagsToParse=c("CDS"), fileType = "detect", meta_lines = 2, header = TRUE, ...)
+read_dna_seg_from_file(file, tagsToParse=c("CDS"), fileType = "detect", meta_lines = 2, gene_type = "arrows", header = TRUE, ...)
 read_dna_seg_from_embl(file, tagsToParse=c("CDS"), ...)
 read_dna_seg_from_genbank(file, tagsToParse=c("CDS"), ...)
 read_dna_seg_from_ptt(file, meta_lines = 2, header = TRUE, ...)
@@ -46,6 +46,9 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
     The number of lines in the ptt file that represent "meta" data, not
     counting the header lines. Standard for NCBI files is 2 (name and
     length, number of proteins. Default is also 2.
+  }
+  \item{gene_type}{
+    Visualization of genes. Can be for example 'arrows' or 'blocks'.
   }
   \item{color_from}{
     In BLAST-like tabs, gives the name of the column that will be used

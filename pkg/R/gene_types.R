@@ -3,7 +3,7 @@
 ################################################################################
 gene_types <- function(auto=TRUE){
   types <- c("arrows", "blocks", "bars", "points", "side_blocks",
-             "side_bars", "side_points", "text", "side_text")
+             "side_bars", "side_points", "text", "side_text", "intron")
   if (auto) types <- c("auto", types)
   types
 }
