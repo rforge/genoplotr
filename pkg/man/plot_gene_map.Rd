@@ -128,12 +128,15 @@ plot_gene_map(dna_segs,
   Nothing. A lattice graphic is plotted on the current device.
 }
 \author{
-  Lionel Guy \email{lionel.guy@ebc.uu.se}
+  Lionel Guy \email{lionel.guy@ebc.uu.se}, Jens Roat Kultima
 }
 \note{
   This plotting function has been tested as far as possible, but given
   its complexity and that the package is young, bugs or strange behaviors
   are possible. Please report them to the author.
+
+  As of 10/3/2010, support for viewing exons/introns is only available
+  using genbank and embl formats, not when importing ptt files.
 }
 \seealso{
   \code{\link{dna_seg}} and \code{\link{comparison}} for the base objects;
