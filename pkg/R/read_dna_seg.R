@@ -48,7 +48,7 @@ read_dna_seg_from_genbank <- function(file, tagsToParse=c("CDS"), ...){
 
 # MAIN FUNCTION
 # Read genes from a GenBank file
-read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"), fileType="detect", meta_lines=2, gene_type="arrows", header=TRUE, ...){
+read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"), fileType="detect", meta_lines=2, gene_type="auto", header=TRUE, ...){
   
   # Import data from file into variable
   importedData <- readLines(file)
@@ -292,8 +292,12 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"), fileType="detect"
       
     # End of loop over all features
     }
+
+    # If gene_type is auto, change form arrows to blocks, otherwise arrows
+    if (length(grep("intron",geneType))>=1 && gene_type == "auto") { geneType[geneType== "auto"] <- "blocks" }
+    if (length(grep("intron",geneType))==0 && gene_type == "auto") { geneType[geneType== "auto"] <- "arrows" }
     
-    # Cut table to include only added features
+    # Cut table to include only added features    
     table <- data.frame(name=name, start=start, end=end, strand=strand,
                         length=length, pid=pid, gene=gene, synonym=synonym,
                         product=product, proteinid=proteinid, feature, gene_type=geneType, stringsAsFactors=FALSE)
@@ -309,6 +313,7 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"), fileType="detect"
   
 # End of genbank to dna_seg
 }
+
 
 
 

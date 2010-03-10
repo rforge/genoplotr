@@ -16,7 +16,7 @@
 }
 \usage{
 read_dna_seg_from_tab(file, header = TRUE, ...)
-read_dna_seg_from_file(file, tagsToParse=c("CDS"), fileType = "detect", meta_lines = 2, gene_type = "arrows", header = TRUE, ...)
+read_dna_seg_from_file(file, tagsToParse=c("CDS"), fileType = "detect", meta_lines = 2, gene_type = "auto", header = TRUE, ...)
 read_dna_seg_from_embl(file, tagsToParse=c("CDS"), ...)
 read_dna_seg_from_genbank(file, tagsToParse=c("CDS"), ...)
 read_dna_seg_from_ptt(file, meta_lines = 2, header = TRUE, ...)
@@ -48,7 +48,10 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
     length, number of proteins. Default is also 2.
   }
   \item{gene_type}{
-    Visualization of genes. Can be for example 'arrows' or 'blocks'.
+    Determines how genes are visualized. If 'auto' genes will appear as
+    arrows in there are no introns and as blocks if there are introns.
+    Can also be set to for example 'blocks' or 'arrows'. Do note, currently
+    introns are not supported in the ptt file format.
   }
   \item{color_from}{
     In BLAST-like tabs, gives the name of the column that will be used

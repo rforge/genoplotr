@@ -43,7 +43,7 @@ gene_grob <- function(gene){
   # introns
   else if (gene$gene_type == "intron") {
     gM <- gene$start + (gene$end - gene$start) / 2
-    intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end), y0=c(1,1.5), y1=c(1.5, 1))
+    intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end), y0=c(.5,1)*gene$strand+.5, y1=c(1,.5)*gene$strand+.5)
     grob <- segmentsGrob(x0=intron$x0, y0=intron$y0, x1=intron$x1, y1=intron$y1, name=gene$name,
                         gp=gpar(lty=gene$lty, lwd=gene$lwd),
                         default.units="native")
