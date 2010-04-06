@@ -30,6 +30,16 @@ block_coord <- function(start, end, strand, y=0.5){
   y <- c(y, y + strand/2, y + strand/2, y)
   list(x=x, y=y)
 }
+
+# exon coord
+exon_coord <- function(start, end, strand){
+  x <- c(rep(start, 2), rep(end, 2))
+  if (strand == 0 ){ y <- c(0.2, 0.8, 0.8, 0.2) }
+  if (strand == 1 ){ y <- c(0.5, 0.8, 0.8, 0.5) }
+  if (strand == -1 ){ y <- c(0.2, 0.5, 0.5, 0.2) }
+  list(x=x, y=y)
+}
+
 # coords for a zone annotation
 bracket_coord <- function(start, end, y=0, w=0.1){
   x <- c(rep(start, 2), rep(end, 2))
