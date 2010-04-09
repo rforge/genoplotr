@@ -30,11 +30,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   fclose($handle);
   echo $contents; } ?>
   </p>
-  <p>This project is hosted on <a href="http://r-forge.r-project.org/">R-Forge</a>.
+  <p>This project is hosted on <a href="http://r-forge.r-project.org/">R-Forge
+  </a>.
   <p>The <strong>project summary page</strong> can be found
   <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">
-  <strong>here</strong></a>, with all info on downloading, obtaining help, reporting
-  bugs and proposing features.
+  <strong>here</strong></a>, with all info on downloading, obtaining help, 
+  reporting bugs and proposing features.
+  </p>
+  <p>There are some <a href="screenshots.php">screenshots</a> available, and 
+  a <a href="pdfs/genoplot_all_examples.pdf">pdf<a> with all the graphics 
+  from the examples.
   </p>
   <!-- includes end of table --> 
   <?php include("end.php"); ?>

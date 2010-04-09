@@ -25,14 +25,17 @@ mids <- apply(barto$dna_segs[[1]][c("start", "end")], 1, mean)
 text <- barto$dna_segs[[1]]$name
 text[grep("BARBAKC", text)] <- ""
 annot <- annotation(x1=mids, text=text, rot=30)
+## Tree
+tree <- newick2phylog("(BB:2.5,(BG:1.8,(BH:1,BQ:0.8):1.9):3);")
+
 ## Plots
 png("../img/barto_seg1.png", h=300, w=500)
-plot_gene_map(barto$dna_segs, barto$comparisons,
-              annotation=annot,
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              annotation=annot, dna_seg_scale=c(rep(FALSE, 3), TRUE), scale=FALSE,
               main="Comparison of the same segment in 4 Bartonella genomes")
 dev.off()
 cairo_pdf("../pdfs/barto_seg1.pdf", h=4, w=7)
-plot_gene_map(barto$dna_segs, barto$comparisons,
-              annotation=annot,
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              annotation=annot, dna_seg_scale=c(rep(FALSE, 3), TRUE), scale=FALSE,
               main="Comparison of the same segment in 4 Bartonella genomes")
 dev.off()
