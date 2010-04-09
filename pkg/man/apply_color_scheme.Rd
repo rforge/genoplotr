@@ -8,7 +8,8 @@
   direction into account.
 }
 \usage{
-apply_color_scheme(x, direction = NULL, color_scheme = "grey")
+apply_color_scheme(x, direction = NULL, color_scheme = "grey",
+decreasing = FALSE, rng = NULL)
 }
 \arguments{
   \item{x}{
@@ -24,11 +25,21 @@ apply_color_scheme(x, direction = NULL, color_scheme = "grey")
     Character. One of \code{red_blue}, \code{blue_red}, \code{grey},
     \code{gray}. 
   }
+  \item{decreasing}{
+    Logical. Are the values of the comparisons oriented such as the
+    lower the value, the closer the relationship (e.g. e-values, gaps,
+    mismatches, etc)? \code{FALSE} by default. 
+  }
+  \item{rng}{
+    Numeric of length 2. Gives the higher and lower limit to apply a
+    color scheme.  
+  }
 }
 \details{
   A color scale is calculated, with the darker color corresponding to
-  the highest values of \code{x}. For the moment, two schemes (red-blue
-  and grey scale) are used.
+  the highest values of \code{x}, or the contrary is \code{decreasing}
+  is \code{TRUE}. For the moment, two schemes (red-blue and grey scale)
+  are used.
 
   For the red-blue scale (as in ACT), the direct comparisons are
   colored in red hues, and the reversed ones in blue hues.
@@ -49,20 +60,31 @@ apply_color_scheme(x, direction = NULL, color_scheme = "grey")
   \code{\link{comparison}}
 }
 \examples{
-## load data
+## Load data
 data(three_genes)
 
-## color_schemes
-## greys
-comparisons[[1]]$col <- c(70, 80, 90)
-comparisons[[1]]$col <- apply_color_scheme(comparisons[[1]]$col,
+## Color schemes
+## Greys
+comparisons[[1]]$values <- c(70, 80, 90)
+comparisons[[1]]$col <- apply_color_scheme(comparisons[[1]]$values,
                                            color_scheme="grey")
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons)
-## red-blue
-comparisons[[1]]$col <- c(70, 80, 90)
-comparisons[[1]]$col <- apply_color_scheme(comparisons[[1]]$col,
+## Red-blue
+comparisons[[1]]$col <- apply_color_scheme(comparisons[[1]]$values,
                                            direction=comparisons[[1]]$direction,
                                            color_scheme="red_blue")
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons)
+## Decreasing
+comparisons[[1]]$col <- apply_color_scheme(comparisons[[1]]$values,
+                                           direction=comparisons[[1]]$direction,
+                                           color_scheme="red_blue",
+                                           decreasing=TRUE)
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons)
+## Range
+comparisons[[1]]$col <- apply_color_scheme(comparisons[[1]]$values,
+                                           direction=comparisons[[1]]$direction,
+                                           color_scheme="red_blue",
+                                           rng=c(30,100))
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons)
 }
 \keyword{ data }

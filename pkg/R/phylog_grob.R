@@ -52,10 +52,12 @@ phylog_grob <-
     for (i in 1:leaves.number) {
       labelGrobs[[i]] <-
         textGrob(x=0, y=y[i], label=leaves.car[i], just="left",
-                 gp=gpar(cex=clabel.leaves), default.units="native")
+                 gp=gpar(cex=clabel.leaves), default.units="native",
+                 name=paste("tree.leave.label", i, sep="."))
       labelSegGrobs[[i]] <-
         segmentsGrob(xcar, y[i], xx[i], y[i],
-                     gp=gpar(col=grey(0.7)), default.units="native")
+                     gp=gpar(col=grey(0.7)), default.units="native",
+                     name=paste("tree.leave.segment", i, sep="."))
     }
   }
   yleaves <- y[1:leaves.number]
@@ -75,13 +77,17 @@ phylog_grob <-
     but <- names(x$parts)[i]
     y[but] <- mean(y[w])
     b <- range(y[w])
+    # vertical branches
     branchesGrobs[[i]] <-
-      segmentsGrob(xx[but], b[1], xx[but], b[2], default.units="native")
+      segmentsGrob(xx[but], b[1], xx[but], b[2], default.units="native",
+                   name=paste("tree.branch.vert.segment", i, sep="."))
     x1 <- xx[w]
     y1 <- y[w]
     x2 <- rep(xx[but], length(w))
+    # horizontal branches
     branchesGrobs[[i+length(x$parts)]] <-
-      segmentsGrob(x1, y1, x2, y1, default.units="native")
+      segmentsGrob(x1, y1, x2, y1, default.units="native",
+                   name=paste("tree.branch.horiz.segment", i, sep="."))
 }
 # if (cnodes > 0) {
 #     for (i in nodes.names) {
@@ -104,14 +110,19 @@ phylog_grob <-
 #         cleaves)
   # creating gTree for branches
   branchesTree <- gTree(children=gList(branchesGrobs, labelSegGrobs),
-                        vp=viewport(xscale=c(0, xcar), yscale=c(0, 1)))
+                        vp=viewport(xscale=c(0, xcar), yscale=c(0, 1),
+                          name="tree.branches"),
+                        name="tree.branchesTree")
   labelTree <- gTree(children=labelGrobs,
-                     vp=viewport(xscale=c(0, 1), yscale=c(0, 1)))
+                     vp=viewport(xscale=c(0, 1), yscale=c(0, 1),
+                       name="tree.labels"),
+                     name="tree.labelsTree")
   # finally plotting
   label_width <- unit(1, "grobwidth",
                       labelGrobs[[which.max(nchar(leaves.car))]])
   layout <- grid.layout(1, 2, widths=unit.c(unit(1, "null"), label_width))
-  fg <- frameGrob(layout=layout)
+  fg <- frameGrob(layout=layout, name="treeFrameGrob",
+                  vp=viewport(name="treeFrame"))
   fg <- placeGrob(fg, branchesTree, col=1)
   fg <- placeGrob(fg, labelTree, col=2)
   return(invisible(list(xy = data.frame(x = x, y = y), xbase = xbase, 

@@ -24,9 +24,13 @@ plot_gene_map(dna_segs,
               main = NULL, 
               main_pos = "centre", 
               dna_seg_labels = NULL, 
-              gene_type = NULL, 
-              dna_seg_line=TRUE,
+              gene_type = NULL,
+              arrow_head_len = 200,
+              dna_seg_line = TRUE,
               scale = TRUE, 
+              dna_seg_scale = !scale,
+              global_color_scheme = c("auto", "auto", "blue_red"),
+              override_color_schemes = FALSE,
               plot_new=TRUE,
               debug = 0
               )
@@ -90,6 +94,12 @@ plot_gene_map(dna_segs,
     A character. Describes the type of representation of genes or
     \code{dna_seg} elements. See details.
   }
+  \item{arrow_head_len}{
+    A numeric. Gives the length of arrow heads for gene type
+    "arrows". The arrow head extends at maximum at half of the gene. Set
+    to \code{Inf} to have all arrow heads covering the half of the
+    gene. 200 by default.
+  }
   \item{dna_seg_line}{
     A vector, either logical or giving colors, of length 1 or of same
     length as \code{dna_segs}. Should the line in the middle of the
@@ -99,6 +109,22 @@ plot_gene_map(dna_segs,
   }
   \item{scale}{
     A logical. Should the scale be displayed on the plot. \code{TRUE} by
+    default. 
+  }
+  \item{dna_seg_scale}{
+    A logical, of length one or of the same length as
+    \code{dna_segs}. Should a scale be displayed below each or all dna
+    segments, respectively. \code{!scale} by default. 
+  }
+  \item{global_color_scheme}{
+    A character of length 3. If no \code{col} column is present on any
+    comparison or is \code{override_color_schemes} is set, apply a
+    global color scheme over all comparions. See below for more details.
+    \code{c("auto", "auto", "blue_red")} by default. 
+  }
+  \item{override_color_schemes}{
+    A logical. If \code{TRUE}, apply a global color scheme even if there
+    are comparisons that have \code{col} columns. \code{FALSE} by
     default. 
   }
   \item{plot_new}{
@@ -122,6 +148,12 @@ plot_gene_map(dna_segs,
   The format of the elements of \code{dna_segs} is previously determined
   in the object or can be globally set by \code{gene_type}. See the
   function \code{\link{gene_types}} to return the available types.
+
+  The three elements of \code{global_color_scheme} are (i) which column
+  serves as scale to apply the color  scheme, or "auto" (default);
+  (ii) if the scale is increasing or decreasing (see
+  \code{apply_color_scheme} for more details), or "auto" (default);
+  (iii) the color scheme to apply.
 }
 \value{
   %% Change this when/if would return gTree
@@ -144,6 +176,7 @@ plot_gene_map(dna_segs,
   \code{\link{read_comparison_from_tab}} and
   \code{\link{read_comparison_from_blast}} to read from files;
   \code{\link{gene_types}} for \code{gene_type} argument;
+  \code{\link{apply_color_scheme}} for color schemes;
 }
 \examples{
 old.par <- par(no.readonly=TRUE)
@@ -212,10 +245,39 @@ plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               gene_type="side_blocks")
 
+## dna_seg_scale & global_color_scheme
+data("barto")
+tree <- newick2phylog("(BB:2.5,(BG:1.8,(BH:1,BQ:0.8):1.9):3);")
+xlims <- data.frame(x0=c(1400000, 10000, 15000, 8000),
+                    x1=c(1445000, 63000, 58000, 62000))
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims)
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims,
+              dna_seg_scale=c(TRUE, FALSE, FALSE, TRUE), scale=FALSE,
+              global_color_scheme=c("e_value","auto","grey"))
+
 ##
-## plot genoPlotR logo
+## Exploring and modifying a gene map plot
 ##
-col <- brewer.pal(8, "RdBu")
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims)
+## View viewports
+current.vpTree()
+## Go down to one of the viewports, add an xaxis, go back up to root viewport
+downViewport("scale")
+grid.xaxis()
+upViewport(0)
+## Get all the names of the objects
+grobNames <- getNames()
+grobNames
+## Change the color ot the scale line
+grid.edit("scale.lines", gp=gpar(col="grey"))
+## Remove first dna_seg_lines
+grid.remove("dna_seg_line.1")
+
+##
+## Plot genoPlotR logo
+##
+col <- c("#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
+         "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC")
 cex <- 2.3
 ## First segment 
 start1 <- c(150, 390, 570)

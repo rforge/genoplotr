@@ -21,8 +21,12 @@ plot_gene_map <- function(dna_segs,
                           main_pos="centre", # centre, left, right
                           dna_seg_labels=NULL,
                           gene_type=NULL, # if not null, resets gene_type
+                          arrow_head_len=200,
                           dna_seg_line=TRUE,
                           scale=TRUE,
+                          dna_seg_scale=!scale,
+                          global_color_scheme=c("auto", "auto", "blue_red"),
+                          override_color_schemes=FALSE,
                           plot_new=TRUE,
                           debug=0){
   ### check arguments ###
@@ -111,7 +115,35 @@ plot_gene_map <- function(dna_segs,
   if (!is.null(gene_type) && !(gene_type %in% gene_types()))
     stop(paste("gene_type muste be one of:",
                paste(gene_types(), collapse=", ")))
-         
+
+  # check scale. Must be logical
+  if (is.logical(dna_seg_scale)){
+    # if length 1, make dna_seg_scale the same length as dna_segs
+    if (length(dna_seg_scale) == 1){
+      dna_seg_scale <- rep(dna_seg_scale, n_dna_segs)
+    }
+    # if a different length, must be of the same length as n_dna_segs
+    else if (length(dna_seg_scale) != n_dna_segs){
+      stop("dna_seg_scale must be the same length dna_segs")
+    }
+  }
+  else {
+    stop("dna_seg_scale must be logical")
+  }
+
+  # check global_color_scheme
+  if (length(global_color_scheme) != 3)
+    stop ("global_color_scheme should be length 3")
+  # accepted values for second value
+  glob_col_sch_2_vals <- c("increasing", "decreasing", "auto")
+  if (length(grep(global_color_scheme[2], glob_col_sch_2_vals)) != 1){
+    stop(paste("Second argument to global_color_scheme should be one of ",
+               glob_col_sch_2_vals, collapse=" "))
+  } else {
+    global_color_scheme[2] <- grep(global_color_scheme[2],
+                                   glob_col_sch_2_vals, value=TRUE)
+  }
+  
   ### prepare plotting frame ###
   frame_w <- c(0,1,0)
   # calculate beginning of plotting and set sensible offsets
@@ -128,6 +160,12 @@ plot_gene_map <- function(dna_segs,
   }
   seg_lengths <- xlims$x1 - xlims$x0
   max_length <- max(seg_lengths)
+
+  # dna_seg lines height. 1 line for the dna_seg, 0.5 in addition for
+  # the dna_seg_scale, if needed. 1 null in between for comparisons
+  h <- rep(1, 2*n_dna_segs - 1)
+  h[seq(1, 2*n_dna_segs - 1, by=2)] <- 1 + 0.5*dna_seg_scale
+  dna_seg_heights <- unit(h, c(rep(c("lines", "null"), n_dna_segs-1), "lines"))
   
   ### filter objects ###
   if (!is.null(xlims)){
@@ -162,18 +200,70 @@ plot_gene_map <- function(dna_segs,
       dna_segs[[i]]$gene_type <- gene_type
     }
   }
+
+  # deal with global color scheme: if no color defined or if override is
+  # set, try to find a common numerical column in all comparisons
+  if ((!any("col" %in% unlist(lapply(comparisons, names)))
+           || override_color_schemes) && !is.null(comparisons)){
+    do_apply_col_scheme <- TRUE
+    # collect numerical columns
+    num_cols <- lapply(comparisons, function(x) names(x)[sapply(x, is.numeric)])
+    shared_num_cols <-
+      names(which(table(unlist(num_cols)) == length(num_cols)))
+    shared_num_cols <- shared_num_cols[!shared_num_cols %in%
+                                       c("start1", "start2", "end1", "end2")]
+    # global_color_scheme[1]: take color from?
+    # take per_id if present, if not, evalue, else the first found in the
+    # first comp
+    if (global_color_scheme[1] == "auto"){
+      names_comp_1 <- names(comparisons[[1]])
+      global_color_scheme[1] <- if ("per_id" %in% shared_num_cols){
+        "per_id"
+      } else if ("evalue" %in% shared_num_cols) {
+        "evalue"
+      } else {
+        names_comp_1[names_comp_1 %in% shared_num_cols][1]
+      }
+    }
+    # global_color_scheme[1]: incr/decr. Turn it to decreasing
+    if (global_color_scheme[2] == "auto"){
+      global_color_scheme[2] <-
+        if (global_color_scheme[1] %in% c("mism", "gaps", "e_value"))
+          TRUE else FALSE
+    } else if (global_color_scheme[2] == "decreasing"){
+      global_color_scheme[2] <- TRUE
+    } else if (global_color_scheme[2] == "increasing"){
+      global_color_scheme[2] <- FALSE
+    } else {
+      stop("Invalid value for global_color_scheme[2]")
+    }
+    
+      
+    # gather range of values from all comparisons
+    range_col_from <-
+      range(unlist(lapply(comparisons,
+                          function(x) range(x[[global_color_scheme[1]]]))))
+    # perform apply_color_scheme later when collecting grobs
+  } else {
+    do_apply_col_scheme <- FALSE
+  }
   
   ### collect grobs ###
   # collect dna_seg grobs
   dna_seg_grobs <- list()
+  dna_seg_scale_grobs <- list()
   for (i in 1:n_dna_segs){
     # debug
     if (debug > 0 && debug < nrow(dna_segs[[i]]))
       dna_segs[[i]] <- dna_segs[[i]][1:debug,]
     # end debug
-    dna_seg_grobs[[i]] <- dna_seg_grob(dna_segs[[i]])
+    dna_seg_grobs[[i]] <- dna_seg_grob(dna_segs[[i]], arrow_head_len, i)
+    dna_seg_scale_grobs[[i]] <-
+      if (dna_seg_scale[[i]]) dna_seg_scale_grob(xlims[i,], i)
+      else NULL
   }
-  # collect comparison grobs
+  
+  # collect comparison grobs. Check colors and override if necessary
   comparison_grobs <- list()
   if (n_comparisons > 0){
     for (i in 1:n_comparisons){
@@ -181,13 +271,22 @@ plot_gene_map <- function(dna_segs,
       if (debug > 0 && debug < nrow(comparisons[[i]]))
         comparisons[[i]] <- comparisons[[i]][1:debug,]
       # end debug
-      comparison_grobs[[i]] <- comparison_grob(comparisons[[i]],
+      # apply color scheme
+      if (do_apply_col_scheme){
+        comparisons[[i]]$col <-
+          apply_color_scheme(x=comparisons[[i]][[global_color_scheme[1]]],
+                             direction=comparisons[[i]]$direction,
+                             color_scheme=global_color_scheme[3],
+                             decreasing=global_color_scheme[2],
+                             rng=range_col_from)
+      }
+      comparison_grobs[[i]] <- comparison_grob(comparisons[[i]], i,
                                                offsets[i], offsets[i+1],
                                                xlim1=as.numeric(xlims[i,]),
                                                xlim2=as.numeric(xlims[i+1,]))
     }
   }
-
+  
   ### annotation ###
   if (!is.null(annotation)){
     annotation_grob <- annotation_grob(annotation, annotation_cex)
@@ -261,7 +360,8 @@ plot_gene_map <- function(dna_segs,
                         name="frame"))
   # annotation
   if (!is.null(annotation)){
-    pushViewport(viewport(layout.pos.row=1, layout.pos.col=2),
+    pushViewport(viewport(layout.pos.row=1, layout.pos.col=2,
+                          name="annotation_outer"),
                  viewport(width=unit(1, "npc")-unit(1, "lines"),
                           xscale=c(xlims[1,1]-offsets[1],
                             xlims[1,1]+max_length-offsets[1]),
@@ -272,7 +372,7 @@ plot_gene_map <- function(dna_segs,
   # scale
   if (scale) {
     pushViewport(viewport(layout.pos.row=3, layout.pos.col=2,
-                          xscale=c(0, max_length)))
+                          xscale=c(0, max_length), name="scale"))
     grid.draw(scale_grob)
     upViewport()
   }
@@ -280,45 +380,67 @@ plot_gene_map <- function(dna_segs,
   # tree or labels. Height is 1-3 lines because margin is 2 in plotarea,
   # and 1 to center to the middle of each dna_seg (1/2 line top and bottom)
   if (!is.null(tree_grob)){
-    pushViewport(viewport(layout.pos.row=2, layout.pos.col=1),
+    # make a supplementary margin if there is a scale in the last
+    # dna_seg to get labels facing the text. Hack.
+    bot_margin <- 1 + 0.5 * dna_seg_scale[[n_dna_segs]]
+    pushViewport(viewport(layout.pos.row=2, layout.pos.col=1,
+                          name="tree_outer"),
                  viewport(width=unit(1, "npc")-unit(1, "lines"),
-                          height=unit(1, "npc")-unit(1, "lines"),
+                          height=unit(1, "npc")-unit(bot_margin, "lines"),
+                          y=unit(1, "npc")-unit(0.5, "lines"),
+                          just=c("centre", "top"),
                           name="tree"))
     grid.draw(tree_grob$grob)
     upViewport(2)    
   } 
   
   # plotting area
-  pushViewport(viewport(layout.pos.row=2, layout.pos.col=2),
+  pushViewport(viewport(layout.pos.row=2, layout.pos.col=2,
+                        name="plotarea_outer"),
                viewport(width=unit(1, "npc")-unit(1, "lines"),
                         height=unit(1, "npc")-unit(0, "lines"),
                         name="plotarea"))
 
   # map grid
   pushViewport(viewport(layout=grid.layout(2*n_dna_segs - 1, 1,
-                          heights=unit(rep(1, 2*n_dna_segs - 1),
-                            c(rep(c("lines", "null"), n_dna_segs -1), "lines"))
-                          ),
-                        name="map")) 
+                          heights=dna_seg_heights), name="map")) 
   ### dna_segs ###
   for (i in 1:n_dna_segs){
+    # calculate xscale
+    xscale <- c(xlims[i,1]-offsets[i], xlims[i,1]+max_length-offsets[i])
+    # layout containing both scale and dna_seg
     pushViewport(viewport(layout.pos.row=2*i-1,
+                          layout=grid.layout(2, 1,
+                            heights=unit(c(1, 0.5*dna_seg_scale[i]),
+                              rep("null", 2))),
+                          name=paste("scale_and_dna_seg", i, sep=".")))
+    # dna_seg_scale
+    if (dna_seg_scale[i]){
+      pushViewport(viewport(layout.pos.row=2,
+                            yscale=c(0,1),
+                            xscale=xscale,
+                            name=paste("dna_seg_scale", i, sep=".")))
+      grid.draw(dna_seg_scale_grobs[[i]])
+      upViewport() # up dna_seg_scale vp
+    }
+    # dna_seg itself
+    pushViewport(viewport(layout.pos.row=1,
                           yscale=c(0,1),
-                          xscale=c(xlims[i,1]-offsets[i],
-                            xlims[i,1]+max_length-offsets[i]),
-                          name = paste("dna_seg", i, sep="_")))
+                          xscale=xscale,
+                          name = paste("dna_seg", i, sep=".")))
     # draw segment line
     if (!dna_seg_line[i]=="FALSE"){
       grid.segments(x0=unit(xlims$x0[i], "native"),
                     y0=unit(0.5, "native"),
                     x1=unit(xlims$x1[i], "native"),
                     y1=unit(0.5, "native"),
+                    name=paste("dna_seg_line", i, sep="."),
                     gp=gpar(col=dna_seg_line[i]))
     }
     #grid.xaxis()
     # draw dna_seg grobs
     grid.draw(dna_seg_grobs[[i]])
-    upViewport() # pop dna_segs[i] vp
+    upViewport(2) # pop dna_seg and scale, and dna_segs[i] vp
   }
   ### comparisons ###
   if (n_comparisons > 0){
@@ -326,7 +448,7 @@ plot_gene_map <- function(dna_segs,
       pushViewport(viewport(layout.pos.row=2*i,
                             yscale=c(0,1),
                             xscale=c(0, max_length),
-                            name = paste("comparison", i, sep="_")))
+                            name = paste("comparison", i, sep=".")))
       # draw comparison grobs
       grid.draw(comparison_grobs[[i]])
       upViewport() # pop comparisons[[i]] vp

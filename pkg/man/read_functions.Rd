@@ -16,15 +16,19 @@
 }
 \usage{
 read_dna_seg_from_tab(file, header = TRUE, ...)
-read_dna_seg_from_file(file, tagsToParse=c("CDS"), fileType = "detect", meta_lines = 2, gene_type = "auto", header = TRUE, ...)
+read_dna_seg_from_file(file, tagsToParse=c("CDS"), fileType = "detect",
+                       meta_lines = 2, gene_type = "auto", header = TRUE, ...)
 read_dna_seg_from_embl(file, tagsToParse=c("CDS"), ...)
 read_dna_seg_from_genbank(file, tagsToParse=c("CDS"), ...)
 read_dna_seg_from_ptt(file, meta_lines = 2, header = TRUE, ...)
 read_comparison_from_tab(file, header = TRUE, ...)
-read_comparison_from_blast(file, color_from = "per_id",
-                           color_scheme="red_blue", ...)
+read_comparison_from_blast(file, sort_by = "per_id",
+                           filt_high_evalue = NULL,
+                           filt_low_per_id = NULL,
+                           filt_length = NULL,
+                           color_scheme = NULL, ...)
 read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
-                    header = TRUE, filter_low=0, ...)
+                    header = TRUE, filter_low = 0, ...)
 }
 \arguments{
   \item{file}{
@@ -52,26 +56,37 @@ read_mauve_backbone(file, ref = 1, gene_type = "side_blocks",
     arrows in there are no introns and as blocks if there are introns.
     Can also be set to for example 'blocks' or 'arrows'. Do note, currently
     introns are not supported in the ptt file format.
+    Default for mauve backbone is \code{side_blocks}.
+    See \code{\link{gene_types}} page for more details, or use function
+    \code{gene_types}. 
   }
-  \item{color_from}{
+  \item{sort_by}{
     In BLAST-like tabs, gives the name of the column that will be used
-    to sort and color the comparisons. Accepted values are \code{per_id}
+    to sort the comparisons. Accepted values are \code{per_id}
     (percent identity, default), \code{mism} (mismatches), \code{gaps}
-    (gaps), \code{e-value} (E-value), \code{bit_score} (bit score). 
+    (gaps), \code{e_value} (E-value), \code{bit_score} (bit score). 
+  }
+  \item{filt_high_evalue}{
+    A numerical, or \code{NULL} (default). Filters out all comparisons
+    that have a e-value higher than this one.
+  }
+  \item{filt_low_per_id}{
+    A numerical, or \code{NULL} (default). Filters out all comparisons
+    that have a percent identity lower than this one.
+  }
+  \item{filt_length}{
+    A numerical, or \code{NULL} (default). Filters out all comparisons
+    that have alignments shorter than this value.
   }
   \item{color_scheme}{
-    The color scheme to apply. See \code{apply_color_scheme} for more
-    details. Possible values include \code{grey} and \code{red_blue},
-    which is the default.
+    A color scheme to apply. See \code{apply_color_scheme} for more
+    details. Possible values include \code{grey} and \code{red_blue}.
+    \code{NULL} by default. Color schemes can be applied while running
+    \code{plot_gene_map}.
   }
   \item{ref}{
     In mauve backbone, which of the dna segments will be the reference,
     i.e. which one will have its blocks in order.
-  }
-  \item{gene_type}{
-    The type of gene/block representation. Default for mauve backbone is
-    \code{side_blocks}. See \code{\link{gene_types}} page for more
-    details, or use function \code{gene_types}.
   }
   \item{\dots}{
     Further arguments passed to generic reading functions and class
@@ -253,6 +268,7 @@ bq <- read_dna_seg_from_ptt(bq_ptt_file)
 ## Read directly from NCBI ftp site:
 url <- "ftp://ftp.ncbi.nih.gov/genomes/Bacteria/Bartonella_henselae_Houston-1/NC_005956.ptt"
 attempt <- 0
+\dontrun{
 while (attempt < 5){
   attempt <- attempt + 1
   bh <- try(read_dna_seg_from_ptt(url))
@@ -263,8 +279,9 @@ while (attempt < 5){
     Sys.sleep(5)
   }
 }
+}
 ## If attempt to connect to internet fails
-if (!is.dna_seg(bh)){
+if (!exists("bh")){
   data(barto)
   bh <- barto$dna_segs[[3]]
 }

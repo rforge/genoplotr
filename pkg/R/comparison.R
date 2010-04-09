@@ -12,7 +12,7 @@ comparison <- function(x){
     stop(paste("Cannot coerce class", class(x), "to comparison"))
   }
 }
-as.comparison <- function(df, col="grey"){
+as.comparison <- function(df){
   # check for class comparison, list, df
   if (is.comparison(comparison)) return(df)
   if (is.list(df) && !is.data.frame(df)) df <- comparison(df)
@@ -32,7 +32,6 @@ as.comparison <- function(df, col="grey"){
                            * sign(df$start2-df$end2) > 0, 1, -1)
     # check color (character and default)
     if (is.factor(df$col)) df$col <- as.character(df$col)
-    if (is.null(df$col)) df$col <- col
   }
   else {
     stop("Unable to handle this format")

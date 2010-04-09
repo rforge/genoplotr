@@ -2,15 +2,16 @@
 # Grobs
 ################################################################################
 # create gene grobs
-gene_grob <- function(gene){
+gene_grob <- function(gene, head_len=200, i=0){
   if (!is.dna_seg(gene)) stop("A dna_seg object is required")
   if (nrow(gene) > 1) stop ("gene must be single-row")
-  # arrows
   mid <- (gene$start + gene$end)/2
+  name <- paste("seg.", i, ".", gene$name, sep="")
+  # arrows
   if (gene$gene_type == "arrows"){
     arrow <- arrow_coord(x1=gene$start, x2=gene$end,
-                         y=0.5, strand=gene$strand, head_len=100)
-    grob <- polygonGrob(arrow$x, arrow$y, name=gene$name,
+                         y=0.5, strand=gene$strand, head_len=head_len)
+    grob <- polygonGrob(arrow$x, arrow$y, name=name,
                         gp=gpar(fill=gene$col, lty=gene$lty, lwd=gene$lwd),
                         default.units="native")
   }
@@ -22,11 +23,25 @@ gene_grob <- function(gene){
     else {
       block <- block_coord(gene$start, gene$end, strand=2, y=0)
     }
-    grob <- polygonGrob(block$x, block$y, name=gene$name,
+    grob <- polygonGrob(block$x, block$y, name=name,
                         gp=gpar(fill=gene$col, col=gene$col, lty=gene$lty,
                           lwd=gene$lwd),
                         default.units="native")  
   }
+  # exons
+  else if (gene$gene_type == "exons" || gene$gene_type == "side_exons"){
+    if (gene$gene_type == "side_exons"){
+      block <- exon_coord(gene$start, gene$end, gene$strand)
+    }
+    else {
+      block <- exon_coord(gene$start, gene$end, 0)
+    }
+    grob <- polygonGrob(block$x, block$y, name=name,
+                        gp=gpar(fill=gene$col, col=gene$col, lty=gene$lty,
+                          lwd=gene$lwd),
+                        default.units="native")  
+  }
+  
   # bars
   else if (gene$gene_type == "bars" || gene$gene_type == "side_bars") {
     if (gene$gene_type == "side_bars"){
@@ -35,20 +50,29 @@ gene_grob <- function(gene){
     else {
       y0 <- 0; y1 <- 1
     }
-    grob <- segmentsGrob(x0=mid, y0=y0, x1=mid, y1=y1,
+    grob <- segmentsGrob(x0=mid, y0=y0, x1=mid, y1=y1, name=name,
                          gp=gpar(col=gene$col, lwd=gene$lwd, lty=gene$lty),
                          default.units="native")
   }
 
   # introns
-  else if (gene$gene_type == "intron") {
-    gM <- gene$start + (gene$end - gene$start) / 2
-    intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end), y0=c(.5,1)*gene$strand+.5, y1=c(1,.5)*gene$strand+.5)
-    grob <- segmentsGrob(x0=intron$x0, y0=intron$y0, x1=intron$x1, y1=intron$y1, name=gene$name,
-                        gp=gpar(lty=gene$lty, lwd=gene$lwd),
-                        default.units="native")
+  else if (gene$gene_type == "introns") {
+    ## if(gene$strand == 1) {
+    ##   intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end),
+    ##                  y0=c(.8,1), y1=c(1,.8))
+    ## }
+    ## if(gene$strand == -1) {
+    ##   intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end),
+    ##                  y0=c(.2,0), y1=c(0,.2))
+    ## }
+    intron <- list(x0=c(gene$start, mid), x1=c(mid, gene$end),
+                   y0=c(0.3, 0.5)*gene$strand + 0.5,
+                   y1=c(0.5, 0.3)*gene$strand + 0.5)
+    grob <- segmentsGrob(x0=intron$x0, y0=intron$y0,
+                         x1=intron$x1, y1=intron$y1, name=name,
+                         gp=gpar(lty=gene$lty, lwd=gene$lwd),
+                         default.units="native")
   }
-  
   # points
   else if (gene$gene_type == "points" || gene$gene_type == "side_points") {
     if (gene$gene_type == "side_points"){
@@ -57,9 +81,9 @@ gene_grob <- function(gene){
     else {
       y <- 0.5
     }
-    grob <- pointsGrob(x=mid, y=y, pch=gene$pch, size=unit(gene$cex/2, "char"),
-                       gp=gpar(col=gene$col),
-                       default.units="native")
+    grob <- pointsGrob(x=mid, y=y, name=name,
+                       pch=gene$pch, size=unit(gene$cex/2, "char"),
+                       gp=gpar(col=gene$col), default.units="native")
   }
   # text
   else if (gene$gene_type == "text" || gene$gene_type == "side_text") {
@@ -69,8 +93,8 @@ gene_grob <- function(gene){
     else {
       just <- c("centre", "centre")
     }
-    grob <- textGrob(label=gene$name, x=mid, y=0.5, just=just,
-                     gp=gpar(col=gene$col, cex=gene$cex),
+    grob <- textGrob(label=gene$name, x=mid, y=0.5, name=name,
+                     just=just, gp=gpar(col=gene$col, cex=gene$cex),
                      default.units="native")
   }
   else {
@@ -79,24 +103,28 @@ gene_grob <- function(gene){
   grob
 }
 # create dna_seg grobs
-dna_seg_grob <- function(dna_seg){
+dna_seg_grob <- function(dna_seg, ...){
   if(!is.dna_seg(dna_seg)) stop("A dna_seg object is required")
   grob_list <- gList()
   if (nrow(dna_seg) < 1) return(grob_list)
   for (i in 1:nrow(dna_seg)){
     gene <- as.dna_seg(dna_seg[i,])
-    grob_list[[i]] <- gene_grob(gene)
+    grob_list[[i]] <- gene_grob(gene, ...)
   }
   grob_list
 }
 # create similarity grobs
-similarity_grob <- function(similarity, xlim1, xlim2, offset1, offset2){
+similarity_grob <- function(similarity, i, xlim1, xlim2, offset1, offset2){
   if (!is.comparison(similarity)) stop("A comparison object is required")  
   if (nrow(similarity) > 1) stop ("gene must be single-row")
   if (!all(is.numeric(c(offset1, offset2)))) stop("Offsets must be numeric")
+  if (is.null(similarity$col)) similarity$col <- grey(0.5)
   x1 <- c(similarity$start1, similarity$end1)+offset1-xlim1[1]
   x2 <- c(similarity$end2, similarity$start2)+offset2-xlim2[1]
   polygonGrob(x=c(x1, x2), y=c(1, 1, 0, 0),
+              name=paste("comp.", i, ".",
+                similarity$start1, "-", similarity$end1, "_",
+                similarity$start2, "-", similarity$end2, sep=""),
               gp=gpar(fill=similarity$col, col=similarity$col, lwd=0.1),
               default.units="native")
 }
@@ -117,9 +145,12 @@ label_grob <- function(label, cex=0.8){
   if (!is.annotation(label)) stop("An annotation object is required")
   if (nrow(label) > 1) stop("A single-line annotation is required")
   grob_list <- gList()
+  # range
   if (!is.na(label$x2)){
     bracket_coord <- bracket_coord(label$x1, label$x2, y=y, w=w)
     grob_list[[2]] <- linesGrob(x=bracket_coord$x, y=bracket_coord$y,
+                                name=paste("annot", "line",
+                                  gsub(" ", "_", label$text), sep="."),
                                 default.units="native",
                                 gp=gpar(col=label$col))
     x <- mean(c(label$x1, label$x2))
@@ -133,6 +164,8 @@ label_grob <- function(label, cex=0.8){
     just <- c(0, 0.5)
   }
   grob_list[[1]] <- textGrob(label$text, x=x, y=y+w, just=just,
+                             name=paste("annot", "label",
+                               gsub(" ", "_", label$text), sep="."),
                              rot=label$rot,
                              default.units="native",
                              gp=gpar(col=label$col, cex=cex))
@@ -156,23 +189,40 @@ dna_seg_label_grob <- function(labels){
   labelGrobs <- gList()
   for (i in 1:n_label) {
     labelGrobs[[i]] <-
-      textGrob(x=0, y=y[i], label=labels[i], just="left",
+      textGrob(x=0, y=y[i], name=paste("label", i, sep="."),
+               label=labels[i], just="left",
                default.units="native")
   }
   width <- unit(1, "grobwidth", labelGrobs[[which.max(nchar(labels))]])
   labelTree <- gTree(children=labelGrobs,
                      vp=viewport(xscale=c(0, 1), yscale=c(0, 1),
-                       width=width))
+                       width=width, name="labels"), name="labelsTree")
   list(grob=labelTree, width=width)
 }
 # create scale grob
 scale_grob <- function(max_length){
     rng <- diff(pretty(c(0, max_length), n=8))[1]
-    scale_grob <- gList(segmentsGrob(x0=max_length, y0=0,
-                                     x1=max_length-rng, y1=0,
-                                     default.units="native"),
-                        textGrob(label=human_nt(rng)$text,
-                                 x=max_length-rng/2, y=0.5,
-                                 default.units="native"))
-    scale_grob
+    gList(segmentsGrob(x0=max_length, y0=0, x1=max_length-rng, y1=0,
+                       name="scale.lines", default.units="native"),
+          textGrob(label=human_nt(rng)$text, x=max_length-rng/2, y=0.5,
+                   name="scale.text", default.units="native")
+          )
+}
+# create dna_seg scale grob
+dna_seg_scale_grob <- function(range, i){
+  range <- as.numeric(range)
+  if (length(range) != 2 && !is.numeric(range))
+    stop("range must be numeric and length 2")
+  ticks <- pretty(range, n=9)
+  ticks2 <- ticks[ticks >= range[1] & ticks <= range[2]]
+  labels <- human_nt(ticks2)
+  gList(segmentsGrob(x0=ticks2, x1=ticks2, y0=0, y1=1,
+                      gp=gpar(col=grey(0.3)),
+                      name=paste("dna_seg_scale", i, "lines", sep="."),
+                      default.units="native"),
+        textGrob(labels$text, x=ticks2, y=0.5, hjust=-0.05,
+                 gp=gpar(col=grey(0.3), cex=0.6),
+                 name=paste("dna_seg_scale", i, "labels", sep="."),
+                 default.units="native")
+        )
 }

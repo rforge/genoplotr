@@ -50,15 +50,16 @@ bracket_coord <- function(start, end, y=0, w=0.1){
 human_nt <- function(nt, signif=FALSE){
   tag <- "nt"
   mult <- 1
-  if (nt >= 1e9){
+  med <- median(nt)
+  if (med >= 1e9){
     nt <- nt/1e9
     tag <- "Gb"
     mult <- 1e9
-  } else if (nt >= 1e6){
+  } else if (med >= 1e6){
     nt <- nt/1e6
     tag <- "Mb"
     mult <- 1e6
-  } else if (nt >= 1e3){
+  } else if (med >= 1e3){
     nt <- nt/1e3
     tag <- "kb"
     mult <- 1e3

@@ -12,7 +12,7 @@
 }
 \usage{
 comparison(x)
-as.comparison(df, col="grey")
+as.comparison(df)
 is.comparison(comparison)
 }
 \arguments{
@@ -22,9 +22,6 @@ is.comparison(comparison)
   }
   \item{df}{
     A \code{data.frame} object. See details for the required columns.
-  }
-  \item{col}{
-    To set the color of the whole object at a time. Grey by default.
   }
   \item{comparison}{
     Any object to test.
@@ -63,13 +60,13 @@ is.comparison(comparison)
   \code{\link{trim.comparison}}, \code{\link{reverse.comparison}}.
 }
 \examples{
-## get some values
+## Get some values
 starts1 <- c(2, 1000, 1050)
 ends1 <- c(600, 800, 1345)
 starts2 <- c(50, 800, 1200)
 ends2 <- c(900, 1100, 1322)
 
-## from a data.frame
+## From a data.frame
 comparison1 <- as.comparison(data.frame(start1=starts1, end1=ends1,
                                         start2=starts2, end2=ends2))
 comparison1
@@ -77,11 +74,11 @@ is.comparison(comparison1)
 is.data.frame(comparison1)
 comparison(data.frame(start1=starts1, end1=ends1,
                       start2=starts2, end2=ends2))
-## from a list
+## From a list
 comparison(list(start1=starts1, end1=ends1,
                 start2=starts2, end2=ends2))
 
-## from a file
+## From a file
 comparison2_file <- system.file('extdata/comparison2.tab',
                                 package = 'genoPlotR')
 comparison2 <- read_comparison_from_tab(comparison2_file)

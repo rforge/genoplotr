@@ -37,7 +37,9 @@ plot_gene_map(list(dna_seg))
 # Change gene_types and plot again
 dna_seg$gene_type <- gene_types(auto=FALSE)
 dna_seg$col <- rainbow(n)
-plot_gene_map(list(dna_seg))
+dna_seg_r <- dna_seg
+dna_seg_r$strand <- -dna_seg$strand
+plot_gene_map(list(dna_seg, dna_seg_r))
 
 }
 \keyword{ data }
