@@ -16,11 +16,12 @@ plot_gene_map(dna_segs,
               tree = NULL,
               tree_width = NULL,
               legend = NULL, 
-              annotation = NULL, 
+              annotations = NULL, 
               annotation_height = 1, 
               annotation_cex = 0.8, 
               xlims = NULL,
               offsets = NULL, 
+              limit_to_longest_dna_seg = TRUE,
               main = NULL, 
               main_pos = "centre", 
               dna_seg_labels = NULL, 
@@ -53,10 +54,11 @@ plot_gene_map(dna_segs,
     default, takes 20 percent of the total plot.
   }
   \item{legend}{
-    Unimplemented.
+    Yet unimplemented.
   }
-  \item{annotation}{
-    An \code{annotation} object. See details. Optional.
+  \item{annotations}{
+    An \code{annotation} object or a list of annotation objects. See
+    details. Optional.
   }
   \item{annotation_height}{
     Numeric. The height, in lines, of the annotation line. One by
@@ -67,14 +69,25 @@ plot_gene_map(dna_segs,
     annotation line. 
   }
   \item{xlims}{
-    A data frame with as many rows as there are \code{dna_seg}s, and
-    with numeric columns \code{x0} and \code{x1}.
+    A list with as many elements as there are \code{dna_seg}s, or
+    \code{NULL}. If \code{NULL}, the whole segment will be
+    represented. If a list, each element of the list is a numeric
+    vector, representing pairs of  left and right limits for each
+    subsegment. See details. 
   }
   \item{offsets}{
-    A numeric as long as there are \code{dna_seg}s. Manually change the
-    alignment of segments: gives the first nucleotide displayed on the
-    left of the plot. If \code{NULL}, an alignment minimizing the
-    length of the edges of the comparison blocks is calculated.
+    A list or a vector with as many elements as there are
+    \code{dna_seg}s, or \code{NULL}. If is a numeric vector, gives the
+    offset of the first subsegment. If is a list, each element should
+    have the same length as there are subsegments (see
+    \code{xlims}). Gives then the length of each gap. If \code{NULL},
+    the size of the gaps is optimized to minimize the lengths of the
+    comparisons. See details.
+  }
+  \item{limit_to_longest_dna_seg}{
+    A logical. Should the plot be restricted to the longest
+    \code{dna_seg}? If no, the other segments can be extended to better
+    fit comparisons.
   }
   \item{main}{
     A character. Main title of the plot.
@@ -149,6 +162,26 @@ plot_gene_map(dna_segs,
   in the object or can be globally set by \code{gene_type}. See the
   function \code{\link{gene_types}} to return the available types.
 
+  \code{xlims} allow the user to plot subsegments of a
+  \code{dna_seg}. \code{xlims} consists of a list composed of as many
+  numeric vectors as there are segments. Each of these numeric vectors
+  give pairs of left and right borders, and gives the
+  direction. For example, c(1,2,6,4) will plot two subsegments, segment
+  1 to 2 which is plotted left to right and segment 4 to 6, plotted
+  right to left. \code{-Inf} and \code{Inf} values are
+  accepted. \code{NULL} values will result in plotting the whole
+  segment.
+
+  \code{offsets} allows to user to define the placement of the
+  subsegments. If a list is provided, each element of the list should
+  have as many elements as there are subsegments. It will give the size
+  of the gaps, including the first one from the border of the plot to
+  the first subsegment.
+
+  \code{dna_seg_scale} gives the ability to plot scales on one, some or
+  every segment. \code{c(TRUE, FALSE, TRUE)} will add scales to the
+  first and third segments.
+
   The three elements of \code{global_color_scheme} are (i) which column
   serves as scale to apply the color  scheme, or "auto" (default);
   (ii) if the scale is increasing or decreasing (see
@@ -182,44 +215,48 @@ plot_gene_map(dna_segs,
 old.par <- par(no.readonly=TRUE)
 data("three_genes")
 
-## segments only
+## Segments only
 plot_gene_map(dna_segs=dna_segs) 
 
-## with comparisons
+## With comparisons
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons) 
 
-## tree
+## Tree
 names <- c("A_aaa", "B_bbb", "C_ccc")
 names(dna_segs) <- names
 tree <- newick2phylog("(((A_aaa:4.2,B_bbb:3.9):3.1,C_ccc:7.3):1);")
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               tree=tree)
 
-## increasing tree width
+## Increasing tree width
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               tree=tree, tree_width=3)
 
-## annotation
-mid_pos <- apply(dna_segs[[1]][,c("start", "end")], 1, mean)
+## Annotation
+## Calculating middle positions
+mid_pos <- middle(dna_segs[[1]])
+
+# Create first annotation
 annot1 <- annotation(x1=mid_pos, text=dna_segs[[1]]$name)
-plot_gene_map(dna_segs=dna_segs, comparisons=comparisons, annotation=annot1)
-## exploring options
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons, annotations=annot1)
+
+## Exploring options
 annot2 <- annotation(x1=c(mid_pos[1], dna_segs[[1]]$end[2]),
                      x2=c(NA, dna_segs[[1]]$end[3]),
                      text=c(dna_segs[[1]]$name[1], "region1"),
                      rot=c(30, 0), col=c("grey", "black"))
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
-              annotation=annot2, annotation_height=1.3)
+              annotations=annot2, annotation_height=1.3)
 
 ## xlims
-xlims <- data.frame(x0=rep(NA, length(dna_segs)),
-                    x1=rep(NA, length(dna_segs)))
-for (i in 1:length(dna_segs)) xlims[i,] <- range(dna_segs[[i]])
-plot_gene_map(dna_segs=dna_segs, comparisons=comparisons, xlims=xlims)
-xlims[3,2] <- 2800
-plot_gene_map(dna_segs=dna_segs, comparisons=comparisons, xlims=xlims)
-xlims[3,] <- c(1, 4000)
-plot_gene_map(dna_segs=dna_segs, comparisons=comparisons, xlims=xlims)
+## Just returning a segment
+plot_gene_map(dna_segs, comparisons,
+              xlims=list(NULL, NULL, c(Inf,-Inf)),
+              dna_seg_scale=TRUE)
+## Removing one gene
+plot_gene_map(dna_segs, comparisons,
+              xlims=list(NULL, NULL, c(-Inf,2800)),
+              dna_seg_scale=TRUE)
 
 ## offsets
 offsets <- c(0, 0, 0)  
@@ -245,25 +282,83 @@ plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               gene_type="side_blocks")
 
-## dna_seg_scale & global_color_scheme
+##
+## From here on, using a bigger dataset from a 4-genome comparison
+##
 data("barto")
+## Adding a tree
 tree <- newick2phylog("(BB:2.5,(BG:1.8,(BH:1,BQ:0.8):1.9):3);")
-xlims <- data.frame(x0=c(1400000, 10000, 15000, 8000),
-                    x1=c(1445000, 63000, 58000, 62000))
-plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims)
-plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims,
+## Showing only subsegments
+xlims1 <- list(c(1380000, 1445000),
+               c(10000, 83000),
+               c(15000, 98000),
+               c(5000, 82000))
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              xlims=xlims1,
+              dna_seg_scale=TRUE)
+## Showing several subsegments per genome
+xlims2 <- list(c(1445000, 1415000, 1380000, 1412000),
+               c(  10000,   45000,   50000,   83000, 90000, 120000),
+               c(  15000,   36000,   90000,  120000, 74000,  98000),
+               c(   5000,    82000))
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              xlims=xlims2,
+              dna_seg_scale=TRUE)
+
+## dna_seg_scale & global_color_scheme
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,
               dna_seg_scale=c(TRUE, FALSE, FALSE, TRUE), scale=FALSE,
               global_color_scheme=c("e_value","auto","grey"))
+
+## Adding annotations for all genomes
+annots <- lapply(barto$dna_segs, function(x){
+  mid <- middle(x)
+  annot <- annotation(x1=mid, text=x$name, rot=30)
+  # removing gene names starting with "B" and keeping 1 in 4
+  idx <- grep("^[^B]", annot$text, perl=TRUE)
+  annot[idx[idx \%\% 4 == 0],] 
+})
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              annotations=annots,
+              xlims=xlims2,
+              dna_seg_scale=TRUE)
+## Allow segments to be placed out of the longest segment
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              annotations=annots,
+              xlims=xlims2,
+              limit_to_longest_dna_seg=FALSE,
+              dna_seg_scale=TRUE)
+## Hand-made offsets: only placement of first segment
+offsets1 <- c(10000, 0, 30000, 10000)
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              annotations=annots,
+              xlims=xlims2,
+              offsets=offsets1,
+              dna_seg_scale=TRUE)
+## Hand-made offsets: size of all gaps
+offsets2 <- list(c(10000, 10000),
+                 c(2000, 2000, 2000),
+                 c(10000, 5000, 2000),
+                 c(10000))
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              annotations=annots,
+              xlims=xlims2,
+              offsets=offsets2,
+              dna_seg_scale=TRUE)
 
 ##
 ## Exploring and modifying a gene map plot
 ##
-plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims)
+plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+              annotations=annots,
+              xlims=xlims2,
+              offsets=offsets2,
+              dna_seg_scale=TRUE)
 ## View viewports
 current.vpTree()
 ## Go down to one of the viewports, add an xaxis, go back up to root viewport
-downViewport("scale")
-grid.xaxis()
+downViewport("dna_seg_scale.3.2")
+grid.rect()
 upViewport(0)
 ## Get all the names of the objects
 grobNames <- getNames()
@@ -271,7 +366,7 @@ grobNames
 ## Change the color ot the scale line
 grid.edit("scale.lines", gp=gpar(col="grey"))
 ## Remove first dna_seg_lines
-grid.remove("dna_seg_line.1")
+grid.remove("dna_seg_line.1.1")
 
 ##
 ## Plot genoPlotR logo
@@ -313,7 +408,7 @@ cairo_pdf("logo.pdf", h=0.7, w=3)
 }
 par(fin=c(0.7, 3))
 plot_gene_map(dna_segs=list(c(ds1, ds_genoR), c(ds2, ds_Plot)),
-              comparisons=list(c1), scale=FALSE,
+              comparisons=list(c1), scale=FALSE, dna_seg_scale=FALSE,
               dna_seg_line=grey(0.7), offsets=c(-20,160))
 \dontrun{
 dev.off()

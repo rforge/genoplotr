@@ -3,6 +3,7 @@
 \alias{trim.default}
 \alias{trim.dna_seg}
 \alias{trim.comparison}
+\alias{trim.annotation}
 \title{
   Trimming data frames with >= 2 numeric columns 
 }
@@ -16,6 +17,7 @@ trim(x, ...)
 \method{trim}{default}(x, xlim = NULL, ...)
 \method{trim}{dna_seg}(x, xlim = NULL, ...)
 \method{trim}{comparison}(x, xlim1 = c(-Inf, Inf), xlim2 = c(-Inf, Inf), ...)
+\method{trim}{annotation}(x, xlim = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -25,13 +25,13 @@ annot <- annotation(x1=c(mid_pos[1], dna_segs[[1]]$end[2]),
 ## Plots
 png("../img/three_genes.png", h=150, w=500)
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
-              annotation=annot, annotation_height=1.3,
+              annotations=annot, annotation_height=1.3,
               tree=tree, tree_width=2,
               main="Comparison of Huey, Dewey and Louie")
 dev.off()
 cairo_pdf("../pdfs/three_genes.pdf", h=2, w=4)
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
-              annotation=annot, annotation_height=1.3,
+              annotations=annot, annotation_height=1.3,
               tree=tree, tree_width=2,
               main="Comparison of Huey, Dewey and Louie")
 dev.off()

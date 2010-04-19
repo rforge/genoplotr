@@ -15,26 +15,6 @@ as.annotation <- function(df, x2=NA, rot=0, col="black"){
   if (is.annotation(df)) return(df)
   if (!all(c("x1", "text") %in% names(df)))
     stop("Data frame should have at least a x1 and text column")
-  ## if (!is.numeric(df[[1]])) stop("First column of df must be numeric")
-  ## x1 <- df[[1]]
-  ## if (ncol(df) == 2){
-  ##   if (!is.character(df[[2]]))
-  ##     stop("With two columns, second one must be character")
-  ##   x2 <- NA
-  ##   text=df[[2]]
-  ## }
-  ## else {
-  ##   if (is.numeric(df[[2]])){
-  ##     x2 <- df[[2]]
-  ##     if (!is.character(df[[3]])) stop("Third column must be character")
-  ##     text <- df[[3]]
-  ##   }
-  ##   else {
-  ##     x2 <- NA
-  ##     if (!is.character(df[[3]])) stop("Second column must be character")
-  ##     text <- df[[3]]
-  ##   }
-  ## }
   # attributes x2, col and arg to all rows if not defined
   if (is.null(df$x2)) df$x2 <- x2
   if (is.null(df$color)) df$color <- col
@@ -44,4 +24,24 @@ as.annotation <- function(df, x2=NA, rot=0, col="black"){
 }
 is.annotation <- function(annotation){
   inherits(annotation, "annotation")  
+}
+range.annotation <- function(x, ...){
+  annotation <- x
+  range(annotation$x1, annotation$x2, na.rm=TRUE)
+}
+trim.annotation <- function(x, xlim=NULL, ...){
+  annotation <- x
+  xlim <- as.numeric(xlim)
+  if (!is.null(xlim)){
+    if (!is.numeric(xlim)) stop("xlim must be numeric")
+    if (length(xlim) != 2) stop("xlim must be length 2")
+    # to be accepted, x1 > xlim1 and, if x2=NA, xlim1 also < xlim1 or,
+    # x2 < xlim2
+    annotation <- annotation[annotation$x1 >= xlim[1] &
+                             ((is.na(annotation$x2) &
+                               annotation$x1 <= xlim[2]) |
+                              (!is.na(annotation$x2) &
+                               annotation$x2 <= xlim[2])),]
+  }
+  annotation
 }

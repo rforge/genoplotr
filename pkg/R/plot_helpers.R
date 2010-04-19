@@ -67,3 +67,38 @@ human_nt <- function(nt, signif=FALSE){
   if (signif) nt <- signif(nt, signif)
   list(n=nt, tag=tag, mult=mult, text=paste(nt, tag))
 }
+# calculate comparison coordinates
+calc_comp_coor <- function(gap, xlim, comp, side){
+  if (length(gap) != nrow(xlim))
+    stop("gap should have the same length as xlim")
+  if (side < 1 && side > 2) stop("side should be 1 or 2")
+  # x is the moving cursor
+  x <- 0
+  start <- if (side==1) comp$start1 else comp$start2 
+  end <- if (side==1) comp$end1 else comp$end2
+  for (i in 1:nrow(xlim)){
+    # increment by the gap length
+    x <- x + gap[i]
+    # select comps
+    idx <- start >= xlim$x0[i] & end <= xlim$x1[i]
+    # re-number by substracting the xlim and adding x
+    if (xlim$strand[i] == 1){
+      start[idx] <- start[idx] - xlim$x0[i] + x
+      end[idx] <- end[idx] - xlim$x0[i] + x
+    } else {
+      start[idx] <- xlim$x1[i] - start[idx] + x
+      end[idx] <- xlim$x1[i] - end[idx] + x
+    }
+    # increment x by the length of the segment
+    x <- x + xlim$length[i]
+  }
+  # reattribute start and stop
+  if (side==1) comp$start1 <- start else comp$start2 <- start
+  if (side==1) comp$end1 <- end else comp$end2 <- end
+  # return the modified comp
+  comp
+}
+middle <- function(dna_seg){
+  if (!is.dna_seg(dna_seg)) stop("argument should be a dna_seg object")
+  apply(dna_seg[,c("start", "end")], 1, mean)
+}

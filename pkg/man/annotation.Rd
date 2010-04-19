@@ -65,27 +65,34 @@ is.annotation(annotation)
   Lionel Guy
 }
 \seealso{
-  \code{\link{plot_gene_map}}.
+  \code{\link{plot_gene_map}}, \code{\link{middle}}.
 }
 \examples{
 ## loading data
 data(three_genes)
 
-## calculating middle positions
-mid_pos <- apply(dna_segs[[1]][,c("start", "end")], 1, mean)
+## Calculating middle positions
+mid_pos <- middle(dna_segs[[1]])
 
-## create first annotation
+# Create first annotation
 annot1 <- annotation(x1=mid_pos, text=dna_segs[[1]]$name)
-plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
-              annotation=annot1)
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons, annotations=annot1)
 
-## exploring options
+## Exploring options
 annot2 <- annotation(x1=c(mid_pos[1], dna_segs[[1]]$end[2]),
                      x2=c(NA, dna_segs[[1]]$end[3]),
                      text=c(dna_segs[[1]]$name[1], "region1"),
                      rot=c(30, 0), col=c("grey", "black"))
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
-              annotation=annot2, annotation_height=1.3)
+              annotations=annot2, annotation_height=1.3)
+
+## Annotations on all the segments
+annots <- lapply(dna_segs, function(x){
+  mid <- middle(x)
+  annot <- annotation(x1=mid, text=x$name, rot=30)
+})
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
+              annotations=annots, annotation_height=1.8, annotation_cex=1)
 
 }
 \keyword{ data }

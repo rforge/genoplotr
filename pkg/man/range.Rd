@@ -1,6 +1,7 @@
 \name{range.dna_seg}
 \alias{range.dna_seg}
 \alias{range.comparison}
+\alias{range.annotation}
 \title{
   Range calculation
 }
@@ -10,6 +11,7 @@
 \usage{
 \method{range}{dna_seg}(x, ...)
 \method{range}{comparison}(x, overall=TRUE, ...)
+\method{range}{annotation}(x, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,8 +28,8 @@
   }
 }
 \details{
-  Calculate the overall range of a \code{dna_seg} or
-  \code{comparison} object. 
+  Calculate the overall range of a \code{dna_seg}, \code{comparison} or
+  an \code{annotation} object. 
 }
 \value{
   A numeric of length 2. For \code{comparison}, if \code{overall} is

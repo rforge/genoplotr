@@ -57,14 +57,6 @@ gene_grob <- function(gene, head_len=200, i=0){
 
   # introns
   else if (gene$gene_type == "introns") {
-    ## if(gene$strand == 1) {
-    ##   intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end),
-    ##                  y0=c(.8,1), y1=c(1,.8))
-    ## }
-    ## if(gene$strand == -1) {
-    ##   intron <- list(x0=c(gene$start, gM), x1=c(gM, gene$end),
-    ##                  y0=c(.2,0), y1=c(0,.2))
-    ## }
     intron <- list(x0=c(gene$start, mid), x1=c(mid, gene$end),
                    y0=c(0.3, 0.5)*gene$strand + 0.5,
                    y1=c(0.5, 0.3)*gene$strand + 0.5)
@@ -114,13 +106,12 @@ dna_seg_grob <- function(dna_seg, ...){
   grob_list
 }
 # create similarity grobs
-similarity_grob <- function(similarity, i, xlim1, xlim2, offset1, offset2){
+similarity_grob <- function(similarity, i){
   if (!is.comparison(similarity)) stop("A comparison object is required")  
   if (nrow(similarity) > 1) stop ("gene must be single-row")
-  if (!all(is.numeric(c(offset1, offset2)))) stop("Offsets must be numeric")
   if (is.null(similarity$col)) similarity$col <- grey(0.5)
-  x1 <- c(similarity$start1, similarity$end1)+offset1-xlim1[1]
-  x2 <- c(similarity$end2, similarity$start2)+offset2-xlim2[1]
+  x1 <- c(similarity$start1, similarity$end1)#+offset1-xlim1[1]
+  x2 <- c(similarity$end2, similarity$start2)#+offset2-xlim2[1]
   polygonGrob(x=c(x1, x2), y=c(1, 1, 0, 0),
               name=paste("comp.", i, ".",
                 similarity$start1, "-", similarity$end1, "_",
@@ -161,7 +152,7 @@ label_grob <- function(label, cex=0.8){
   if (label$rot == 0){
     just <- c(0.5, 0)
   } else {
-    just <- c(0, 0.5)
+    just <- c(-0.1, 0.5)
   }
   grob_list[[1]] <- textGrob(label$text, x=x, y=y+w, just=just,
                              name=paste("annot", "label",
@@ -209,20 +200,32 @@ scale_grob <- function(max_length){
           )
 }
 # create dna_seg scale grob
-dna_seg_scale_grob <- function(range, i){
+dna_seg_scale_grob <- function(range, unit, i, j){
   range <- as.numeric(range)
   if (length(range) != 2 && !is.numeric(range))
     stop("range must be numeric and length 2")
-  ticks <- pretty(range, n=9)
-  ticks2 <- ticks[ticks >= range[1] & ticks <= range[2]]
-  labels <- human_nt(ticks2)
-  gList(segmentsGrob(x0=ticks2, x1=ticks2, y0=0, y1=1,
-                      gp=gpar(col=grey(0.3)),
-                      name=paste("dna_seg_scale", i, "lines", sep="."),
-                      default.units="native"),
-        textGrob(labels$text, x=ticks2, y=0.5, hjust=-0.05,
+  x0 <- ceiling(range[1]/unit)*unit
+  x1 <- floor(range[2]/unit)*unit
+  if (x1 < x0) x1 <- x0
+  ticks <- seq(x0, x1, by=unit)
+  labels <- human_nt(ticks)
+  gList(segmentsGrob(x0=ticks, x1=ticks, y0=0, y1=1,
+                     gp=gpar(col=grey(0.3)),
+                     name=paste("dna_seg_scale", i, j, "lines", sep="."),
+                     default.units="native"),
+        textGrob(labels$text, x=ticks, y=0.5, hjust=-0.05,
                  gp=gpar(col=grey(0.3), cex=0.6),
-                 name=paste("dna_seg_scale", i, "labels", sep="."),
+                 name=paste("dna_seg_scale", i, j, "labels", sep="."),
                  default.units="native")
         )
+}
+# create gap grob
+gap_grob <- function(w, m, i, j){
+  segmentsGrob(x0=c(m-w/4, m-w/8),
+               x1=c(m+w/8, m+w/4),
+               y0=c(0.2,0.2),
+               y1=c(0.8,0.8),
+               gp=gpar(col=grey(0.3)),
+               default.units="native",
+               name=paste("gap", i, j, sep="."))
 }
