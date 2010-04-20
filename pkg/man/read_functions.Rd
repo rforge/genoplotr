@@ -295,7 +295,7 @@ bh_vs_bq <- read_comparison_from_blast(bh_vs_bq_file, color_scheme="grey")
 
 ## Plot
 plot_gene_map(dna_segs=list(BH=bh, BQ=bq), comparisons=list(bh_vs_bq),
-              xlims=list(c(1,50000), c(50000, 50000)))
+              xlims=list(c(1,50000), c(1, 50000)))
 
 
 }
