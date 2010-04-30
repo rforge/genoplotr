@@ -30,8 +30,8 @@ is.comparison(comparison)
 \details{
   Objects (either data frames or lists) should have at least named
   elements \code{start1}, \code{end1}, \code{start2} and \code{end2}. In
-  addition, it take use a \code{col} column to give either a color or a
-  numeric vector that can be used for color-coding.
+  addition, it can take a \code{col}or column. Additional numeric columns can
+  be used for color-coding (via \code{apply_color_scheme}.
 
   \code{comparison} tries to build a comparison object from either a
   data frame or a list, \code{as.comparison} accepts only data.frames.

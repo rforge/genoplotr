@@ -16,7 +16,7 @@ names(dna_segs) <- names
 tree <- newick2phylog("(((Huey:4.2,Dewey:3.9):3.1,Louie:7.3):1);")
 
 ## Annotations
-mid_pos <- apply(dna_segs[[1]][,c("start", "end")], 1, mean)
+mid_pos <- middle(dna_segs[[1]])
 annot <- annotation(x1=c(mid_pos[1], dna_segs[[1]]$end[2]),
                      x2=c(NA, dna_segs[[1]]$end[3]),
                      text=c(dna_segs[[1]]$name[1], "region1"),
