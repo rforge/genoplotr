@@ -1,5 +1,3 @@
-## Load library
-library(genoPlotR)
 ##
 ## Three genes
 ##

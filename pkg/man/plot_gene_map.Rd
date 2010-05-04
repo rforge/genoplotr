@@ -184,7 +184,7 @@ plot_gene_map(dna_segs,
 
   The three elements of \code{global_color_scheme} are (i) which column
   serves as scale to apply the color  scheme, or "auto" (default);
-  (ii) if the scale is increasing or decreasing (see
+  (ii) if the scale is "increasing" or "decreasing" (see
   \code{apply_color_scheme} for more details), or "auto" (default);
   (iii) the color scheme to apply.
 }

@@ -188,8 +188,8 @@ plot_gene_map <- function(dna_segs,
   # accepted values for second value
   glob_col_sch_2_vals <- c("increasing", "decreasing", "auto")
   if (length(grep(global_color_scheme[2], glob_col_sch_2_vals)) != 1){
-    stop(paste("Second argument to global_color_scheme should be one of ",
-               glob_col_sch_2_vals, collapse=" "))
+    stop(paste("Second argument to global_color_scheme should be one of",
+               paste(glob_col_sch_2_vals, collapse=", ")))
   } else {
     global_color_scheme[2] <- grep(global_color_scheme[2],
                                    glob_col_sch_2_vals, value=TRUE)
