@@ -53,7 +53,7 @@ xlims <- list(c(Inf, -Inf), c(-Inf, Inf), c(1850, 2800))
 annot <- annotation(x1=c(mid_pos[1], dna_segs[[1]]$end[2]),
                      x2=c(NA, dna_segs[[1]]$end[3]),
                      text=c(dna_segs[[1]]$name[1], "region1"),
-                     rot=c(30, 0), col=c("grey", "black"))
+                     rot=c(30, 0), col=c("blue", "black"))
 @
 
 Now plotting these three segments:
@@ -105,7 +105,7 @@ This section will give an overview of the different types of \R{} objects in
 
 \subsection{\code{dna\_seg}}
 
-A \code{dna\_seg} object are is a collection of genes or elements along a 
+A \code{dna\_seg} object is a collection of genes or elements along a 
 genome, to be represented on a map. 
 
 \code{dna\_seg} objects need to have 4 columns, \code{name}, \code{start}, 
@@ -134,8 +134,9 @@ comparison between two DNA segments.
 
 Objects (either data frames or lists) should have at least named
 elements \code{start1}, \code{end1}, \code{start2} and \code{end2}. 
-In addition, it can use a \code{col}or column to give. Additional 
-numeric columns can be used for color-coding (via \code{apply\_color\_scheme}.
+In addition, it can use a \code{col}or column, that will give
+the color of each comparison. Additional numeric columns can be used 
+for automatic color-coding (via \code{apply\_color\_scheme}.
 
 <<>>=
 starts1 <- c(2, 1000, 1050)
@@ -175,9 +176,9 @@ Several formats can be read by \genoPlotR{} to produce \code{dna\_seg} objects:
 \begin{itemize}
   \item EMBL files (\code{read\_dna\_seg\_from\_embl})
   \item Genbank files (\code{read\_dna\_seg\_from\_genbank})
-  \item PTT (protein table) files (basically a tabular version of a Genbank 
-    file)(\code{read\_dna\_seg\_from\_ptt})
-  \item Tab files (user generated) (\code{read\_dna\_seg\_from\_ptt})
+  \item PTT (protein table) files, tabular versions of Genbank 
+    files)(\code{read\_dna\_seg\_from\_ptt})
+  \item User generated tabular files (\code{read\_dna\_seg\_from\_ptt})
 \end{itemize}
 The function \code{read\_dna\_seg\_from\_file} is a wrapper function, that
 will attempt to guess the correct format of the file.
@@ -219,7 +220,7 @@ the documentation for a more thorough description.
   \item[\code{annotations}] An annotation object, or a list of annotations. 
     Will display annotations to the first, or to all DNA segments, respectively.
   \item[\code{xlims}] A list of even-numbered numeric vectors, giving the
-    borders of sub-segments to be plotted. The vector \code{c(1,5000,8000,6000}
+    borders of sub-segments to be plotted. The vector \code{c(1,5000,8000,6000)}
     will display two sub-segments (1 to 5000 and 6000 to 8000), the second 
     being in reverse orientation.
   \item[\code{main}] A title to the plot.
@@ -229,7 +230,7 @@ the documentation for a more thorough description.
     to each segments. If simply \code{TRUE}, will display a scale on each
     segment. If a vector, a scale will be displayed for the corresponding 
     \code{TRUE} element.
-  \item[\code{global\_color\_scheme}] Allows to recalcultate the colors of 
+  \item[\code{global\_color\_scheme}] Allows to recalculate the colors of 
     the comparisons, to have colors corresponding to the same scale for all 
     comparisons.
   \item[\code{plot\_new}] Turn off to avoid creating a new plot. Escpecially
@@ -239,7 +240,7 @@ the documentation for a more thorough description.
 \section{Other useful functions}
 
 \begin{itemize}
-  \item[\code{apply\_color\_scheme}] Allows to apply a gray scale or hues
+  \item[\code{apply\_color\_scheme}] Allows to apply a gray scale or shades
     of red and blue to a comparison.
   \item[\code{middle}] Useful to get the middle of a gene, especially to
     create annotations.
@@ -292,8 +293,8 @@ dna_segs <- list(dna_seg1, dna_seg2, dna_seg3)
 @ 
 
 Then, create two \code{comparisons} objects from data frames with columns
-start1, end1, start2, end2 and col. In the first comparison, the start
-and stops correspond to the genes created above.
+start1, end1, start2, end2 and col. In the first comparison, the starts
+and ends correspond to the genes created above.
 
 <<ex1_create_comps>>=
 df4 <- data.frame(start1=dna_seg1$start,
@@ -323,9 +324,9 @@ plot_gene_map(dna_segs=dna_segs, comparisons=comparisons)
   
 \subsubsection{A more elaborate plot}
 
-Many options can be added to this simple plot. First, the first comparison
-will be colored in grey scale, using an arbitrary scale passed to the function
-\code{apply\_color\_scheme}.
+Many options can be added to this simple plot. To begin with, the first 
+comparison will be colored in grey scale, using an arbitrary scale passed 
+to the function \code{apply\_color\_scheme}.
 
 <<ex1_col_scheme>>=
 comparisons[[1]]$col <- apply_color_scheme(c(0.6, 0.4, 0.5), "grey")
@@ -352,12 +353,14 @@ gene, and the use of two numeric values for the second region.
 <<ex1_annots>>=
 mid_pos <- middle(dna_segs[[1]])
 annot <- annotation(x1=c(mid_pos[1], dna_segs[[1]]$end[2]),
-                     x2=c(NA, dna_segs[[1]]$end[3]),
-                     text=c(dna_segs[[1]]$name[1], "region1"),
-                     rot=c(30, 0), col=c("grey", "black"))
+                    x2=c(NA, dna_segs[[1]]$end[3]),
+                    text=c(dna_segs[[1]]$name[1], "region1"),
+                    rot=c(30, 0), col=c("grey", "black"))
 @ 
 
-Finally, the plot is drawn, addind a title.
+Finally, the plot is drawn, addind a title. The different options can be
+checked by removing/adding the different arguments. New windows can be opened
+by using \code{x11()} or \code{window()}, depending on the OS.
 
 <<ex1_adv_plot>>=
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
@@ -365,6 +368,7 @@ plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               tree=tree_HDL, tree_width=2,
               main="Comparison of Huey, Dewey and Louie")
 @
+
 \begin{center}
 <<fig=TRUE, width=6, height=2.5, echo=FALSE, results=hide>>=
 <<ex1_adv_plot>>
