@@ -14,6 +14,10 @@ $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
   R-Forge summary page</a></br>
 </p>
 <p><a href="http://r-forge.r-project.org/R/?group_id=651">
-  Downloads</a></br>
+  Development versions (R-Forge)</a></br>
+</p>
+<p><a href="http://cran.r-project.org/web/packages/genoPlotR/index.html">
+  Stable version (CRAN)</a></br>
+</p>
 <!--/left menu-->
    
