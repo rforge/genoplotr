@@ -61,7 +61,7 @@ that plot, refer to the first of the examples developed below.
 &#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(Inf,&nbsp;-Inf),&nbsp;c(-Inf,&nbsp;Inf),&nbsp;c(1850,&nbsp;2800))
 &#62;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1&nbsp;=&nbsp;c(mid_pos[1],&nbsp;dna_segs[[1]]$end[2]),&nbsp;
 +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2&nbsp;=&nbsp;c(NA,&nbsp;dna_segs[[1]]$end[3]),&nbsp;text&nbsp;=&nbsp;c(dna_segs[[1]]$name[1],&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"region1"),&nbsp;rot&nbsp;=&nbsp;c(30,&nbsp;0),&nbsp;col&nbsp;=&nbsp;c("grey",&nbsp;"black"))
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"region1"),&nbsp;rot&nbsp;=&nbsp;c(30,&nbsp;0),&nbsp;col&nbsp;=&nbsp;c("blue",&nbsp;"black"))
 
 </pre>
 
@@ -130,7 +130,7 @@ This section will give an overview of the different types of <font face="helveti
 3.1</a>&nbsp;&nbsp;<tt>dna_seg</tt></h3>
 
 <div class="p"><!----></div>
-A <tt>dna_seg</tt> object are is a collection of genes or elements along a 
+A <tt>dna_seg</tt> object is a collection of genes or elements along a 
 genome, to be represented on a map. 
 
 <div class="p"><!----></div>
@@ -181,8 +181,9 @@ comparison between two DNA segments.
 <div class="p"><!----></div>
 Objects (either data frames or lists) should have at least named
 elements <tt>start1</tt>, <tt>end1</tt>, <tt>start2</tt> and <tt>end2</tt>. 
-In addition, it can use a <tt>col</tt>or column to give. Additional 
-numeric columns can be used for color-coding (via <tt>apply_color_scheme</tt>.
+In addition, it can use a <tt>col</tt>or column, that will give
+the color of each comparison. Additional numeric columns can be used 
+for automatic color-coding (via <tt>apply_color_scheme</tt>.
 
 <div class="p"><!----></div>
 
@@ -274,12 +275,12 @@ Several formats can be read by <span class="roman"> genoPlotR</span> to produce 
 <div class="p"><!----></div>
 </li>
 
-<li> PTT (protein table) files (basically a tabular version of a Genbank 
-    file)(<tt>read_dna_seg_from_ptt</tt>)
+<li> PTT (protein table) files, tabular versions of Genbank 
+    files)(<tt>read_dna_seg_from_ptt</tt>)
 <div class="p"><!----></div>
 </li>
 
-<li> Tab files (user generated) (<tt>read_dna_seg_from_ptt</tt>)
+<li> User generated tabular files (<tt>read_dna_seg_from_ptt</tt>)
 <div class="p"><!----></div>
 </li>
 </ul>
@@ -335,7 +336,7 @@ the documentation for a more thorough description.
 <br /><tt>annotations</tt> An annotation object, or a list of annotations. 
     Will display annotations to the first, or to all DNA segments, respectively.
 <br /><tt>xlims</tt> A list of even-numbered numeric vectors, giving the
-    borders of sub-segments to be plotted. The vector <tt>c(1,5000,8000,6000</tt>
+    borders of sub-segments to be plotted. The vector <tt>c(1,5000,8000,6000)</tt>
     will display two sub-segments (1 to 5000 and 6000 to 8000), the second 
     being in reverse orientation.
 <br /><tt>main</tt> A title to the plot.
@@ -345,7 +346,7 @@ the documentation for a more thorough description.
     to each segments. If simply <tt>TRUE</tt>, will display a scale on each
     segment. If a vector, a scale will be displayed for the corresponding 
     <tt>TRUE</tt> element.
-<br /><tt>global_color_scheme</tt> Allows to recalcultate the colors of 
+<br /><tt>global_color_scheme</tt> Allows to recalculate the colors of 
     the comparisons, to have colors corresponding to the same scale for all 
     comparisons.
 <br /><tt>plot_new</tt> Turn off to avoid creating a new plot. Escpecially
@@ -358,7 +359,7 @@ the documentation for a more thorough description.
 <div class="p"><!----></div>
 
 <ul>
-<br /><tt>apply_color_scheme</tt> Allows to apply a gray scale or hues
+<br /><tt>apply_color_scheme</tt> Allows to apply a gray scale or shades
     of red and blue to a comparison.
 <br /><tt>middle</tt> Useful to get the middle of a gene, especially to
     create annotations.
@@ -421,8 +422,8 @@ name, start, end, strand and col.
 
 <div class="p"><!----></div>
 Then, create two <tt>comparisons</tt> objects from data frames with columns
-start1, end1, start2, end2 and col. In the first comparison, the start
-and stops correspond to the genes created above.
+start1, end1, start2, end2 and col. In the first comparison, the starts
+and ends correspond to the genes created above.
 
 <div class="p"><!----></div>
 
@@ -456,9 +457,9 @@ This constitutes all the material required to create a basic plot.
 7.1.2</a>&nbsp;&nbsp;A more elaborate plot</h4>
 
 <div class="p"><!----></div>
-Many options can be added to this simple plot. First, the first comparison
-will be colored in grey scale, using an arbitrary scale passed to the function
-<tt>apply_color_scheme</tt>.
+Many options can be added to this simple plot. To begin with, the first 
+comparison will be colored in grey scale, using an arbitrary scale passed 
+to the function <tt>apply_color_scheme</tt>.
 
 <div class="p"><!----></div>
 
@@ -502,7 +503,10 @@ gene, and the use of two numeric values for the second region.
 </pre>
 
 <div class="p"><!----></div>
-Finally, the plot is drawn, addind a title.
+Finally, the plot is drawn, addind a title, allowing 2 inches for the tree
+width (instead of the default 20% of the plot), and changing the annotation
+space to 1.3 lines (as opposed to 1 by default). The different options can be
+checked by removing/adding the different arguments to <tt>plot_gene_map</tt>. 
 
 <div class="p"><!----></div>
 
@@ -513,8 +517,15 @@ Finally, the plot is drawn, addind a title.
 
 </pre>
 
-<center>
-<img src="img/genoPlotR-021.png" alt="genoPlotR-021.png" />
+<div class="p"><!----></div>
+To explore the different options, new windows can be opened by using 
+<tt>x11()</tt> or <tt>window()</tt>, depending on the OS, or saved to files 
+using for example <tt>png()</tt> or <tt>pdf()</tt>. To finish the plot, the 
+function <tt>dev.off()</tt> should be called.
+
+<div class="p"><!----></div>
+
+<center><img src="img/genoPlotR-021.png" alt="genoPlotR-021.png" />
 </center>
 The plot can be saved by adding, in front of the call to 
 <tt>plot_gene_map</tt>, a call to one of the graphical device functions of 
@@ -530,8 +541,8 @@ This section will give an example of how data can be retrieved and generated
 online, using the resources available at the NCBI
 <a href="http://www.ncbi.nlm.nih.gov/"><tt>http://www.ncbi.nlm.nih.gov/</tt></a>. This example was devised on 5/3/2010, and
 given the relatively rapid rate of changes in public databases, it is 
-perfectly that part or all of this example becomes obsolete. Please contact
-the author of this document in such a case.
+possible that part or all of this example becomes obsolete. Please contact
+the author of this document (lionel.guy@ebc.uu.se) in such a case.
 
 <div class="p"><!----></div>
 In this example, the genomes of <em>Bartonella henselae</em> 
@@ -580,7 +591,7 @@ a direct link (<a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi"><tt>http://blas
 the "bl2seq" resource is presented in the "Specialized BLAST" section.
 
 <div class="p"><!----></div>
-There, the genomes can be aligned by entering the two genomes accession 
+There, the genomes can be aligned by entering the two genome accession 
 numbers. The other arguments to BLAST can then be modified at will to suit 
 the needs of the comparison. Once the BLAST search is run, the hit table 
 (which can be read by <span class="roman"> genoPlotR</span> can be downloaded by clicking on
@@ -592,14 +603,15 @@ the needs of the comparison. Once the BLAST search is run, the hit table
 
 <div class="p"><!----></div>
 Provided that the Genbank files and their comparison have been saved
-under the correct names, they can be parsed directly by <span class="roman"> genoPlotR</span>.
+under the correct names in the directory where R was started, 
+they can be parsed directly by <span class="roman"> genoPlotR</span>.
 
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;BH&nbsp;&lt;-&nbsp;try(read_dna_seg_from_file("NC_005966.gbk"))
+&#62;&nbsp;BH&nbsp;&lt;-&nbsp;try(read_dna_seg_from_file("NC_005956.gbk"))
 &#62;&nbsp;BQ&nbsp;&lt;-&nbsp;try(read_dna_seg_from_file("NC_005955.gbk"))
-&#62;&nbsp;BH_vs_BQ&nbsp;&lt;-&nbsp;try(read_comparison_from_blast("NC_005966_vs_NC_005955.blast"))
+&#62;&nbsp;BH_vs_BQ&nbsp;&lt;-&nbsp;try(read_comparison_from_blast("NC_005956_vs_NC_005955.blast"))
 
 </pre>
 

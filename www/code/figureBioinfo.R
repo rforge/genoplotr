@@ -57,13 +57,18 @@ annot_pan <- annotation(x1=x_pan[1,], x2=x_pan[2,],
 #### Plot ####
 ## Superstructure
 
+#for (device in c("png", "pdf", "jpg", "eps")){
 for (device in c("png", "pdf", "jpg")){
   if (device == "png") {
     png("../img/figureBioinfo.png", h=500, w=350)
   } else if (device == "pdf"){
     cairo_pdf("../pdfs/figureBioinfo.pdf", h=7, w=5)
-  } else {
-    jpeg("../img/figureBioinfo.jpg", h=500, w=350, quality=90)
+  } else if (device == "jpg"){
+    jpeg("../img/figureBioinfo.jpg", h=1000, w=700, quality=100, res=150)
+  } else if (device == "eps"){
+    #setEPS(horizontal=FALSE, onefile=FALSE, paper="special")
+    cairo_ps("../img/figureBioinfo.eps", onefile=TRUE, height=7,
+             width=5)
   }
   grid.newpage()
   pushViewport(viewport(layout=grid.layout(3,1,

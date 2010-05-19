@@ -358,9 +358,10 @@ annot <- annotation(x1=c(mid_pos[1], dna_segs[[1]]$end[2]),
                     rot=c(30, 0), col=c("grey", "black"))
 @ 
 
-Finally, the plot is drawn, addind a title. The different options can be
-checked by removing/adding the different arguments. New windows can be opened
-by using \code{x11()} or \code{window()}, depending on the OS.
+Finally, the plot is drawn, addind a title, allowing 2 inches for the tree
+width (instead of the default 20\% of the plot), and changing the annotation
+space to 1.3 lines (as opposed to 1 by default). The different options can be
+checked by removing/adding the different arguments to \code{plot\_gene\_map}. 
 
 <<ex1_adv_plot>>=
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
@@ -368,6 +369,12 @@ plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               tree=tree_HDL, tree_width=2,
               main="Comparison of Huey, Dewey and Louie")
 @
+
+To explore the different options, new windows can be opened by using 
+\code{x11()} or \code{window()}, depending on the OS, or saved to files 
+using for example \code{png()} or \code{pdf()}. To finish the plot, the 
+function \code{dev.off()} should be called.
+
 
 \begin{center}
 <<fig=TRUE, width=6, height=2.5, echo=FALSE, results=hide>>=
@@ -385,8 +392,8 @@ This section will give an example of how data can be retrieved and generated
 online, using the resources available at the NCBI
 \url{http://www.ncbi.nlm.nih.gov/}. This example was devised on 5/3/2010, and
 given the relatively rapid rate of changes in public databases, it is 
-perfectly that part or all of this example becomes obsolete. Please contact
-the author of this document in such a case.
+possible that part or all of this example becomes obsolete. Please contact
+the author of this document (lionel.guy@ebc.uu.se) in such a case.
 
 In this example, the genomes of \emph{Bartonella henselae} 
 (RefSeq accession NC\_005956) and \emph{Bartonella quintana} (RefSeq 
@@ -424,7 +431,7 @@ BLAST in the ``Popular resources'' section of the NCBI home page, or by using
 a direct link (\url{http://blast.ncbi.nlm.nih.gov/Blast.cgi}). A link to
 the ``bl2seq'' resource is presented in the ``Specialized BLAST'' section.
 
-There, the genomes can be aligned by entering the two genomes accession 
+There, the genomes can be aligned by entering the two genome accession 
 numbers. The other arguments to BLAST can then be modified at will to suit 
 the needs of the comparison. Once the BLAST search is run, the hit table 
 (which can be read by \genoPlotR{} can be downloaded by clicking on
@@ -433,12 +440,13 @@ the needs of the comparison. Once the BLAST search is run, the hit table
 \subsubsection{Plotting}
 
 Provided that the Genbank files and their comparison have been saved
-under the correct names, they can be parsed directly by \genoPlotR{}.
+under the correct names in the directory where R was started, 
+they can be parsed directly by \genoPlotR{}.
 
 <<ex_2_load_fake, results=hide, eval=FALSE>>=
-BH <- try(read_dna_seg_from_file("NC_005966.gbk"))
+BH <- try(read_dna_seg_from_file("NC_005956.gbk"))
 BQ <- try(read_dna_seg_from_file("NC_005955.gbk"))
-BH_vs_BQ <- try(read_comparison_from_blast("NC_005966_vs_NC_005955.blast"))
+BH_vs_BQ <- try(read_comparison_from_blast("NC_005956_vs_NC_005955.blast"))
 @ 
 
 <<ex2_load_silent, echo=FALSE, results=hide>>=

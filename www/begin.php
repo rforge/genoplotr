@@ -3,7 +3,7 @@
   <tr> 
     <td class="frame1" width="200"> 
       <!-- R-Forge Logo -->
-      <a href="/"><img src="<?php echo $themeroot; ?>/images/logo.png" 
+      <a href="/"><img src="<?php echo $themeroot; ?>/imagesrf/logo.png" 
         border="0" alt="R-Forge Logo" /> </a> 
     </td>
     <td class="frame1" width="600"><a href="index.php">
