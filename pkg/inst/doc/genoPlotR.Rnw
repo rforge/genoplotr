@@ -29,7 +29,7 @@ to fill in that gap.
 
 This document provides an introduction to \genoPlotR{}, providing the user 
 with examples of increasing complexity. It is not meant as a comprehensive
-guide otto all the functions and options of the package, but rather as 
+guide to all the functions and options of the package, but rather as 
 a first approach to the package.
 
 To load the library in a R session, type:

@@ -45,9 +45,8 @@ plot_gene_map(dna_segs,
   }
   \item{tree}{
     A tree, under the form of a \code{\link[ade4]{phylog}} object. If
-    specified, takes place at the left of the tags. The tree doesn't
-    need to be ordered as the \code{dna_seg_labels}, but a permutation
-    of the tree with that order should exist.
+    specified, takes place at the left of the tags. See details below
+    for more information.
   }
   \item{tree_width}{
     Numeric. The width of the tree area in the plot, in inches. By
@@ -151,9 +150,15 @@ plot_gene_map(dna_segs,
 }
 \details{
   One line is plotted per \code{dna_seg}. Eventually, the space between
-  the lines will be filled with the \code{comparisons}. A phylogenetic
-  tree (a \code{phylog} object from package \code{ade4}) can be drawn at
-  the left of the plot.
+  the lines will be filled with the \code{comparisons}.
+
+  A phylogenetic tree (a \code{phylog} object from package \code{ade4})
+  can be drawn at the left of the plot. The tree doesn't need to be
+  ordered as the \code{dna_seg_labels}, but a permutation of the tree
+  with that order should exist. If the tree is large, the number of
+  permutations become too large, and the function will stop (>100000
+  permutations). The solution is then to provide segments that are
+  ordered in the same manner as the tree labels (or vice-versa).
 
   A scale, a main title and an annotation row at the top of the plot can
   also be added.
