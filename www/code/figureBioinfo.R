@@ -5,13 +5,18 @@
 #### Gather data ####
 library(genoPlotR)
 data(barto)
-#names <- c("B_bacilliformis", "B_grahamii", "B_henselae", "B_quintana")
+
+## Saving data
+## Uncomment the two commented lines if you wish to save the figures
+## on your desktop
+imgPath <- "../img"
+pdfPath <- "../pdfs"
+#imgPath <- "~/Desktop"
+#pdfPath <- "~/Desktop"
+
 names <- c("BB", "BG", "BH", "BQ")
-#names(barto$dna_segs) <- names
 ## Adding a tree
 tree <- newick2phylog("(BB:2.5,(BG:1.8,(BH:1,BQ:0.8):1.9):3);")
-#tree <- newick2phylog("(B_bacilliformis:2.5,(B_grahamii:1.8,(B_henselae:1,B_quintana:0.8):1.9):3);")
-
 
 ## Panel A: Bartonella mauve output
 bbone_file <- system.file('extdata/barto.backbone', package = 'genoPlotR')
@@ -31,7 +36,7 @@ annots <- lapply(barto$dna_segs, function(x){
   annot <- annotation(x1=mid, text=x$name, rot=30)
   # removing gene names starting with "B" and keeping 1 in 4
   idx <- grep("^[^B]", annot$text, perl=TRUE)
-  annot[idx[idx %% 4 == 0],] 
+  annot[idx[idx %% 5 == 0],] 
 })
 
 ## Panel C: Chromosome Y subsegment comparison
@@ -53,47 +58,76 @@ x_pan <- sapply(genes_pan, function(x)
                  )
 annot_pan <- annotation(x1=x_pan[1,], x2=x_pan[2,],
                         text=dimnames(x_pan)[[2]])
-
+## Example code
+exampleCode <- c('dna_seg1 <- read_dna_seg_from_tab("myTab1.tab")',
+                 'dna_seg2 <- read_dna_seg_from_file("myGbk.gbk")',
+                 'dna_seg3 <- read_dna_seg_from_file("myEmbl.embl")',
+                 'comp1 <- read_comparison_from_tab("myTab2.tab")',
+                 'comp2 <- read_comparison_from_blast("myBlast.blast")',
+                 'tree <- newick2phylog("(A:2,(B:1,C:0.5):0.8);")',
+                 'plot_gene_map(dna_segs=list(dna_seg1, dna_seg2, dna_seg3),',
+                 '              comparisons=list(comp1, comp2), tree=tree)')
+n_lines_code <- length(exampleCode)
+code_cex <- 0.9
+              
 #### Plot ####
 ## Superstructure
-
 #for (device in c("png", "pdf", "jpg", "eps")){
 for (device in c("png", "pdf", "jpg")){
   if (device == "png") {
-    png("../img/figureBioinfo.png", h=500, w=350)
+    png(file.path(imgPath, "figureBioinfo.png"), h=650, w=350)
   } else if (device == "pdf"){
-    cairo_pdf("../pdfs/figureBioinfo.pdf", h=7, w=5)
+    cairo_pdf(file.path(pdfPath, "figureBioinfo.pdf"), h=8, w=5)
   } else if (device == "jpg"){
-    jpeg("../img/figureBioinfo.jpg", h=1000, w=700, quality=100, res=150)
+    jpeg(file.path(imgPath, "figureBioinfo.jpg"), h=1300, w=700, quality=100, res=150)
   } else if (device == "eps"){
     #setEPS(horizontal=FALSE, onefile=FALSE, paper="special")
-    cairo_ps("../img/figureBioinfo.eps", onefile=TRUE, height=7,
+    cairo_ps(file.path(imgPath, "figureBioinfo.eps"), onefile=TRUE, height=8,
              width=5)
   }
   grid.newpage()
-  pushViewport(viewport(layout=grid.layout(3,1,
-                          heights=unit(c(1,1.3,0.8), rep("null", 3)))))
-  ## Panel A
-  pushViewport(viewport(layout.pos.row=1))
-  plot_gene_map(dna_segs=bbone$dna_segs, comparisons=bbone$comparisons,
-                tree=tree, dna_seg_scale=c(FALSE, FALSE, FALSE, TRUE),
-                scale=FALSE, main="A", main_pos="left", plot_new=FALSE)
+  pushViewport(viewport(layout=grid.layout(4, 1,
+                          heights=unit(c(1.3 + code_cex*n_lines_code, 1, 1.6, 0.8),
+                            c("lines", "null", "null", "null")))))
+  ## Example code
+  pushViewport(viewport(layout.pos.row=1,
+                        yscale=c(1.3 + code_cex*n_lines_code, 0),
+                        xscale=c(0,1)))
+  grid.text(label='A', x=0.02, y=0,
+            just=c("left", "top"), gp=gpar(cex=1.2), default.units="native")
+  for (i in 1:n_lines_code){
+    grid.text(label=exampleCode[i], x=0.04, y=i,
+              just=c("left", "top"), gp=gpar(cex=code_cex),
+              default.units="native")
+  }
   upViewport()
   ## Panel B
   pushViewport(viewport(layout.pos.row=2))
-  plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
-              annotations=annots, xlims=xlims,
-              limit_to_longest_dna_seg=FALSE, scale=FALSE,
-              dna_seg_scale=TRUE, main="B", main_pos="left",
-              annotation_height=0.6, annotation_cex=0.5, 
-              plot_new=FALSE)
+  plot_gene_map(dna_segs=bbone$dna_segs, comparisons=bbone$comparisons,
+                n_scale_ticks=5, scale_cex=0.8, dna_seg_label_cex=1.2,
+                tree=tree, dna_seg_scale=c(FALSE, FALSE, FALSE, TRUE),
+                scale=FALSE, main="B", main_pos="left", plot_new=FALSE)
   upViewport()
   ## Panel C
   pushViewport(viewport(layout.pos.row=3))
+  plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
+                annotations=annots, xlims=xlims,
+                n_scale_ticks=5, scale_cex=0.8, dna_seg_label_cex=1.2,
+                limit_to_longest_dna_seg=FALSE, scale=FALSE,
+                dna_seg_scale=TRUE, main="C", main_pos="left",
+                annotation_height=1.2, annotation_cex=0.8,
+                arrow_head_len=1000,
+                plot_new=FALSE)
+  upViewport()
+  ## Panel D
+  pushViewport(viewport(layout.pos.row=4))
   plot_gene_map(chrY_subseg$dna_segs, chrY_subseg$comparison,
                 annotations=list(annot_homo, annot_pan),
-                dna_seg_scale=TRUE, scale=FALSE, main="C", main_pos="left",
+                dna_seg_label_cex=1.2,
+                main="D", main_pos="left",
                 plot_new=FALSE)
-  upViewport(2)
+  upViewport()
+  ##
+  upViewport()
   dev.off()
 }

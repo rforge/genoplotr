@@ -5,6 +5,14 @@
 library(genoPlotR)
 data(barto)
 
+## Saving data
+## Uncomment the two commented lines if you wish to save the figures
+## on your desktop
+imgPath <- "../img"
+pdfPath <- "../pdfs"
+#imgPath <- "~/Desktop"
+#pdfPath <- "~/Desktop"
+
 ## Adding a tree
 tree <- newick2phylog("(BB:2.5,(BG:1.8,(BH:1,BQ:0.8):1.9):3);")
 ## Showing several subsegments per genome
@@ -22,7 +30,7 @@ annots <- lapply(barto$dna_segs, function(x){
 })
 
 ## Plots
-png("../img/barto_multiseg.png", h=300, w=500)
+png(file.path(imgPath, "barto_multiseg.png"), h=300, w=500)
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
               annotations=annots,
               xlims=xlims2,
@@ -30,7 +38,7 @@ plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
               dna_seg_scale=TRUE,
               main="Comparison of the same segment in 4 Bartonella genomes")
 dev.off()
-cairo_pdf("../pdfs/barto_multiseg.pdf", h=4, w=7)
+cairo_pdf(file.path(pdfPath, "barto_multiseg.pdf"), h=4, w=7)
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
               annotations=annots,
               xlims=xlims2,
