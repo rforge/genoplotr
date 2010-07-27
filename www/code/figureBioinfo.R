@@ -59,11 +59,11 @@ x_pan <- sapply(genes_pan, function(x)
 annot_pan <- annotation(x1=x_pan[1,], x2=x_pan[2,],
                         text=dimnames(x_pan)[[2]])
 ## Example code
-exampleCode <- c('dna_seg1 <- read_dna_seg_from_tab("myTab1.tab")',
-                 'dna_seg2 <- read_dna_seg_from_file("myGbk.gbk")',
-                 'dna_seg3 <- read_dna_seg_from_file("myEmbl.embl")',
-                 'comp1 <- read_comparison_from_tab("myTab2.tab")',
-                 'comp2 <- read_comparison_from_blast("myBlast.blast")',
+exampleCode <- c('dna_seg1 <- read_dna_seg_from_file("myGbk.gbk")',
+                 #'dna_seg2 <- read_dna_seg_from_file("myEmbl.embl")',
+                 #'dna_seg3 <- read_dna_seg_from_tab("myTab1.tab")',
+                 'comp1 <- read_comparison_from_blast("myBlast.blast")',
+                 #'comp2 <- read_comparison_from_tab("myTab2.tab")',
                  'tree <- newick2phylog("(A:2,(B:1,C:0.5):0.8);")',
                  'plot_gene_map(dna_segs=list(dna_seg1, dna_seg2, dna_seg3),',
                  '              comparisons=list(comp1, comp2), tree=tree)')
@@ -79,7 +79,7 @@ for (device in c("png", "pdf", "jpg")){
   } else if (device == "pdf"){
     cairo_pdf(file.path(pdfPath, "figureBioinfo.pdf"), h=8, w=5)
   } else if (device == "jpg"){
-    jpeg(file.path(imgPath, "figureBioinfo.jpg"), h=1300, w=700, quality=100, res=150)
+    jpeg(file.path(imgPath, "figureBioinfo.jpg"), h=1250, w=700, quality=100, res=150)
   } else if (device == "eps"){
     #setEPS(horizontal=FALSE, onefile=FALSE, paper="special")
     cairo_ps(file.path(imgPath, "figureBioinfo.eps"), onefile=TRUE, height=8,
