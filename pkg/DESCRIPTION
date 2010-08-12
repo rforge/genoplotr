@@ -1,7 +1,7 @@
 Package: genoPlotR
 Type: Package
 Title: Plot publication-grade gene and genome maps 
-Version: 0.5
+Version: 0.5.1
 Date: 2009-12-08
 Author: Lionel Guy <lionel.guy@ebc.uu.se>
 URL: http://genoplotr.r-forge.r-project.org/
