@@ -44,7 +44,6 @@ minimize_comps <- function(comparisons, xlims, lengths, prel_offsets,
                      fixed_offsets=fixed_offsets, offsets_ref=offsets[[i+1]],
                      xlim=xlims[[i]], xlim_ref=xlims[[i+1]],
                      comp=comparisons[[i]], side_ref=2)
-        #browser()
         offsets[[i]][1] <- opt$par
       }
       # else optimise on all offsets
