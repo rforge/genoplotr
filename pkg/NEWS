@@ -1,6 +1,18 @@
 genoPlotR changes
 =================
 
+0.5.5 - 2010-09-27
+------------------
+NEW FEATURES:
+- Added a new gene_type: lines (and the corresponding side_lines)
+- Improved the example for gene_type
+
+0.5.4 - 2010-09-15
+------------------
+BUGFIX:
+- Added some extra checks on mauve input data, and on dna_seg input data
+  to avoid mysterious error messages
+
 0.5.3 - 2010-09-08
 ------------------
 Article published in Bioinformatics, added a CITATION file.

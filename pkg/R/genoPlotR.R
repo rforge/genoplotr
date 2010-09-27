@@ -160,7 +160,7 @@ plot_gene_map <- function(dna_segs,
     dna_seg_line[dna_seg_line == "TRUE"] <- "black"
   }
   if (!is.character(dna_seg_line ))
-    stop("dna_seg_line should be eiher a logical or charcater giving color")
+    stop("dna_seg_line should be eiher a logical or character giving color")
   if (length(dna_seg_line) == 1){
     dna_seg_line <- rep(dna_seg_line, n_dna_segs)
   } else if (length(dna_seg_line) != n_dna_segs){
