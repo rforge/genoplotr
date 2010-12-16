@@ -1,7 +1,13 @@
 genoPlotR changes
 =================
 
-0.5.6 -
+0.5.7 - 2010-12-16
+------------------
+BUGFIX:
+- Corrected as.dna_seg to prevent factors to slip in and fixed the gene_type
+  verification.
+
+0.5.6 - 2010-10-04
 ------------------
 BUGFIX:
 - Modified the feature parsing algorithm, features with an "_" inside (ex. 
