@@ -188,7 +188,7 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
           gsub("^ |:|\"| $", "",
                gsub("[[:blank:]]+|[[:space:]]+",
                     " ", strsplit(paste(currentFeature,
-                                        collapse=""), "   /")[[1]]))  
+                                        collapse=""), "   /")[[1]]))
       }
       if(TYPE == "EMBL") {
         currentFeature <-
@@ -203,8 +203,9 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
                      tagsToParse)) > 0){
         # Create list with exons to parse
         tag <- gsub(" [[:graph:]]+", "", currentFeature[1])
-        exonVector <- strsplit(gsub("[[:alpha:]]| |\\(|\\)|", "",
-                                    currentFeature[1]), ",")
+        qualif <- gsub("[[:graph:]]+ ", "", currentFeature[1])
+        exonVector <- strsplit(gsub("[[:alpha:]]|_| |\\(|\\)|", "",
+                                   currentFeature[1]), ",")
         if (length(grep("complement", currentFeature[1])) > 0){
           exonVector <- paste(tag, " complement(", exonVector[[1]], ")",
                               sep="")
