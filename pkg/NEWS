@@ -1,11 +1,19 @@
 genoPlotR changes
 =================
 
+0.5.8 - 2011-01-31
+------------------
+NEW FEATURE:
+- The plot area is now clipped, as a workaround to avoid comparisons that
+  are too large.
+
 0.5.7 - 2010-12-16
 ------------------
 BUGFIX:
 - Corrected as.dna_seg to prevent factors to slip in and fixed the gene_type
   verification.
+NEW FEATURE:
+- Changing the color of the dna_labels is possible (not for trees yet)
 
 0.5.6 - 2010-10-04
 ------------------

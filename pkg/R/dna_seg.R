@@ -71,7 +71,7 @@ as.dna_seg <- function(df, col="blue", lty=1, lwd=1, pch=8, cex=1,
     stop("Unable to handle this format")
   }
   class(df) <- c("dna_seg", "data.frame")
-  df
+  return(df)
 }
 is.dna_seg <- function(dna_seg){
   inherits(dna_seg, "dna_seg")

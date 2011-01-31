@@ -28,6 +28,7 @@ plot_gene_map(dna_segs,
               main_pos = "centre", 
               dna_seg_labels = NULL, 
               dna_seg_label_cex=1,
+              dna_seg_label_col="black",
               gene_type = NULL,
               arrow_head_len = 200,
               dna_seg_line = TRUE,
@@ -119,6 +120,10 @@ plot_gene_map(dna_segs,
   \item{dna_seg_label_cex}{
     A numeric. The character size for the DNA segments labels, or tree
     labels. Default is 1.
+  }
+  \item{dna_seg_label_col}{
+    A color, of length 1 or of the same length as \code{dna_segs}. Gives
+    the color of the labels. Default is black.
   }
   \item{gene_type}{
     A character. Describes the type of representation of genes or
@@ -354,6 +359,11 @@ plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,
               dna_seg_scale=TRUE, scale=FALSE,
               dna_seg_label_cex=1.7)
+
+## Changing colors of dna_seg_labels
+plot_gene_map(barto$dna_segs, barto$comparisons, xlims=xlims1,
+              dna_seg_scale=TRUE, scale=FALSE,
+              dna_seg_label_col=c("black", "grey", "blue", "red"))
 
 
 ## Adding annotations for all genomes

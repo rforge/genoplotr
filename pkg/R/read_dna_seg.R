@@ -89,7 +89,7 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
   # If type isn't PTT do everything else...
   else {
     
-    # Extarct and name main segments
+    # Extract and name main segments
     if(TYPE == "Genbank") {
       mainSegments <- grep("^[[:alnum:]]", importedData)
       names(mainSegments) <- gsub("*| .*", "", grep("^[[:alnum:]]",

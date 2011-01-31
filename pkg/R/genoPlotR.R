@@ -24,6 +24,7 @@ plot_gene_map <- function(dna_segs,
                           main_pos="centre", # centre, left, right
                           dna_seg_labels=NULL,
                           dna_seg_label_cex=1,
+                          dna_seg_label_col="black",
                           gene_type=NULL, # if not null, resets gene_type
                           arrow_head_len=200,
                           dna_seg_line=TRUE,
@@ -63,6 +64,14 @@ plot_gene_map <- function(dna_segs,
   # check length of labels
   if (!is.null(dna_seg_labels) && !(length(dna_seg_labels) == n_dna_segs))
     stop("Argument dna_seg_labels doesn't have the same length as dna_segs")
+
+  # check dna_seg_label colors
+  if (length(dna_seg_label_col) == 1){
+    dna_seg_label_col <- rep(dna_seg_label_col, n_dna_segs)
+  }
+  else if (!length(dna_seg_label_col) == n_dna_segs){
+    stop("Length of argument dna_seg_label_col must be 1 or as dna_segs")
+  }
   
   # check tree
   if (!is.null(tree)){
@@ -462,7 +471,8 @@ plot_gene_map <- function(dna_segs,
     tree_w <- unit(0.1, "npc") + tree_grob$width
   } else if(!is.null(dna_seg_labels)){
     # just labels
-    tree_grob <- dna_seg_label_grob(dna_seg_labels, cex=dna_seg_label_cex)
+    tree_grob <- dna_seg_label_grob(dna_seg_labels, cex=dna_seg_label_cex,
+                                    col=dna_seg_label_col)
     tree_w <- tree_grob$width
   } else {
     # nothing
@@ -532,7 +542,7 @@ plot_gene_map <- function(dna_segs,
                         name="plotarea_outer"),
                viewport(width=unit(1, "npc")-unit(1, "lines"),
                         height=unit(1, "npc")-unit(0, "lines"),
-                        name="plotarea"))
+                        name="plotarea", clip="on"))
 
   # map grid
   pushViewport(viewport(layout=grid.layout(n_rows, 1,

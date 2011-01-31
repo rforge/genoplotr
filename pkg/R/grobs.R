@@ -193,14 +193,14 @@ annotation_grob <- function(annotation, ...){
   grob_list
 }
 # create tree grob
-dna_seg_label_grob <- function(labels, cex){
+dna_seg_label_grob <- function(labels, cex, col){
   n_label <- length(labels)
   y <- seq(1, 0, len=n_label)
   labelGrobs <- gList()
   for (i in 1:n_label) {
     labelGrobs[[i]] <-
       textGrob(x=0, y=y[i], name=paste("label", i, sep="."),
-               label=labels[i], just="left", gp=gpar(cex=cex),
+               label=labels[i], just="left", gp=gpar(cex=cex, col=col[i]),
                default.units="native")
   }
   width <- unit(1, "grobwidth", labelGrobs[[which.max(nchar(labels))]])
