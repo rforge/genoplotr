@@ -1,0 +1,7 @@
+TODO:
+- change coloring when reading from mauve bbones: color first segments in the ref genome, and then according to their apparition in the next genomes.
+- read xmfa format from mauve, mugsy. See description on the mauve website. Take quality into account
+- filter given several ranges/features on any segment, by successive filtering of the nearby segments, keeping only ranges that have comparisons better than x and with margins of y. Return xlim?
+- Check filtering of comparisons: how do I treat partial matches? Seems inconsistent...
+- Read from gff3 files
+- Read color tags from genbank/embl/gff(?) file
