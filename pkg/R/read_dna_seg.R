@@ -56,7 +56,7 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
   # Find file type
   TYPE <- "Unknown"
   if (fileType == "detect" || fileType == "Detect" || fileType == "DETECT") {
-    if (length(grep(">", importedData[1]))) {TYPE <- "fasta"}
+    if (length(grep(">", importedData[1]))) {TYPE <- "Fasta"}
     if (length(grep("^ID", importedData))) {TYPE <- "EMBL"}
     if (length(grep("^LOCUS", importedData))) {TYPE <- "Genbank"}
   }
@@ -171,6 +171,7 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
     gene=character()
     synonym=character()
     product=character()
+    color=character()
     proteinid=character()
     feature=character()
     geneType=character()
@@ -297,6 +298,9 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
             # Extract product
             product <- c(product, extract_data("product=", currentFeature))
 
+            # Extract color
+            color <- c(color, extract_data("(color|colour)=", currentFeature))
+            
             # Set geneType
             if (length(grep("intron", currentFeature[1])) > 0){
               geneType <- c(geneType, "introns")
@@ -316,26 +320,6 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
                                          currentFeature[1]))
             }
             
-            # SIMPLE ERROR HANDLING
-            if(is.numeric(start) == FALSE) stop("Start is not numeric.")
-            if(is.numeric(end) == FALSE) stop("End is not numeric.")
-            if(is.numeric(length) == FALSE) stop("Length is not numeric.")
-            if(is.numeric(strand) == FALSE) stop("Strand is not numeric.")
-            if(is.character(pid) == FALSE) stop("PID is not character.")
-            if(is.character(name) == FALSE) stop("Name is not character.")
-            if(is.character(gene) == FALSE) stop("Gene is not character.")
-            if(is.character(synonym) == FALSE) {
-              stop("Synonym is not character.")
-            }
-            if(is.character(product) == FALSE) {
-              stop("Product is not character.")
-            }
-            if(is.character(proteinid) == FALSE) {
-              stop("Protein ID is not character.")
-            }
-            if(is.character(feature) == FALSE) {
-              stop("Feature is not character.")
-            }
             
           # end of parse if start and end ok
           }
@@ -348,6 +332,36 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
       
     # End of loop over all features
     }
+    
+    # SIMPLE ERROR HANDLING
+    if(is.numeric(start) == FALSE) stop("Start is not numeric.")
+    if(is.numeric(end) == FALSE) stop("End is not numeric.")
+    if(is.numeric(length) == FALSE) stop("Length is not numeric.")
+    if(is.numeric(strand) == FALSE) stop("Strand is not numeric.")
+    if(is.character(pid) == FALSE) stop("PID is not character.")
+    if(is.character(name) == FALSE) stop("Name is not character.")
+    if(is.character(gene) == FALSE) stop("Gene is not character.")
+    if(is.character(synonym) == FALSE) {
+      stop("Synonym is not character.")
+    }
+    if(is.character(product) == FALSE) {
+      stop("Product is not character.")
+    }
+    if(is.character(proteinid) == FALSE) {
+      stop("Protein ID is not character.")
+    }
+    if(is.character(feature) == FALSE) {
+      stop("Feature is not character.")
+    }
+    # Check color
+    # Eventually, change Artemis colors to their RGB equivalent
+    artCol <- artemisColors()
+    if (all(color %in% c("NA", artCol$n))) {
+      for (i in 1:length(color)){
+        if (color[i] != "NA") color[i] <- artCol$colors[artCol$n == color[i]]
+      }
+    }
+    color[color == "NA"] <- "blue"
 
     # If gene_type is auto, change form arrows to blocks, otherwise arrows
     if (length(grep("intron", geneType))>=1 && gene_type == "auto") {
@@ -360,8 +374,8 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
     # Cut table to include only added features    
     table <- data.frame(name=name, start=start, end=end, strand=strand,
                         length=length, pid=pid, gene=gene, synonym=synonym,
-                        product=product, proteinid=proteinid, feature,
-                        gene_type=geneType, stringsAsFactors=FALSE)
+                        product=product, proteinid=proteinid, feature=feature,
+                        gene_type=geneType, col=color, stringsAsFactors=FALSE)
     
     # SIMPLE ERROR HANDLING
     if (dim(table)[1] == 0)
