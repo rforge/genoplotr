@@ -15,6 +15,7 @@ plot_gene_map(dna_segs,
               comparisons = NULL,
               tree = NULL,
               tree_width = NULL,
+              tree_branch_labels_cex = NULL,
               legend = NULL, 
               annotations = NULL, 
               annotation_height = 1, 
@@ -57,6 +58,11 @@ plot_gene_map(dna_segs,
   \item{tree_width}{
     Numeric. The width of the tree area in the plot, in inches. By
     default, takes 20 percent of the total plot.
+  }
+  \item{tree_branch_labels_cex}{
+    Numeric or \code{NULL} (default). If the tree provided contains
+    node annotations, they will be displayed with this \code{cex}. If
+    equal to 0, node annotations are not displayed.
   }
   \item{legend}{
     Yet unimplemented.
@@ -190,6 +196,11 @@ plot_gene_map(dna_segs,
   permutations). The solution is then to provide segments that are
   ordered in the same manner as the tree labels (or vice-versa).
 
+  There is an (experimental) support for branch annotations. These are
+  given in the Newick tree, directly after the parenthesis closing a
+  node. They will be ignored if they start with \"I\", and trimmed if
+  they start with \"X\".
+
   A scale, a main title and an annotation row at the top of the plot can
   also be added.
 
@@ -262,10 +273,17 @@ names(dna_segs) <- names
 tree <- newick2phylog("(((A_aaa:4.2,B_bbb:3.9):3.1,C_ccc:7.3):1);")
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               tree=tree)
-
 ## Increasing tree width
 plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
               tree=tree, tree_width=3)
+## Annotations on the tree
+tree2 <- newick2phylog("(((A_aaa:4.2,B_bbb:3.9)97:3.1,C_ccc:7.3)78:1);")
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
+              tree=tree2, tree_width=3)
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
+              tree=tree2, tree_width=3, tree_branch_labels_cex=0.5)
+plot_gene_map(dna_segs=dna_segs, comparisons=comparisons,
+              tree=tree2, tree_width=3, tree_branch_labels_cex=0)
 
 ## Annotation
 ## Calculating middle positions

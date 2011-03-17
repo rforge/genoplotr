@@ -1,7 +1,7 @@
 genoPlotR changes
 =================
 
-0.5.9 - 2011-03-16
+0.6 - 2011-03-16
 ------------------
 NEW FEATURES:
 - Added transparency support in apply_color_scheme, which is applied by
@@ -9,9 +9,12 @@ NEW FEATURES:
 - Added a function, artemisColors(), that returns the colors as in Artemis.
 - read_dna_seg_from_file can now read color or colour tags in genbank or embl
   files.
+- Added experimental support for tree branches annotations.
 BUGFIX:
 - Further corrected a bug occuring when fixed_gap_length was set, and allowing
   comparisons with 0 rows.
+- Fasta types were incorrectly guessed
+NOTE: some of the features have been released in an intermediate version 0.5.9
 
 0.5.8 - 2011-01-31
 ------------------
