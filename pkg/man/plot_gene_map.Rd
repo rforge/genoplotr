@@ -37,7 +37,7 @@ plot_gene_map(dna_segs,
               dna_seg_scale = !scale,
               n_scale_ticks=7,
               scale_cex=0.6,
-              global_color_scheme = c("auto", "auto", "blue_red"),
+              global_color_scheme = c("auto", "auto", "blue_red", 0.5),
               override_color_schemes = FALSE,
               plot_new=TRUE,
               debug = 0
@@ -165,7 +165,7 @@ plot_gene_map(dna_segs,
     A numeric. The character size for the scale labels. Default is 1.
   }
   \item{global_color_scheme}{
-    A character of length 3. If no \code{col} column is present on any
+    A character of length 4. If no \code{col} column is present on any
     comparison or is \code{override_color_schemes} is set, apply a
     global color scheme over all comparions. See below for more details.
     \code{c("auto", "auto", "blue_red")} by default. 
@@ -198,8 +198,9 @@ plot_gene_map(dna_segs,
 
   There is an (experimental) support for branch annotations. These are
   given in the Newick tree, directly after the parenthesis closing a
-  node. They will be ignored if they start with \"I\", and trimmed if
-  they start with \"X\".
+  node. They can be characters or integers, but so far
+  \code{newick2phylog} doesn't support decimal values. Tags will be
+  ignored if they start with "I", and trimmed if they start with "X".
 
   A scale, a main title and an annotation row at the top of the plot can
   also be added.
@@ -228,11 +229,12 @@ plot_gene_map(dna_segs,
   every segment. \code{c(TRUE, FALSE, TRUE)} will add scales to the
   first and third segments.
 
-  The three elements of \code{global_color_scheme} are (i) which column
+  The four elements of \code{global_color_scheme} are (i) which column
   serves as scale to apply the color  scheme, or "auto" (default);
   (ii) if the scale is "increasing" or "decreasing" (see
   \code{apply_color_scheme} for more details), or "auto" (default);
-  (iii) the color scheme to apply.
+  (iii) the color scheme to apply; (iv) the transparency to apply (0.5
+  by default).
 }
 \value{
   %% Change this when/if would return gTree
@@ -366,7 +368,7 @@ plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
 ## dna_seg_scale & global_color_scheme
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,
               dna_seg_scale=c(TRUE, FALSE, FALSE, TRUE), scale=FALSE,
-              global_color_scheme=c("e_value","auto","grey"))
+              global_color_scheme=c("e_value", "auto", "grey", "0.7"))
 
 ## Changing size and number of dna_seg_scale_labels
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,

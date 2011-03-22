@@ -361,7 +361,6 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
         if (color[i] != "NA") color[i] <- artCol$colors[artCol$n == color[i]]
       }
     }
-    color[color == "NA"] <- "blue"
 
     # If gene_type is auto, change form arrows to blocks, otherwise arrows
     if (length(grep("intron", geneType))>=1 && gene_type == "auto") {
@@ -375,8 +374,11 @@ read_dna_seg_from_file <- function(file, tagsToParse=c("CDS"),
     table <- data.frame(name=name, start=start, end=end, strand=strand,
                         length=length, pid=pid, gene=gene, synonym=synonym,
                         product=product, proteinid=proteinid, feature=feature,
-                        gene_type=geneType, col=color, stringsAsFactors=FALSE)
-    
+                        gene_type=geneType, stringsAsFactors=FALSE)
+    if (!all(color == "NA")){
+      color[color == "NA"] <- "blue"
+      table$col <- color
+    }
     # SIMPLE ERROR HANDLING
     if (dim(table)[1] == 0)
       stop("Nothing to return in table. I.e. no features extracted.")

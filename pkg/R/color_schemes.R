@@ -14,10 +14,10 @@ apply_color_scheme <- function(x, direction=NULL, color_scheme="grey",
   }
   if (!is.numeric(x)) stop("Color column is not numeric")
   if (is.null(rng)) rng <- range(x)
-  col <- rep(grey(0.5), length(x))
   if (!(is.logical(transparency) && !(transparency))
       && !is.numeric(transparency))
     stop ("transparency should be FALSE or numeric")
+  col <- rep(grey(0.5), length(x))
   # red blue
   if (any(color_scheme %in% c("red_blue", "blue_red"))){
     if (is.null(direction)) direction <- rep(1, length(x))

@@ -33,7 +33,8 @@ plot_gene_map <- function(dna_segs,
                           dna_seg_scale=!scale, # scale on each dna_seg
                           n_scale_ticks=7,    # number of tick marks for these
                           scale_cex=0.6,      # size of text on scale
-                          global_color_scheme=c("auto", "auto", "blue_red"),
+                          global_color_scheme=c("auto", "auto",
+                            "blue_red", 0.5),
                           override_color_schemes=FALSE,
                           plot_new=TRUE, # FALSE to integrate on a bigger plot
                           debug=0){
@@ -206,8 +207,8 @@ plot_gene_map <- function(dna_segs,
   }
 
   # check global_color_scheme
-  if (length(global_color_scheme) != 3)
-    stop ("global_color_scheme should be length 3")
+  if (length(global_color_scheme) != 4)
+    stop ("global_color_scheme should be length 4")
   # accepted values for second value
   glob_col_sch_2_vals <- c("increasing", "decreasing", "auto")
   if (length(grep(global_color_scheme[2], glob_col_sch_2_vals)) != 1){
@@ -287,7 +288,8 @@ plot_gene_map <- function(dna_segs,
                            direction=comparisons[[i]]$direction,
                            color_scheme=global_color_scheme[3],
                            decreasing=global_color_scheme[2],
-                           rng=range_col_from)
+                           rng=range_col_from,
+                           transparency=as.numeric(global_color_scheme[4]))
     }
   }
 
