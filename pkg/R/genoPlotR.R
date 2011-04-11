@@ -37,7 +37,8 @@ plot_gene_map <- function(dna_segs,
                             "blue_red", 0.5),
                           override_color_schemes=FALSE,
                           plot_new=TRUE, # FALSE to integrate on a bigger plot
-                          debug=0){
+                          debug = 0,
+                          ...){
   #----------------------------------------------------------------------------#
   # check arguments
   #----------------------------------------------------------------------------#
@@ -413,7 +414,7 @@ plot_gene_map <- function(dna_segs,
         dna_subsegs[[i]][[j]] <- dna_subsegs[[i]][[j]][1:debug,]
       # end debug
       dna_seg_grobs[[i]][[j]] <- dna_seg_grob(dna_subsegs[[i]][[j]],
-                                            arrow_head_len, i)
+                                            arrow_head_len, i, ...)
       dna_seg_scale_grobs[[i]][[j]] <-
         if (dna_seg_scale[[i]])
           dna_seg_scale_grob(range=xlims[[i]][j,c("x0","x1")],

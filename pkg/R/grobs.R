@@ -2,7 +2,7 @@
 # Grobs
 ################################################################################
 # create gene grobs
-gene_grob <- function(gene, head_len=200, i=0){
+gene_grob <- function(gene, head_len=200, i=0, ...){
   if (!is.dna_seg(gene)) stop("A dna_seg object is required")
   if (nrow(gene) > 1) stop ("gene must be single-row")
   mid <- (gene$start + gene$end)/2
@@ -108,7 +108,12 @@ gene_grob <- function(gene, head_len=200, i=0){
                      default.units="native")
   }
   else {
-    stop(paste("Invalid gene_type:",  gene$gene_type))
+    
+    grob <- try(do.call(gene$gene_type, list(gene, ...)), silent=FALSE)
+    #browser()
+    if (!(is.grob(grob) || all(sapply(grob, is.grob))))
+      stop(paste(gene$gene_type, "is an invalid gene_type or",
+                 "does not return a grob"))
   }
   grob
 }

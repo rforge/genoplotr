@@ -44,6 +44,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   </p>
   <!-- includes main text -->
   <?php include("index_txt.html"); ?>
+  <!-- includes news -->
+  <h3>News:</h3>
+  <pre><?php include("NEWS"); ?></pre>
   <!-- includes end of table --> 
   <?php include("end.php"); ?>
   

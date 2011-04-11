@@ -40,8 +40,8 @@ plot_gene_map(dna_segs,
               global_color_scheme = c("auto", "auto", "blue_red", 0.5),
               override_color_schemes = FALSE,
               plot_new=TRUE,
-              debug = 0
-              )
+              debug = 0,
+              ...)
 }
 \arguments{
   \item{dna_segs}{
@@ -183,6 +183,9 @@ plot_gene_map(dna_segs,
     A numeric. If > 0, only that number of element will be plotted for
     each \code{dna_seg} and \code{comparison}.
   }
+  \item{\dots}{
+    Further arguments to be passed to user-defined graphical functions.
+  }
 }
 \details{
   One line is plotted per \code{dna_seg}. Eventually, the space between
@@ -207,7 +210,9 @@ plot_gene_map(dna_segs,
 
   The format of the elements of \code{dna_segs} is previously determined
   in the object or can be globally set by \code{gene_type}. See the
-  function \code{\link{gene_types}} to return the available types.
+  function \code{\link{gene_types}} to return the available types. Gene
+  type can also be user-defined, using a function returning a
+  \code{grob}. See \code{\link{gene_types}} for more details.
 
   \code{xlims} allow the user to plot subsegments of a
   \code{dna_seg}. \code{xlims} consists of a list composed of as many
