@@ -37,7 +37,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
   </tr>
   <?php 
   $examples=array("three_genes", "barto_seg1", "barto_multiseg", 
-		  "chrY_subseg", "figureBioinfo");
+		  "chrY_subseg", "barto_seg_plots", "figureBioinfo");
 foreach ($examples as $example){
   echo "<tr>
      <td><b>Example: $example</b></td>
