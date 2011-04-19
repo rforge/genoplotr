@@ -32,7 +32,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
   <!-- includes table and top row and colum -->
   <?php include("begin.php"); ?>
   <p>(This page is an automatic conversion of the <a href="pdfs/genoPlotR.pdf">
-      pdf vignette<a> included in the package)</p>
+      pdf vignette<a> included in the package. Transparent colors don't show
+      at all in these figures, so refer to the pdf for better images.)</p>
   <!-- includes vignette html -->
   <?php include("vignette.html") ?>
   <!-- includes end of table --> 

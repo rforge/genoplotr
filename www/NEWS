@@ -1,9 +1,12 @@
 genoPlotR changes
 =================
 
-0.7 - 2011-04-06
+0.7 - 2011-04-18
 ----------------
 NEW FEATURES:
+- It is now possible to plot user-defined graphs on top of each dna_seg,
+  using the graphical functions of grid or user-defined ones. See
+  seg_plot functions and argument in plot_gene_maps
 - Added a function, auto_annotate, to create smart annotations from genbank
   or embl files.
 - Added the possibility to use user-defined graphical functions to plot

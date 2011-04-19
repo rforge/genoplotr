@@ -315,7 +315,7 @@ The backbone output of the Mauve genome aligner
 <tt>read_comparison_from_blast</tt><a href="#tthFtNtAAB" name="tthFrefAAB"><sup>1</sup></a>.
 
 <div class="p"><!----></div>
-The function will return a list consisting of a list of <tt>dna_seg</tt>s
+The function will return a list consisting of a list of <tt>dna_seg</tt> objects 
 and the corresponding <tt>comparisons</tt>.
 
 <div class="p"><!----></div>
@@ -834,7 +834,7 @@ The segments can be directly plotted, passing the annotations as a list.
 <div class="p"><!----></div>
      <h3><a name="tth_sEc7.6">
 7.6</a>&nbsp;&nbsp;Example 6: Combining several <span class="roman"> genoPlotR</span> figures and annotating the
-m</h3>
+figure</h3>
 
 <div class="p"><!----></div>
 In this example, some of the previous plots are combined in a single, 
@@ -902,13 +902,13 @@ viewport structure, and to see all object names.
 
 <pre>
 List&nbsp;of&nbsp;6
-&nbsp;$&nbsp;name&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1303]&nbsp;"ROOT"&nbsp;"overall_vp"&nbsp;"panelA"&nbsp;"oma"&nbsp;...
-&nbsp;$&nbsp;gDepth&nbsp;:&nbsp;num&nbsp;[1:1303]&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;...
-&nbsp;$&nbsp;vpDepth:&nbsp;num&nbsp;[1:1303]&nbsp;0&nbsp;1&nbsp;2&nbsp;3&nbsp;4&nbsp;5&nbsp;6&nbsp;6&nbsp;5&nbsp;6&nbsp;...
-&nbsp;$&nbsp;gPath&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1303]&nbsp;""&nbsp;""&nbsp;""&nbsp;""&nbsp;...
-&nbsp;$&nbsp;vpPath&nbsp;:&nbsp;chr&nbsp;[1:1303]&nbsp;""&nbsp;"ROOT"&nbsp;"ROOT::overall_vp"&nbsp;"ROOT::overall_vp::panelA"
+&nbsp;$&nbsp;name&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;"ROOT"&nbsp;"overall_vp"&nbsp;"panelA"&nbsp;"oma"&nbsp;...
+&nbsp;$&nbsp;gDepth&nbsp;:&nbsp;num&nbsp;[1:1323]&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;...
+&nbsp;$&nbsp;vpDepth:&nbsp;num&nbsp;[1:1323]&nbsp;0&nbsp;1&nbsp;2&nbsp;3&nbsp;4&nbsp;5&nbsp;6&nbsp;6&nbsp;5&nbsp;6&nbsp;...
+&nbsp;$&nbsp;gPath&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;""&nbsp;""&nbsp;""&nbsp;""&nbsp;...
+&nbsp;$&nbsp;vpPath&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;""&nbsp;"ROOT"&nbsp;"ROOT::overall_vp"&nbsp;"ROOT::overall_vp::panelA"
 &nbsp;...
-&nbsp;$&nbsp;type&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1303]&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;...
+&nbsp;$&nbsp;type&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;...
 &nbsp;-&nbsp;attr(*,&nbsp;"class")=&nbsp;chr&nbsp;"flatGridListing"
 
 </pre>
@@ -925,28 +925,31 @@ ort[oma_layout]-&#62;(viewport[frame]-&#62;(viewport[plotarea_outer]-&#62;(viewp
 parison.3],&nbsp;viewport[scale_and_dna_seg.1]-&#62;(viewport[dna_seg.1.1]),&nbsp;viewport[sca
 le_and_dna_seg.2]-&#62;(viewport[dna_seg.2.1]),&nbsp;viewport[scale_and_dna_seg.3]-&#62;(view
 port[dna_seg.3.1]),&nbsp;viewport[scale_and_dna_seg.4]-&#62;(viewport[dna_seg.4.1],&nbsp;viewp
-ort[dna_seg_scale.4.1])))),&nbsp;viewport[tree_outer]-&#62;(viewport[tree])),&nbsp;viewport[ma
-in]))),&nbsp;viewport[panelB]-&#62;(viewport[oma]-&#62;(viewport[oma_layout]-&#62;(viewport[frame
-]-&#62;(viewport[plotarea_outer]-&#62;(viewport[plotarea]-&#62;(viewport[map]-&#62;(viewport[com
-parison.1],&nbsp;viewport[comparison.2],&nbsp;viewport[comparison.3],&nbsp;viewport[scale_and_d
-na_seg.1]-&#62;(viewport[annotation.1.1],&nbsp;viewport[annotation.1.2],&nbsp;viewport[dna_seg
-.1.1],&nbsp;viewport[dna_seg.1.2],&nbsp;viewport[dna_seg_scale.1.1],&nbsp;viewport[dna_seg_scal
-e.1.2],&nbsp;viewport[gap.1.2]),&nbsp;viewport[scale_and_dna_seg.2]-&#62;(viewport[annotation.
-2.1],&nbsp;viewport[annotation.2.2],&nbsp;viewport[annotation.2.3],&nbsp;viewport[dna_seg.2.1],
-&nbsp;viewport[dna_seg.2.2],&nbsp;viewport[dna_seg.2.3],&nbsp;viewport[dna_seg_scale.2.1],&nbsp;view
-port[dna_seg_scale.2.2],&nbsp;viewport[dna_seg_scale.2.3],&nbsp;viewport[gap.2.2],&nbsp;viewpor
-t[gap.2.3]),&nbsp;viewport[scale_and_dna_seg.3]-&#62;(viewport[annotation.3.1],&nbsp;viewport[
-annotation.3.2],&nbsp;viewport[annotation.3.3],&nbsp;viewport[dna_seg.3.1],&nbsp;viewport[dna_s
-eg.3.2],&nbsp;viewport[dna_seg.3.3],&nbsp;viewport[dna_seg_scale.3.1],&nbsp;viewport[dna_seg_sc
-ale.3.2],&nbsp;viewport[dna_seg_scale.3.3],&nbsp;viewport[gap.3.2],&nbsp;viewport[gap.3.3]),&nbsp;vi
-ewport[scale_and_dna_seg.4]-&#62;(viewport[annotation.4.1],&nbsp;viewport[dna_seg.4.1],&nbsp;v
-iewport[dna_seg_scale.4.1])))),&nbsp;viewport[tree_outer]-&#62;(viewport[tree])),&nbsp;viewpor
-t[main]))),&nbsp;viewport[panelC]-&#62;(viewport[oma]-&#62;(viewport[oma_layout]-&#62;(viewport[f
-rame]-&#62;(viewport[plotarea_outer]-&#62;(viewport[plotarea]-&#62;(viewport[map]-&#62;(viewport
-[comparison.1],&nbsp;viewport[scale_and_dna_seg.1]-&#62;(viewport[annotation.1.1],&nbsp;viewpo
-rt[dna_seg.1.1],&nbsp;viewport[dna_seg_scale.1.1]),&nbsp;viewport[scale_and_dna_seg.2]-&#62;(v
-iewport[annotation.2.1],&nbsp;viewport[dna_seg.2.1],&nbsp;viewport[dna_seg_scale.2.1])))))
-,&nbsp;viewport[main])))))&nbsp;
+ort[dna_seg_scale.4.1]),&nbsp;viewport[seg_plot.1],&nbsp;viewport[seg_plot.2],&nbsp;viewport[se
+g_plot.3],&nbsp;viewport[seg_plot.4]))),&nbsp;viewport[tree_outer]-&#62;(viewport[tree])),&nbsp;vie
+wport[main]))),&nbsp;viewport[panelB]-&#62;(viewport[oma]-&#62;(viewport[oma_layout]-&#62;(viewpo
+rt[frame]-&#62;(viewport[plotarea_outer]-&#62;(viewport[plotarea]-&#62;(viewport[map]-&#62;(view
+port[comparison.1],&nbsp;viewport[comparison.2],&nbsp;viewport[comparison.3],&nbsp;viewport[sca
+le_and_dna_seg.1]-&#62;(viewport[annotation.1.1],&nbsp;viewport[annotation.1.2],&nbsp;viewport
+[dna_seg.1.1],&nbsp;viewport[dna_seg.1.2],&nbsp;viewport[dna_seg_scale.1.1],&nbsp;viewport[dna_
+seg_scale.1.2],&nbsp;viewport[gap.1.2]),&nbsp;viewport[scale_and_dna_seg.2]-&#62;(viewport[ann
+otation.2.1],&nbsp;viewport[annotation.2.2],&nbsp;viewport[annotation.2.3],&nbsp;viewport[dna_s
+eg.2.1],&nbsp;viewport[dna_seg.2.2],&nbsp;viewport[dna_seg.2.3],&nbsp;viewport[dna_seg_scale.2.
+1],&nbsp;viewport[dna_seg_scale.2.2],&nbsp;viewport[dna_seg_scale.2.3],&nbsp;viewport[gap.2.2],
+&nbsp;viewport[gap.2.3]),&nbsp;viewport[scale_and_dna_seg.3]-&#62;(viewport[annotation.3.1],&nbsp;v
+iewport[annotation.3.2],&nbsp;viewport[annotation.3.3],&nbsp;viewport[dna_seg.3.1],&nbsp;viewpo
+rt[dna_seg.3.2],&nbsp;viewport[dna_seg.3.3],&nbsp;viewport[dna_seg_scale.3.1],&nbsp;viewport[dn
+a_seg_scale.3.2],&nbsp;viewport[dna_seg_scale.3.3],&nbsp;viewport[gap.3.2],&nbsp;viewport[gap.3
+.3]),&nbsp;viewport[scale_and_dna_seg.4]-&#62;(viewport[annotation.4.1],&nbsp;viewport[dna_seg
+.4.1],&nbsp;viewport[dna_seg_scale.4.1]),&nbsp;viewport[seg_plot.1],&nbsp;viewport[seg_plot.2],
+&nbsp;viewport[seg_plot.3],&nbsp;viewport[seg_plot.4]))),&nbsp;viewport[tree_outer]-&#62;(viewport[
+tree])),&nbsp;viewport[main]))),&nbsp;viewport[panelC]-&#62;(viewport[oma]-&#62;(viewport[oma_layo
+ut]-&#62;(viewport[frame]-&#62;(viewport[plotarea_outer]-&#62;(viewport[plotarea]-&#62;(viewport
+[map]-&#62;(viewport[comparison.1],&nbsp;viewport[scale_and_dna_seg.1]-&#62;(viewport[annotat
+ion.1.1],&nbsp;viewport[dna_seg.1.1],&nbsp;viewport[dna_seg_scale.1.1]),&nbsp;viewport[scale_an
+d_dna_seg.2]-&#62;(viewport[annotation.2.1],&nbsp;viewport[dna_seg.2.1],&nbsp;viewport[dna_seg
+_scale.2.1]),&nbsp;viewport[seg_plot.1],&nbsp;viewport[seg_plot.2])))),&nbsp;viewport[main]))))
+)&nbsp;
 
 </pre>
 
@@ -997,6 +1000,138 @@ panel B.
 <center>
 <img src="img/ex6.png" alt="ex6.png" /> 
 </center>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.7">
+7.7</a>&nbsp;&nbsp;Example 7: Using user-defined <tt>gene_type</tt> and <tt>seg_plot</tt>
+</h3>
+In this example, the use of personalized <tt>gene_type</tt>s and of 
+<tt>seg_plots</tt> to show data next to DNA segments is demonstrated. The 
+same data as in example 4 is used.
+
+<div class="p"><!----></div>
+A graphical function is defined, to represent triangles instead of arrows 
+for genes. The triangles are oriented in function of their strand and the 
+transparency is set differently according to a length cut-off, passed with 
+the function. As required, the function has only two arguments, a <tt>gene</tt> 
+which is a row of a <tt>dna_seg</tt>, and the dots (...). Any extra argument 
+passed to <tt>plot_gene_map</tt> will be passed in turn to the 
+<tt>gene_type</tt>-defining function.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;starGrob&nbsp;&lt;-&nbsp;function(gene,&nbsp;...)&nbsp;{
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;sin(((0:5)/2.5)&nbsp;*&nbsp;pi)&nbsp;*&nbsp;(gene$end&nbsp;-&nbsp;gene$start)/2&nbsp;+&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(gene$end&nbsp;+&nbsp;gene$start)/2
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;cos(((0:5)/2.5)&nbsp;*&nbsp;pi)&nbsp;*&nbsp;gene$strand&nbsp;*&nbsp;0.5&nbsp;+&nbsp;0.5
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idx&nbsp;&lt;-&nbsp;c(1,&nbsp;3,&nbsp;5,&nbsp;2,&nbsp;4,&nbsp;1)
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line_col&nbsp;&lt;-&nbsp;if&nbsp;(!is.null(gene$line_col))&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gene$line_col
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;gene$col
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;&lt;-&nbsp;list(...)$length_cutoff
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!is.null(length_cutoff))&nbsp;{
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alpha&nbsp;&lt;-&nbsp;if&nbsp;((gene$end&nbsp;-&nbsp;gene$start)&nbsp;&lt;&nbsp;length_cutoff)&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.3
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;0.8
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;alpha&nbsp;&lt;-&nbsp;1
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g&nbsp;&lt;-&nbsp;polygonGrob(x[idx],&nbsp;y[idx],&nbsp;gp&nbsp;=&nbsp;gpar(fill&nbsp;=&nbsp;gene$col,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col&nbsp;=&nbsp;line_col,&nbsp;lty&nbsp;=&nbsp;gene$lty,&nbsp;lwd&nbsp;=&nbsp;gene$lwd,&nbsp;alpha&nbsp;=&nbsp;alpha),&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default.units&nbsp;=&nbsp;"native")
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;&lt;-&nbsp;textGrob(label&nbsp;=&nbsp;"***",&nbsp;x&nbsp;=&nbsp;(gene$end&nbsp;+&nbsp;gene$start)/2,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;0.5,&nbsp;default.units&nbsp;=&nbsp;"native")
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gList(g,&nbsp;t)
++&nbsp;}
+
+</pre>
+
+<div class="p"><!----></div>
+To make use of that, the <tt>gene_type</tt> column of the <tt>dna_segs</tt> must b
+e replaced. To make use of the supplementary argument <tt>line_col</tt>, a column
+ is added to the <tt>dna_seg</tt> object. Finally, plot the result.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;barto$dna_segs[[2]]$gene_type&nbsp;&lt;-&nbsp;"starGrob"
+&#62;&nbsp;barto$dna_segs[[4]]$gene_type&nbsp;&lt;-&nbsp;"starGrob"
+&#62;&nbsp;line_col&nbsp;&lt;-&nbsp;rep(1:20,&nbsp;(nrow(barto$dna_segs[[3]])%%20)&nbsp;+&nbsp;1)
+&#62;&nbsp;barto$dna_segs[[2]]$line_col&nbsp;&lt;-&nbsp;line_col[1:nrow(barto$dna_segs[[2]])]
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;=&nbsp;600)
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-047.png" alt="genoPlotR-047.png" />
+</center>
+
+<div class="p"><!----></div>
+Now, let's plot some random data along with the DNA segment. A standard 
+<tt>grid</tt> function returning a grob is used, but it is possible to use 
+personalized functions, as long as they return <tt>grob</tt> or <tt>gList</tt> 
+objects. For example, the function <tt>starGrob</tt> defined in the previous 
+exercise could be modified to be used here.
+
+<div class="p"><!----></div>
+The <tt>seg_plot</tt> objects are first defined, with the following structure:
+
+<pre>
+&#62;&nbsp;seg_plots&nbsp;&lt;-&nbsp;lapply(barto$dna_segs,&nbsp;function(ds)&nbsp;{
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;seq(1,&nbsp;range(ds)[2],&nbsp;by&nbsp;=&nbsp;1000)
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;jitter(seq(100,&nbsp;300,&nbsp;length&nbsp;=&nbsp;length(x)),&nbsp;amount&nbsp;=&nbsp;50)
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot(func&nbsp;=&nbsp;linesGrob,&nbsp;args&nbsp;=&nbsp;list(x&nbsp;=&nbsp;x,&nbsp;y&nbsp;=&nbsp;y,&nbsp;gp&nbsp;=&nbsp;gpar(col&nbsp;=&nbsp;grey(
+0.3),&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lty&nbsp;=&nbsp;2)))
++&nbsp;})
+&#62;&nbsp;str(seg_plots[[1]])
+
+</pre>
+
+<pre>
+List&nbsp;of&nbsp;5
+&nbsp;$&nbsp;func&nbsp;:function&nbsp;(x&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;y&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;default.units&nbsp;=&nbsp;"npc",&nbsp;arrow&nbsp;=&nbsp;NULL,&nbsp;name&nbsp;=&nbsp;NULL,&nbsp;gp&nbsp;=&nbsp;gpar(),&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;vp&nbsp;=&nbsp;NULL)&nbsp;&nbsp;
+&nbsp;$&nbsp;args&nbsp;:List&nbsp;of&nbsp;4
+&nbsp;&nbsp;..$&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;[1:1445]&nbsp;1&nbsp;1001&nbsp;2001&nbsp;3001&nbsp;4001&nbsp;...
+&nbsp;&nbsp;..$&nbsp;y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;[1:1445]&nbsp;148.7&nbsp;123&nbsp;52.9&nbsp;100.9&nbsp;77.2&nbsp;...
+&nbsp;&nbsp;..$&nbsp;gp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:List&nbsp;of&nbsp;2
+&nbsp;&nbsp;..&nbsp;..$&nbsp;col:&nbsp;chr&nbsp;"#4D4D4D"
+&nbsp;&nbsp;..&nbsp;..$&nbsp;lty:&nbsp;num&nbsp;2
+&nbsp;&nbsp;..&nbsp;..-&nbsp;attr(*,&nbsp;"class")=&nbsp;chr&nbsp;"gpar"
+&nbsp;&nbsp;..$&nbsp;default.units:&nbsp;chr&nbsp;"native"
+&nbsp;$&nbsp;xargs:&nbsp;chr&nbsp;[1:5]&nbsp;"x"&nbsp;"x0"&nbsp;"x1"&nbsp;"x2"&nbsp;...
+&nbsp;$&nbsp;yargs:&nbsp;chr&nbsp;[1:5]&nbsp;"y"&nbsp;"y0"&nbsp;"y1"&nbsp;"y2"&nbsp;...
+&nbsp;$&nbsp;ylim&nbsp;:&nbsp;NULL
+&nbsp;-&nbsp;attr(*,&nbsp;"class")=&nbsp;chr&nbsp;[1:2]&nbsp;"seg_plot"&nbsp;"list"
+
+</pre>
+
+<div class="p"><!----></div>
+Each <tt>seg_plot</tt> element has a <tt>func</tt> argument, giving the function 
+to use to plot the data, here the <tt>grid</tt> function <tt>linesGrob</tt>. The
+arguments that are passed to this function are contained in the <tt>args</tt> 
+argument, a list. Notice the use of <tt>gp=gpar(...)</tt>. 
+
+<div class="p"><!----></div>
+The result can then be plotted, and modulated using the arguments 
+<tt>seg_plot_height</tt>, <tt>seg_plot_height_unit</tt>, <tt>seg_plot_yaxis
+</tt>,
+and <tt>seg_plot_yaxis_cex</tt>.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;seg_plots&nbsp;=&nbsp;seg_plots,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_height&nbsp;=&nbsp;0.5,&nbsp;seg_plot_height_unit&nbsp;=&nbsp;"null",&nbsp;seg_plot_yaxis&nbsp;=&nbsp;2,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_yaxis_cex&nbsp;=&nbsp;0.7)
+
+</pre>
+<img src="img/genoPlotR-050.png" alt="genoPlotR-050.png" />
 <hr /><h3>Footnotes:</h3>
 
 <div class="p"><!----></div>

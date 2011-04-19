@@ -4,5 +4,5 @@ TODO:
 - Filter given several ranges/features on any segment, by successive filtering of the nearby segments, keeping only ranges that have comparisons better than x and with margins of y. Return xlim?
 - Check filtering of comparisons: how do I treat partial matches? Seems inconsistent...
 - Read from gff3 files
-- Branch tags and root on the tree
 - Legend (home-made/blast comparisons)
+- Tree scale
