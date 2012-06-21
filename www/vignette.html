@@ -52,16 +52,16 @@ that plot, refer to the first of the examples developed below.
 
 <pre>
 &#62;&nbsp;data(three_genes)
-&#62;&nbsp;comparisons[[1]]$col&nbsp;&lt;-&nbsp;apply_color_scheme(c(0.6,&nbsp;0.4,&nbsp;0.5),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"grey")
+&#62;&nbsp;comparisons[[1]]$col&nbsp;&lt;-&nbsp;apply_color_scheme(c(0.6,&nbsp;0.4,&nbsp;0.5),&nbsp;"grey")
 &#62;&nbsp;names&nbsp;&lt;-&nbsp;c("Huey",&nbsp;"Dewey",&nbsp;"Louie")
 &#62;&nbsp;names(dna_segs)&nbsp;&lt;-&nbsp;names
 &#62;&nbsp;tree&nbsp;&lt;-&nbsp;newick2phylog("(((Huey:4.2,Dewey:3.9):3.1,Louie:7.3):1);")
 &#62;&nbsp;mid_pos&nbsp;&lt;-&nbsp;middle(dna_segs[[1]])
 &#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(Inf,&nbsp;-Inf),&nbsp;c(-Inf,&nbsp;Inf),&nbsp;c(1850,&nbsp;2800))
-&#62;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1&nbsp;=&nbsp;c(mid_pos[1],&nbsp;dna_segs[[1]]$end[2]),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2&nbsp;=&nbsp;c(NA,&nbsp;dna_segs[[1]]$end[3]),&nbsp;text&nbsp;=&nbsp;c(dna_segs[[1]]$name[1],&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"region1"),&nbsp;rot&nbsp;=&nbsp;c(30,&nbsp;0),&nbsp;col&nbsp;=&nbsp;c("blue",&nbsp;"black"))
+&#62;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1=c(mid_pos[1],&nbsp;dna_segs[[1]]$end[2]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2=c(NA,&nbsp;dna_segs[[1]]$end[3]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=c(dna_segs[[1]]$name[1],&nbsp;"region1"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rot=c(30,&nbsp;0),&nbsp;col=c("blue",&nbsp;"black"))
 
 </pre>
 
@@ -71,10 +71,12 @@ Now plotting these three segments:
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;plot_gene_map(dna_segs&nbsp;=&nbsp;dna_segs,&nbsp;comparisons&nbsp;=&nbsp;comparisons,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annot,&nbsp;annotation_height&nbsp;=&nbsp;1.3,&nbsp;tree&nbsp;=&nbsp;tree,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tree_width&nbsp;=&nbsp;2,&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;main&nbsp;=&nbsp;"Comparison&nbsp;of&nbsp;Huey,&nbsp;Dewey&nbsp;and&nbsp;Louie
-")
+&#62;&nbsp;plot_gene_map(dna_segs=dna_segs,&nbsp;comparisons=comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annot,&nbsp;annotation_height=1.3,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tree=tree,&nbsp;tree_width=2,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="Comparison&nbsp;of&nbsp;Huey,&nbsp;Dewey&nbsp;and&nbsp;Louie")
+&#62;&nbsp;
 
 </pre>
 
@@ -100,7 +102,7 @@ the package.
 Another way of obtaining the list of functions present in the package is to run 
 
 <pre>
-&#62;&nbsp;library(help&nbsp;=&nbsp;genoPlotR)
+&#62;&nbsp;library(help=genoPlotR)
 
 </pre>
 A lot of examples and help are available in the main functions, i.e. the 
@@ -148,8 +150,8 @@ the object, but not used.
 &#62;&nbsp;ends1&nbsp;&lt;-&nbsp;c(600,&nbsp;800,&nbsp;1345)
 &#62;&nbsp;strands1&nbsp;&lt;-&nbsp;c("-",&nbsp;-1,&nbsp;1)
 &#62;&nbsp;cols1&nbsp;&lt;-&nbsp;c("blue",&nbsp;"grey",&nbsp;"red")
-&#62;&nbsp;df1&nbsp;&lt;-&nbsp;data.frame(name&nbsp;=&nbsp;names1,&nbsp;start&nbsp;=&nbsp;starts1,&nbsp;end&nbsp;=&nbsp;ends1,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand&nbsp;=&nbsp;strands1,&nbsp;col&nbsp;=&nbsp;cols1)
+&#62;&nbsp;df1&nbsp;&lt;-&nbsp;data.frame(name=names1,&nbsp;start=starts1,&nbsp;end=ends1,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=strands1,&nbsp;col=cols1)
 &#62;&nbsp;dna_seg1&nbsp;&lt;-&nbsp;dna_seg(df1)
 &#62;&nbsp;str(dna_seg1)
 
@@ -192,8 +194,8 @@ for automatic color-coding (via <tt>apply_color_scheme</tt>.
 &#62;&nbsp;ends1&nbsp;&lt;-&nbsp;c(600,&nbsp;800,&nbsp;1345)
 &#62;&nbsp;starts2&nbsp;&lt;-&nbsp;c(50,&nbsp;800,&nbsp;1200)
 &#62;&nbsp;ends2&nbsp;&lt;-&nbsp;c(900,&nbsp;1100,&nbsp;1322)
-&#62;&nbsp;comparison1&nbsp;&lt;-&nbsp;as.comparison(data.frame(start1&nbsp;=&nbsp;starts1,&nbsp;end1&nbsp;=&nbsp;ends1,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2&nbsp;=&nbsp;starts2,&nbsp;end2&nbsp;=&nbsp;ends2))
+&#62;&nbsp;comparison1&nbsp;&lt;-&nbsp;as.comparison(data.frame(start1=starts1,&nbsp;end1=ends1,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2=starts2,&nbsp;end2=ends2))
 &#62;&nbsp;str(comparison1)
 
 </pre>
@@ -221,7 +223,7 @@ position or to a range.
 
 <pre>
 &#62;&nbsp;mid_pos&nbsp;&lt;-&nbsp;middle(dna_segs[[1]])
-&#62;&nbsp;annot1&nbsp;&lt;-&nbsp;annotation(x1&nbsp;=&nbsp;mid_pos,&nbsp;text&nbsp;=&nbsp;dna_segs[[1]]$name)
+&#62;&nbsp;annot1&nbsp;&lt;-&nbsp;annotation(x1=mid_pos,&nbsp;text=dna_segs[[1]]$name)
 &#62;&nbsp;str(annot1)
 
 </pre>
@@ -404,17 +406,23 @@ name, start, end, strand and col.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;df1&nbsp;&lt;-&nbsp;data.frame(name&nbsp;=&nbsp;c("feat1",&nbsp;"feat2",&nbsp;"feat3"),&nbsp;start&nbsp;=&nbsp;c(2,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1000,&nbsp;1050),&nbsp;end&nbsp;=&nbsp;c(600,&nbsp;800,&nbsp;1345),&nbsp;strand&nbsp;=&nbsp;c(-1,&nbsp;-1,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1),&nbsp;col&nbsp;=&nbsp;c("blue",&nbsp;"grey",&nbsp;"red"))
+&#62;&nbsp;df1&nbsp;&lt;-&nbsp;data.frame(name=c("feat1",&nbsp;"feat2",&nbsp;"feat3"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start=c(2,&nbsp;1000,&nbsp;1050),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end=c(600,&nbsp;800,&nbsp;1345),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=c(-1,&nbsp;-1,&nbsp;1),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=c("blue",&nbsp;"grey",&nbsp;"red"))
 &#62;&nbsp;dna_seg1&nbsp;&lt;-&nbsp;dna_seg(df1)
-&#62;&nbsp;df2&nbsp;&lt;-&nbsp;data.frame(name&nbsp;=&nbsp;c("feat1",&nbsp;"feat2",&nbsp;"feat3"),&nbsp;start&nbsp;=&nbsp;c(50,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;800,&nbsp;1200),&nbsp;end&nbsp;=&nbsp;c(900,&nbsp;1100,&nbsp;1322),&nbsp;strand&nbsp;=&nbsp;c(-1,&nbsp;1,&nbsp;1),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col&nbsp;=&nbsp;c("blue",&nbsp;"grey",&nbsp;"red"))
+&#62;&nbsp;df2&nbsp;&lt;-&nbsp;data.frame(name=c("feat1",&nbsp;"feat2",&nbsp;"feat3"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start=c(50,&nbsp;800,&nbsp;1200),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end=c(900,&nbsp;1100,&nbsp;1322),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=c(-1,&nbsp;1,&nbsp;1),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=c("blue",&nbsp;"grey",&nbsp;"red"))
 &#62;&nbsp;dna_seg2&nbsp;&lt;-&nbsp;dna_seg(df2)
-&#62;&nbsp;df3&nbsp;&lt;-&nbsp;data.frame(name&nbsp;=&nbsp;c("feat1",&nbsp;"feat2",&nbsp;"feat3"),&nbsp;start&nbsp;=&nbsp;c(1899,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2108,&nbsp;2803),&nbsp;end&nbsp;=&nbsp;c(2034,&nbsp;2732,&nbsp;3620),&nbsp;strand&nbsp;=&nbsp;c(-1,&nbsp;-1,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1),&nbsp;col&nbsp;=&nbsp;rep("blue",&nbsp;3))
+&#62;&nbsp;df3&nbsp;&lt;-&nbsp;data.frame(name=c("feat1",&nbsp;"feat2",&nbsp;"feat3"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start=c(1899,&nbsp;2108,&nbsp;2803),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end=c(2034,&nbsp;2732,&nbsp;3620),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=c(-1,&nbsp;-1,&nbsp;1),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=rep("blue",&nbsp;3))
 &#62;&nbsp;dna_seg3&nbsp;&lt;-&nbsp;dna_seg(df3)
 &#62;&nbsp;dna_segs&nbsp;&lt;-&nbsp;list(dna_seg1,&nbsp;dna_seg2,&nbsp;dna_seg3)
 
@@ -428,11 +436,16 @@ and ends correspond to the genes created above.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;df4&nbsp;&lt;-&nbsp;data.frame(start1&nbsp;=&nbsp;dna_seg1$start,&nbsp;end1&nbsp;=&nbsp;dna_seg1$end,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2&nbsp;=&nbsp;dna_seg2$start,&nbsp;end2&nbsp;=&nbsp;dna_seg2$end)
+&#62;&nbsp;df4&nbsp;&lt;-&nbsp;data.frame(start1=dna_seg1$start,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end1=dna_seg1$end,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2=dna_seg2$start,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end2=dna_seg2$end)
 &#62;&nbsp;comparison1&nbsp;&lt;-&nbsp;comparison(df4)
-&#62;&nbsp;df5&nbsp;&lt;-&nbsp;data.frame(start1&nbsp;=&nbsp;c(50,&nbsp;800),&nbsp;end1&nbsp;=&nbsp;c(500,&nbsp;1100),&nbsp;start2&nbsp;=&nbsp;c(1899,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2732),&nbsp;end2&nbsp;=&nbsp;c(2034,&nbsp;2508),&nbsp;col&nbsp;=&nbsp;c("#67000D",&nbsp;"#08306B"))
+&#62;&nbsp;df5&nbsp;&lt;-&nbsp;data.frame(start1=c(50,&nbsp;800),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end1=c(500,&nbsp;1100),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2=c(1899,&nbsp;2732),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end2=c(2034,&nbsp;2508),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=c("#67000D",&nbsp;"#08306B"))
 &#62;&nbsp;comparison2&nbsp;&lt;-&nbsp;comparison(df5)
 &#62;&nbsp;comparisons&nbsp;&lt;-&nbsp;list(comparison1,&nbsp;comparison2)
 
@@ -444,7 +457,7 @@ This constitutes all the material required to create a basic plot.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;plot_gene_map(dna_segs&nbsp;=&nbsp;dna_segs,&nbsp;comparisons&nbsp;=&nbsp;comparisons)
+&#62;&nbsp;plot_gene_map(dna_segs=dna_segs,&nbsp;comparisons=comparisons)
 
 </pre>
 
@@ -464,8 +477,7 @@ to the function <tt>apply_color_scheme</tt>.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;comparisons[[1]]$col&nbsp;&lt;-&nbsp;apply_color_scheme(c(0.6,&nbsp;0.4,&nbsp;0.5),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"grey")
+&#62;&nbsp;comparisons[[1]]$col&nbsp;&lt;-&nbsp;apply_color_scheme(c(0.6,&nbsp;0.4,&nbsp;0.5),&nbsp;"grey")
 
 </pre>
 
@@ -496,9 +508,10 @@ gene, and the use of two numeric values for the second region.
 
 <pre>
 &#62;&nbsp;mid_pos&nbsp;&lt;-&nbsp;middle(dna_segs[[1]])
-&#62;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1&nbsp;=&nbsp;c(mid_pos[1],&nbsp;dna_segs[[1]]$end[2]),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2&nbsp;=&nbsp;c(NA,&nbsp;dna_segs[[1]]$end[3]),&nbsp;text&nbsp;=&nbsp;c(dna_segs[[1]]$name[1],&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"region1"),&nbsp;rot&nbsp;=&nbsp;c(30,&nbsp;0),&nbsp;col&nbsp;=&nbsp;c("grey",&nbsp;"black"))
+&#62;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1=c(mid_pos[1],&nbsp;dna_segs[[1]]$end[2]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2=c(NA,&nbsp;dna_segs[[1]]$end[3]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=c(dna_segs[[1]]$name[1],&nbsp;"region1"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rot=c(30,&nbsp;0),&nbsp;col=c("grey",&nbsp;"black"))
 
 </pre>
 
@@ -511,9 +524,10 @@ checked by removing/adding the different arguments to <tt>plot_gene_map</tt>.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;plot_gene_map(dna_segs&nbsp;=&nbsp;dna_segs,&nbsp;comparisons&nbsp;=&nbsp;comparisons,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annot,&nbsp;annotation_height&nbsp;=&nbsp;1.3,&nbsp;tree&nbsp;=&nbsp;tree_HDL,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tree_width&nbsp;=&nbsp;2,&nbsp;main&nbsp;=&nbsp;"Comparison&nbsp;of&nbsp;Huey,&nbsp;Dewey&nbsp;and&nbsp;Louie")
+&#62;&nbsp;plot_gene_map(dna_segs=dna_segs,&nbsp;comparisons=comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annot,&nbsp;annotation_height=1.3,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tree=tree_HDL,&nbsp;tree_width=2,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="Comparison&nbsp;of&nbsp;Huey,&nbsp;Dewey&nbsp;and&nbsp;Louie")
 
 </pre>
 
@@ -621,10 +635,14 @@ The data, or a sample thereof (using <tt>xlims</tt>) can now be plotted.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(1,&nbsp;50000),&nbsp;c(1,&nbsp;50000))
-&#62;&nbsp;plot_gene_map(dna_segs&nbsp;=&nbsp;list(BH,&nbsp;BQ),&nbsp;comparisons&nbsp;=&nbsp;list(BH_vs_BQ),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;main&nbsp;=&nbsp;"BH&nbsp;vs&nbsp;BQ,&nbsp;comparison&nbsp;of&nbsp;the&nbsp;first&nbsp;50&nbsp;kb",&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gene_type&nbsp;=&nbsp;"side_blocks",&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,&nbsp;scale&nbsp;=&nbsp;FALSE)
+&#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(1,50000),&nbsp;c(1,50000))
+&#62;&nbsp;plot_gene_map(dna_segs=list(BH,&nbsp;BQ),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comparisons=list(BH_vs_BQ),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="BH&nbsp;vs&nbsp;BQ,&nbsp;comparison&nbsp;of&nbsp;the&nbsp;first&nbsp;50&nbsp;kb",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gene_type="side_blocks",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;scale=FALSE)
+&#62;&nbsp;
 
 </pre>
 
@@ -663,8 +681,8 @@ The data set can also be accessed in the package by running
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;bbone_file&nbsp;&lt;-&nbsp;system.file("extdata/barto.backbone",&nbsp;package&nbsp;=&nbsp;"genoPlotR")
-&#62;&nbsp;bbone&nbsp;&lt;-&nbsp;read_mauve_backbone(bbone_file,&nbsp;ref&nbsp;=&nbsp;2,&nbsp;filter_low&nbsp;=&nbsp;10000)
+&#62;&nbsp;bbone_file&nbsp;&lt;-&nbsp;system.file('extdata/barto.backbone',&nbsp;package&nbsp;=&nbsp;'genoPlotR')
+&#62;&nbsp;bbone&nbsp;&lt;-&nbsp;read_mauve_backbone(bbone_file,&nbsp;ref=2,&nbsp;filter_low=10000)
 &#62;&nbsp;names&nbsp;&lt;-&nbsp;c("B_bacilliformis",&nbsp;"B_grahamii",&nbsp;"B_henselae",&nbsp;"B_quintana")
 &#62;&nbsp;names(bbone$dna_segs)&nbsp;&lt;-&nbsp;names
 
@@ -676,10 +694,10 @@ Calculating the lengths by adding the length on both sides of the comparisons
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;for&nbsp;(i&nbsp;in&nbsp;1:length(bbone$comparisons))&nbsp;{
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmp&nbsp;&lt;-&nbsp;bbone$comparisons[[i]]
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bbone$comparisons[[i]]$length&nbsp;&lt;-&nbsp;abs(cmp$end1&nbsp;-&nbsp;cmp$start1)&nbsp;+&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abs(cmp$end2&nbsp;-&nbsp;cmp$start2)
+&#62;&nbsp;for&nbsp;(i&nbsp;in&nbsp;1:length(bbone$comparisons)){
++&nbsp;&nbsp;&nbsp;cmp&nbsp;&lt;-&nbsp;bbone$comparisons[[i]]
++&nbsp;&nbsp;&nbsp;bbone$comparisons[[i]]$length&nbsp;&lt;-&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abs(cmp$end1&nbsp;-&nbsp;cmp$start1)&nbsp;+&nbsp;abs(cmp$end2&nbsp;-&nbsp;cmp$start2)
 +&nbsp;}
 
 </pre>
@@ -691,9 +709,10 @@ according to their lengths.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;plot_gene_map(dna_segs&nbsp;=&nbsp;bbone$dna_segs,&nbsp;comparisons&nbsp;=&nbsp;bbone$comparisons,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global_color_scheme&nbsp;=&nbsp;c("length",&nbsp;"increasing",&nbsp;"red_blue",&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.7),&nbsp;override_color_schemes&nbsp;=&nbsp;TRUE)
+&#62;&nbsp;plot_gene_map(dna_segs=bbone$dna_segs,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comparisons=bbone$comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global_color_scheme=c("length",&nbsp;"increasing",&nbsp;"red_blue",&nbsp;0.7),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override_color_schemes=TRUE)
 
 </pre>
 
@@ -738,9 +757,10 @@ subsegments are shown, respectively, all in normal orientation.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(1445000,&nbsp;1415000,&nbsp;1380000,&nbsp;1412000),&nbsp;c(10000,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;45000,&nbsp;50000,&nbsp;83000,&nbsp;90000,&nbsp;120000),&nbsp;c(15000,&nbsp;36000,&nbsp;90000,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;120000,&nbsp;74000,&nbsp;98000),&nbsp;c(5000,&nbsp;82000))
+&#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(1445000,&nbsp;1415000,&nbsp;1380000,&nbsp;1412000),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c(&nbsp;&nbsp;10000,&nbsp;&nbsp;&nbsp;45000,&nbsp;&nbsp;&nbsp;50000,&nbsp;&nbsp;&nbsp;83000,&nbsp;90000,&nbsp;120000),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c(&nbsp;&nbsp;15000,&nbsp;&nbsp;&nbsp;36000,&nbsp;&nbsp;&nbsp;90000,&nbsp;&nbsp;120000,&nbsp;74000,&nbsp;&nbsp;98000),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c(&nbsp;&nbsp;&nbsp;5000,&nbsp;&nbsp;&nbsp;82000))
 
 </pre>
 
@@ -754,11 +774,11 @@ middle of each element of the DNA segments.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;annots&nbsp;&lt;-&nbsp;lapply(barto$dna_segs,&nbsp;function(x)&nbsp;{
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mid&nbsp;&lt;-&nbsp;middle(x)
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1&nbsp;=&nbsp;mid,&nbsp;text&nbsp;=&nbsp;x$name,&nbsp;rot&nbsp;=&nbsp;30)
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idx&nbsp;&lt;-&nbsp;grep("^[^B]",&nbsp;annot$text,&nbsp;perl&nbsp;=&nbsp;TRUE)
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annot[idx[idx%%4&nbsp;==&nbsp;0],&nbsp;]
+&#62;&nbsp;annots&nbsp;&lt;-&nbsp;lapply(barto$dna_segs,&nbsp;function(x){
++&nbsp;&nbsp;&nbsp;mid&nbsp;&lt;-&nbsp;middle(x)
++&nbsp;&nbsp;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1=mid,&nbsp;text=x$name,&nbsp;rot=30)
++&nbsp;&nbsp;&nbsp;idx&nbsp;&lt;-&nbsp;grep("^[^B]",&nbsp;annot$text,&nbsp;perl=TRUE)
++&nbsp;&nbsp;&nbsp;annot[idx[idx&nbsp;%%&nbsp;4&nbsp;==&nbsp;0],]&nbsp;
 +&nbsp;})
 
 </pre>
@@ -771,10 +791,13 @@ placement of the sub-segments.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;limit_to_longest_dna_seg&nbsp;=&nbsp;FALSE,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,&nbsp;scale&nbsp;=&nbsp;FALSE,&nbsp;main&nbsp;=&nbsp;"Comparison&nbsp;of&nbsp;homologous&nbsp;segm
-ents&nbsp;in&nbsp;4&nbsp;Bartonella&nbsp;genomes")
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree=tree_barto,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit_to_longest_dna_seg=FALSE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;scale=FALSE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="Comparison&nbsp;of&nbsp;homologous&nbsp;segments&nbsp;in&nbsp;4&nbsp;Bartonella&nbsp;genomes"
+)
 
 </pre>
 
@@ -800,17 +823,19 @@ corresponding annotations are created.
 <pre>
 &#62;&nbsp;data(chrY_subseg)
 &#62;&nbsp;genes_homo&nbsp;&lt;-&nbsp;unique(chrY_subseg$dna_segs[[1]]$gene)
-&#62;&nbsp;x_homo&nbsp;&lt;-&nbsp;sapply(genes_homo,&nbsp;function(x)&nbsp;range(chrY_subseg$dna_segs[[1]][chrY_
-subseg$dna_segs[[1]]$gene&nbsp;==&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x,&nbsp;]))
-&#62;&nbsp;annot_homo&nbsp;&lt;-&nbsp;annotation(x1&nbsp;=&nbsp;x_homo[1,&nbsp;],&nbsp;x2&nbsp;=&nbsp;x_homo[2,&nbsp;],&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text&nbsp;=&nbsp;dimnames(x_homo)[[2]])
+&#62;&nbsp;x_homo&nbsp;&lt;-&nbsp;sapply(genes_homo,&nbsp;function(x)
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range(chrY_subseg$dna_segs[[1]]
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[chrY_subseg$dna_segs[[1]]$gene&nbsp;==&nbsp;x,])
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+&#62;&nbsp;annot_homo&nbsp;&lt;-&nbsp;annotation(x1=x_homo[1,],&nbsp;x2=x_homo[2,],
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=dimnames(x_homo)[[2]])
 &#62;&nbsp;genes_pan&nbsp;&lt;-&nbsp;unique(chrY_subseg$dna_segs[[2]]$gene)
-&#62;&nbsp;x_pan&nbsp;&lt;-&nbsp;sapply(genes_pan,&nbsp;function(x)&nbsp;range(chrY_subseg$dna_segs[[2]][chrY_su
-bseg$dna_segs[[2]]$gene&nbsp;==&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x,&nbsp;]))
-&#62;&nbsp;annot_pan&nbsp;&lt;-&nbsp;annotation(x1&nbsp;=&nbsp;x_pan[1,&nbsp;],&nbsp;x2&nbsp;=&nbsp;x_pan[2,&nbsp;],&nbsp;text&nbsp;=&nbsp;dimnames(x_pa
-n)[[2]])
+&#62;&nbsp;x_pan&nbsp;&lt;-&nbsp;sapply(genes_pan,&nbsp;function(x)
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range(chrY_subseg$dna_segs[[2]]
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[chrY_subseg$dna_segs[[2]]$gene&nbsp;==&nbsp;x,])
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+&#62;&nbsp;annot_pan&nbsp;&lt;-&nbsp;annotation(x1=x_pan[1,],&nbsp;x2=x_pan[2,],
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=dimnames(x_pan)[[2]])
 
 </pre>
 
@@ -821,9 +846,11 @@ The segments can be directly plotted, passing the annotations as a list.
 
 <pre>
 &#62;&nbsp;main&nbsp;&lt;-&nbsp;"Comparison&nbsp;of&nbsp;two&nbsp;subsegments&nbsp;in&nbsp;H.&nbsp;sapiens&nbsp;and&nbsp;P.&nbsp;troglodytes"
-&#62;&nbsp;plot_gene_map(chrY_subseg$dna_segs,&nbsp;chrY_subseg$comparison,&nbsp;annotations&nbsp;=&nbsp;list
-(annot_homo,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annot_pan),&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,&nbsp;main&nbsp;=&nbsp;main,&nbsp;scale&nbsp;=&nbsp;FALSE)
+&#62;&nbsp;plot_gene_map(chrY_subseg$dna_segs,&nbsp;chrY_subseg$comparison,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=list(annot_homo,&nbsp;annot_pan),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main=main,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale=FALSE)
 
 </pre>
 
@@ -853,8 +880,9 @@ The plot is divided in three rows, of relative heights 1, 1.3 and 0.8.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;pushViewport(viewport(layout&nbsp;=&nbsp;grid.layout(3,&nbsp;1,&nbsp;heights&nbsp;=&nbsp;unit(c(1,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.3,&nbsp;0.8),&nbsp;rep("null",&nbsp;3))),&nbsp;name&nbsp;=&nbsp;"overall_vp"))
+&#62;&nbsp;pushViewport(viewport(layout=grid.layout(3,1,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;heights=unit(c(1,1.3,0.8),&nbsp;rep("null",&nbsp;3))),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name="overall_vp"))
 
 </pre>
 
@@ -869,22 +897,27 @@ page every single panel.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;pushViewport(viewport(layout.pos.row&nbsp;=&nbsp;1,&nbsp;name&nbsp;=&nbsp;"panelA"))
-&#62;&nbsp;plot_gene_map(dna_segs&nbsp;=&nbsp;bbone$dna_segs,&nbsp;comparisons&nbsp;=&nbsp;bbone$comparisons,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale&nbsp;=&nbsp;c(FALSE,&nbsp;FALSE,&nbsp;FALSE,&nbsp;TRUE),&nbsp;scale&nbsp;=&nbsp;FALSE,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main&nbsp;=&nbsp;"A",&nbsp;main_pos&nbsp;=&nbsp;"left",&nbsp;plot_new&nbsp;=&nbsp;FALSE)
+&#62;&nbsp;##&nbsp;Panel&nbsp;A
+&#62;&nbsp;pushViewport(viewport(layout.pos.row=1,&nbsp;name="panelA"))
+&#62;&nbsp;plot_gene_map(dna_segs=bbone$dna_segs,&nbsp;comparisons=bbone$comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=c(FALSE,&nbsp;FALSE,&nbsp;FALSE,&nbsp;TRUE),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale=FALSE,&nbsp;main="A",&nbsp;main_pos="left",&nbsp;plot_new=FALSE)
 &#62;&nbsp;upViewport()
-&#62;&nbsp;pushViewport(viewport(layout.pos.row&nbsp;=&nbsp;2,&nbsp;name&nbsp;=&nbsp;"panelB"))
-&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;annotations&nbsp;=&nbsp;annots,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tree&nbsp;=&nbsp;tree_barto,&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;limit_to_longest_dna_seg&nbsp;=&nbsp;FALSE,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale&nbsp;=&nbsp;FALSE,&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,&nbsp;main&nbsp;=&nbsp;"B",&nbsp;main_pos&nbsp;=&nbsp;"left",&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotation_height&nbsp;=&nbsp;0.6,&nbsp;annotation_cex&nbsp;=&nbsp;0.5,&nbsp;plot_new&nbsp;=&nbsp;FALSE)
+&#62;&nbsp;##&nbsp;Panel&nbsp;B
+&#62;&nbsp;pushViewport(viewport(layout.pos.row=2,&nbsp;name="panelB"))
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annots,&nbsp;tree=tree_barto,&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit_to_longest_dna_seg=FALSE,&nbsp;scale=FALSE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;main="B",&nbsp;main_pos="left",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotation_height=0.6,&nbsp;annotation_cex=0.5,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plot_new=FALSE)
 &#62;&nbsp;upViewport()
-&#62;&nbsp;pushViewport(viewport(layout.pos.row&nbsp;=&nbsp;3,&nbsp;name&nbsp;=&nbsp;"panelC"))
-&#62;&nbsp;plot_gene_map(chrY_subseg$dna_segs,&nbsp;chrY_subseg$comparison,&nbsp;annotations&nbsp;=&nbsp;list
-(annot_homo,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annot_pan),&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,&nbsp;scale&nbsp;=&nbsp;FALSE,&nbsp;main&nbsp;=&nbsp;"C",&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main_pos&nbsp;=&nbsp;"left",&nbsp;plot_new&nbsp;=&nbsp;FALSE)
+&#62;&nbsp;##&nbsp;Panel&nbsp;C
+&#62;&nbsp;pushViewport(viewport(layout.pos.row=3,&nbsp;name="panelC"))
+&#62;&nbsp;plot_gene_map(chrY_subseg$dna_segs,&nbsp;chrY_subseg$comparison,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=list(annot_homo,&nbsp;annot_pan),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;scale=FALSE,&nbsp;main="C",&nbsp;main_pos="left",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plot_new=FALSE)
 &#62;&nbsp;upViewport(0)
 
 </pre>
@@ -895,20 +928,20 @@ The commands <tt>current.vpTree()</tt> and <tt>grid.ls()</tt> can be used to see
 viewport structure, and to see all object names.
 
 <pre>
-&#62;&nbsp;grid_list&nbsp;&lt;-&nbsp;grid.ls(grob&nbsp;=&nbsp;TRUE,&nbsp;viewports&nbsp;=&nbsp;TRUE,&nbsp;print&nbsp;=&nbsp;FALSE)
+&#62;&nbsp;grid_list&nbsp;&lt;-&nbsp;grid.ls(grob=TRUE,&nbsp;viewports=TRUE,&nbsp;print=FALSE)
 &#62;&nbsp;str(grid_list)
 
 </pre>
 
 <pre>
 List&nbsp;of&nbsp;6
-&nbsp;$&nbsp;name&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;"ROOT"&nbsp;"overall_vp"&nbsp;"panelA"&nbsp;"oma"&nbsp;...
-&nbsp;$&nbsp;gDepth&nbsp;:&nbsp;num&nbsp;[1:1323]&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;...
-&nbsp;$&nbsp;vpDepth:&nbsp;num&nbsp;[1:1323]&nbsp;0&nbsp;1&nbsp;2&nbsp;3&nbsp;4&nbsp;5&nbsp;6&nbsp;6&nbsp;5&nbsp;6&nbsp;...
-&nbsp;$&nbsp;gPath&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;""&nbsp;""&nbsp;""&nbsp;""&nbsp;...
-&nbsp;$&nbsp;vpPath&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;""&nbsp;"ROOT"&nbsp;"ROOT::overall_vp"&nbsp;"ROOT::overall_vp::panelA"
+&nbsp;$&nbsp;name&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1340]&nbsp;"ROOT"&nbsp;"overall_vp"&nbsp;"panelA"&nbsp;"oma"&nbsp;...
+&nbsp;$&nbsp;gDepth&nbsp;:&nbsp;num&nbsp;[1:1340]&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;...
+&nbsp;$&nbsp;vpDepth:&nbsp;num&nbsp;[1:1340]&nbsp;0&nbsp;1&nbsp;2&nbsp;3&nbsp;4&nbsp;5&nbsp;6&nbsp;6&nbsp;5&nbsp;6&nbsp;...
+&nbsp;$&nbsp;gPath&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1340]&nbsp;""&nbsp;""&nbsp;""&nbsp;""&nbsp;...
+&nbsp;$&nbsp;vpPath&nbsp;:&nbsp;chr&nbsp;[1:1340]&nbsp;""&nbsp;"ROOT"&nbsp;"ROOT::overall_vp"&nbsp;"ROOT::overall_vp::panelA"
 &nbsp;...
-&nbsp;$&nbsp;type&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1323]&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;...
+&nbsp;$&nbsp;type&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1340]&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;...
 &nbsp;-&nbsp;attr(*,&nbsp;"class")=&nbsp;chr&nbsp;"flatGridListing"
 
 </pre>
@@ -967,10 +1000,10 @@ function, it can thus become relatively long.
 
 <pre>
 &#62;&nbsp;downViewport("panelA")
-&#62;&nbsp;for&nbsp;(i&nbsp;in&nbsp;1:length(names))&nbsp;{
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new_label&nbsp;&lt;-&nbsp;sub("_",&nbsp;".&nbsp;",&nbsp;names[[i]])
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grid.edit(paste("label",&nbsp;i,&nbsp;sep&nbsp;=&nbsp;"."),&nbsp;label&nbsp;=&nbsp;new_label,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gp&nbsp;=&nbsp;gpar(fontface&nbsp;=&nbsp;"italic"))
+&#62;&nbsp;for&nbsp;(i&nbsp;in&nbsp;1:length(names)){
++&nbsp;&nbsp;&nbsp;new_label&nbsp;&lt;-&nbsp;sub("_",&nbsp;".&nbsp;",&nbsp;names[[i]])
++&nbsp;&nbsp;&nbsp;grid.edit(paste("label",&nbsp;i,&nbsp;sep="."),&nbsp;label=new_label,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gp=gpar(fontface="italic"))
 +&nbsp;}
 &#62;&nbsp;grid.remove("label.2")
 &#62;&nbsp;upViewport(0)
@@ -986,8 +1019,7 @@ panel B.
 <pre>
 &#62;&nbsp;downViewport("panelB")
 &#62;&nbsp;downViewport("dna_seg.3.2")
-&#62;&nbsp;grid.rect(height&nbsp;=&nbsp;unit(2.2,&nbsp;"npc"),&nbsp;gp&nbsp;=&nbsp;gpar(col&nbsp;=&nbsp;"red",&nbsp;lwd&nbsp;=&nbsp;2,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fill&nbsp;=&nbsp;0))
+&#62;&nbsp;grid.rect(height&nbsp;=&nbsp;unit(2.2,&nbsp;"npc"),&nbsp;gp=gpar(col="red",&nbsp;lwd=2,&nbsp;fill=0))
 &#62;&nbsp;upViewport(0)
 
 </pre>
@@ -1021,27 +1053,27 @@ passed to <tt>plot_gene_map</tt> will be passed in turn to the
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;starGrob&nbsp;&lt;-&nbsp;function(gene,&nbsp;...)&nbsp;{
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;sin(((0:5)/2.5)&nbsp;*&nbsp;pi)&nbsp;*&nbsp;(gene$end&nbsp;-&nbsp;gene$start)/2&nbsp;+&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(gene$end&nbsp;+&nbsp;gene$start)/2
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;cos(((0:5)/2.5)&nbsp;*&nbsp;pi)&nbsp;*&nbsp;gene$strand&nbsp;*&nbsp;0.5&nbsp;+&nbsp;0.5
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idx&nbsp;&lt;-&nbsp;c(1,&nbsp;3,&nbsp;5,&nbsp;2,&nbsp;4,&nbsp;1)
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line_col&nbsp;&lt;-&nbsp;if&nbsp;(!is.null(gene$line_col))&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gene$line_col
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;gene$col
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;&lt;-&nbsp;list(...)$length_cutoff
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!is.null(length_cutoff))&nbsp;{
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alpha&nbsp;&lt;-&nbsp;if&nbsp;((gene$end&nbsp;-&nbsp;gene$start)&nbsp;&lt;&nbsp;length_cutoff)&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.3
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;0.8
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;alpha&nbsp;&lt;-&nbsp;1
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g&nbsp;&lt;-&nbsp;polygonGrob(x[idx],&nbsp;y[idx],&nbsp;gp&nbsp;=&nbsp;gpar(fill&nbsp;=&nbsp;gene$col,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col&nbsp;=&nbsp;line_col,&nbsp;lty&nbsp;=&nbsp;gene$lty,&nbsp;lwd&nbsp;=&nbsp;gene$lwd,&nbsp;alpha&nbsp;=&nbsp;alpha),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default.units&nbsp;=&nbsp;"native")
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;&lt;-&nbsp;textGrob(label&nbsp;=&nbsp;"***",&nbsp;x&nbsp;=&nbsp;(gene$end&nbsp;+&nbsp;gene$start)/2,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;0.5,&nbsp;default.units&nbsp;=&nbsp;"native")
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gList(g,&nbsp;t)
+&#62;&nbsp;starGrob&nbsp;&lt;-&nbsp;function(gene,&nbsp;...){
++&nbsp;&nbsp;&nbsp;##&nbsp;Coordinates&nbsp;for&nbsp;the&nbsp;star
++&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;sin(((0:5)/2.5)*pi)*(gene$end-gene$start)/2&nbsp;+&nbsp;(gene$end+gene$start)/2
++&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;cos(((0:5)/2.5)*pi)*gene$strand*0.5&nbsp;+&nbsp;0.5
++&nbsp;&nbsp;&nbsp;idx&nbsp;&lt;-&nbsp;c(1,&nbsp;3,&nbsp;5,&nbsp;2,&nbsp;4,&nbsp;1)
++&nbsp;&nbsp;&nbsp;##&nbsp;Attribute&nbsp;line_col&nbsp;only&nbsp;if&nbsp;present&nbsp;in&nbsp;the&nbsp;gene
++&nbsp;&nbsp;&nbsp;line_col&nbsp;&lt;-&nbsp;if&nbsp;(!is.null(gene$line_col))&nbsp;gene$line_col&nbsp;else&nbsp;gene$col
++&nbsp;&nbsp;&nbsp;##&nbsp;Having&nbsp;a&nbsp;conditional&nbsp;transparency,&nbsp;depending&nbsp;on&nbsp;a&nbsp;length&nbsp;cut-off
++&nbsp;&nbsp;&nbsp;##&nbsp;passed&nbsp;via&nbsp;dots
++&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;&lt;-&nbsp;list(...)$length_cutoff
++&nbsp;&nbsp;&nbsp;if&nbsp;(!is.null(length_cutoff)){
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alpha&nbsp;&lt;-&nbsp;if&nbsp;((gene$end-gene$start)&nbsp;&lt;&nbsp;length_cutoff)&nbsp;&nbsp;0.3&nbsp;else&nbsp;&nbsp;0.8
++&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;alpha&nbsp;&lt;-&nbsp;1
++&nbsp;&nbsp;&nbsp;
++&nbsp;&nbsp;&nbsp;##&nbsp;Grobs
++&nbsp;&nbsp;&nbsp;g&nbsp;&lt;-&nbsp;polygonGrob(x[idx],&nbsp;y[idx],&nbsp;gp=gpar(fill=gene$col,&nbsp;col=line_col,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lty=gene$lty,&nbsp;lwd=gene$lwd,&nbsp;alpha=alpha),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default.units="native")
++&nbsp;&nbsp;&nbsp;t&nbsp;&lt;-&nbsp;textGrob(label="***",&nbsp;x=(gene$end+gene$start)/2,&nbsp;y=0.5,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default.units="native")
++&nbsp;&nbsp;&nbsp;gList(g,&nbsp;t)
 +&nbsp;}
 
 </pre>
@@ -1056,11 +1088,13 @@ e replaced. To make use of the supplementary argument <tt>line_col</tt>, a colum
 <pre>
 &#62;&nbsp;barto$dna_segs[[2]]$gene_type&nbsp;&lt;-&nbsp;"starGrob"
 &#62;&nbsp;barto$dna_segs[[4]]$gene_type&nbsp;&lt;-&nbsp;"starGrob"
-&#62;&nbsp;line_col&nbsp;&lt;-&nbsp;rep(1:20,&nbsp;(nrow(barto$dna_segs[[3]])%%20)&nbsp;+&nbsp;1)
+&#62;&nbsp;line_col&nbsp;&lt;-&nbsp;rep(1:20,&nbsp;(nrow(barto$dna_segs[[3]])&nbsp;%%&nbsp;20)+1)
 &#62;&nbsp;barto$dna_segs[[2]]$line_col&nbsp;&lt;-&nbsp;line_col[1:nrow(barto$dna_segs[[2]])]
-&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;=&nbsp;600)
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;=&nbsp;600)
 
 </pre>
 
@@ -1079,12 +1113,10 @@ exercise could be modified to be used here.
 The <tt>seg_plot</tt> objects are first defined, with the following structure:
 
 <pre>
-&#62;&nbsp;seg_plots&nbsp;&lt;-&nbsp;lapply(barto$dna_segs,&nbsp;function(ds)&nbsp;{
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;seq(1,&nbsp;range(ds)[2],&nbsp;by&nbsp;=&nbsp;1000)
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;jitter(seq(100,&nbsp;300,&nbsp;length&nbsp;=&nbsp;length(x)),&nbsp;amount&nbsp;=&nbsp;50)
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot(func&nbsp;=&nbsp;linesGrob,&nbsp;args&nbsp;=&nbsp;list(x&nbsp;=&nbsp;x,&nbsp;y&nbsp;=&nbsp;y,&nbsp;gp&nbsp;=&nbsp;gpar(col&nbsp;=&nbsp;grey(
-0.3),&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lty&nbsp;=&nbsp;2)))
+&#62;&nbsp;seg_plots&nbsp;&lt;-&nbsp;lapply(barto$dna_segs,&nbsp;function(ds){
++&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;seq(1,&nbsp;range(ds)[2],&nbsp;by=1000)
++&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;jitter(seq(100,&nbsp;300,&nbsp;length=length(x)),&nbsp;amount=50)
++&nbsp;&nbsp;&nbsp;seg_plot(func=linesGrob,&nbsp;args=list(x=x,&nbsp;y=y,&nbsp;gp=gpar(col=grey(0.3),&nbsp;lty=2)))
 +&nbsp;})
 &#62;&nbsp;str(seg_plots[[1]])
 
@@ -1092,12 +1124,12 @@ The <tt>seg_plot</tt> objects are first defined, with the following structure:
 
 <pre>
 List&nbsp;of&nbsp;5
-&nbsp;$&nbsp;func&nbsp;:function&nbsp;(x&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;y&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;default.units&nbsp;=&nbsp;"npc",&nbsp;arrow&nbsp;=&nbsp;NULL,&nbsp;name&nbsp;=&nbsp;NULL,&nbsp;gp&nbsp;=&nbsp;gpar(),&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;vp&nbsp;=&nbsp;NULL)&nbsp;&nbsp;
+&nbsp;$&nbsp;func&nbsp;:function&nbsp;(x&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;y&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;default.u
+nits&nbsp;=&nbsp;"npc",&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;arrow&nbsp;=&nbsp;NULL,&nbsp;name&nbsp;=&nbsp;NULL,&nbsp;gp&nbsp;=&nbsp;gpar(),&nbsp;vp&nbsp;=&nbsp;NULL)&nbsp;&nbsp;
 &nbsp;$&nbsp;args&nbsp;:List&nbsp;of&nbsp;4
 &nbsp;&nbsp;..$&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;[1:1445]&nbsp;1&nbsp;1001&nbsp;2001&nbsp;3001&nbsp;4001&nbsp;...
-&nbsp;&nbsp;..$&nbsp;y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;[1:1445]&nbsp;148.7&nbsp;123&nbsp;52.9&nbsp;100.9&nbsp;77.2&nbsp;...
+&nbsp;&nbsp;..$&nbsp;y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;[1:1445]&nbsp;75.2&nbsp;82.2&nbsp;77.3&nbsp;146.7&nbsp;137.5&nbsp;...
 &nbsp;&nbsp;..$&nbsp;gp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:List&nbsp;of&nbsp;2
 &nbsp;&nbsp;..&nbsp;..$&nbsp;col:&nbsp;chr&nbsp;"#4D4D4D"
 &nbsp;&nbsp;..&nbsp;..$&nbsp;lty:&nbsp;num&nbsp;2
@@ -1125,10 +1157,14 @@ and <tt>seg_plot_yaxis_cex</tt>.
 <div class="p"><!----></div>
 
 <pre>
-&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;seg_plots&nbsp;=&nbsp;seg_plots,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_height&nbsp;=&nbsp;0.5,&nbsp;seg_plot_height_unit&nbsp;=&nbsp;"null",&nbsp;seg_plot_yaxis&nbsp;=&nbsp;2,&nbsp;
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_yaxis_cex&nbsp;=&nbsp;0.7)
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims&nbsp;=&nbsp;xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plots&nbsp;=&nbsp;seg_plots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_height&nbsp;=&nbsp;0.5,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_height_unit&nbsp;=&nbsp;"null",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_yaxis&nbsp;=&nbsp;2,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_yaxis_cex&nbsp;=&nbsp;0.7)
 
 </pre>
 <img src="img/genoPlotR-050.png" alt="genoPlotR-050.png" />
