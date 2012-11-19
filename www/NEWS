@@ -1,6 +1,14 @@
 genoPlotR changes
 =================
 
+0.8.1 - 2012-11-19
+------------------
+BUGFIXES:
+- Fixed a bug in read_mauve_backbone where the reference genome could be set
+  to anything. Added check for that.
+- Fixed a bug in apply_color_schemes and the main function, to prevent 
+  comparisons with 0 rows to crash the program.
+
 0.8 - 2012-06-21
 ----------------
 NEW FEATURE:
