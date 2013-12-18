@@ -399,28 +399,30 @@ xlims1 <- list(c(1380000, 1445000),
                c(10000, 83000),
                c(15000, 98000),
                c(5000, 82000))
+\dontrun{
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
               xlims=xlims1,
               dna_seg_scale=TRUE)
-## Showing several subsegments per genome
+}## Showing several subsegments per genome
 xlims2 <- list(c(1445000, 1415000, 1380000, 1412000),
                c(  10000,   45000,   50000,   83000, 90000, 120000),
                c(  15000,   36000,   90000,  120000, 74000,  98000),
                c(   5000,    82000))
+\dontrun{
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree,
               xlims=xlims2,
               dna_seg_scale=TRUE)
-
+}
 ## dna_seg_scale & global_color_scheme
+\dontrun{
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,
               dna_seg_scale=c(TRUE, FALSE, FALSE, TRUE), scale=FALSE,
               global_color_scheme=c("e_value", "auto", "grey", "0.7"))
-
 ## Changing size and number of dna_seg_scale_labels
+
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,
               dna_seg_scale=TRUE, scale=FALSE,
               n_scale_ticks=3, scale_cex=1)
-
 ## Changing size of dna_seg_labels (tree, in that case)
 plot_gene_map(barto$dna_segs, barto$comparisons, tree=tree, xlims=xlims1,
               dna_seg_scale=TRUE, scale=FALSE,
@@ -431,7 +433,7 @@ plot_gene_map(barto$dna_segs, barto$comparisons, xlims=xlims1,
               dna_seg_scale=TRUE, scale=FALSE,
               dna_seg_label_col=c("black", "grey", "blue", "red"))
 
-
+}
 ## Adding annotations for all genomes
 annots <- lapply(barto$dna_segs, function(x){
   mid <- middle(x)
