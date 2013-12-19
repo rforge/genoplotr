@@ -1,6 +1,12 @@
 genoPlotR changes
 =================
 
+0.8.2 - 2013-12-19
+------------------
+Adapting the package to new CRAN guidelines:
+- Moved vignette from inst/doc/ to vignettes/
+- Reduced examples in plot_gene_map to get under 5s checking time
+
 0.8.1 - 2012-11-19
 ------------------
 BUGFIXES:
