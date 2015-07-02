@@ -1,3 +1,6 @@
+import("methods")
+import("grid")
+import("ade4")
 export(
   plot_gene_map,
 
@@ -56,5 +59,8 @@ S3method(reverse, comparison)
 S3method(range, annotation)
 S3method(trim, annotation)
 
+S3method(trim, seg_plot)
+
 S3method(trim, default)
 S3method(reverse, default)
+

@@ -1,0 +1,1176 @@
+
+
+
+
+
+
+ 
+ 
+<title>Getting started with \genoPlotR{}</title>
+    
+<h1 align="center">Getting started with <span class="roman"> genoPlotR</span> </h1>
+
+<h3 align="center">Lionel Guy </h3>
+
+<div class="p"><!----></div>
+
+<h2>Introduction</h2>
+
+<div class="p"><!----></div>
+The <span class="roman"> genoPlotR</span> package is intended to produce publication-grade graphics 
+of gene and genome maps. With the amazing speed of data production of new 
+DNA sequencing techniques and the increase in the number of software 
+available to compare these sequences, there is a great need to graphically 
+represent these sequences and their comparisons. A number of packages 
+already exist (Artemis, ACT, mauve), but none of them produces easily 
+reproducible, publication-grade graphics. The goal of this package is 
+to fill in that gap. 
+
+<div class="p"><!----></div>
+This document provides an introduction to <span class="roman"> genoPlotR</span>, providing the user 
+with examples of increasing complexity. It is not meant as a comprehensive
+guide to all the functions and options of the package, but rather as 
+a first approach to the package.
+
+<div class="p"><!----></div>
+To load the library in a R session, type:
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;library(genoPlotR)
+
+</pre>
+
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;Quick start</h2>
+
+<div class="p"><!----></div>
+Loading the simplest dataset, applying a color scheme and some limits to the 
+plotting aread, adding a tree and some annotations. For more details about
+that plot, refer to the first of the examples developed below.
+
+<pre>
+&#62;&nbsp;data(three_genes)
+&#62;&nbsp;comparisons[[1]]$col&nbsp;&lt;-&nbsp;apply_color_scheme(c(0.6,&nbsp;0.4,&nbsp;0.5),&nbsp;"grey")
+&#62;&nbsp;names&nbsp;&lt;-&nbsp;c("Huey",&nbsp;"Dewey",&nbsp;"Louie")
+&#62;&nbsp;names(dna_segs)&nbsp;&lt;-&nbsp;names
+&#62;&nbsp;tree&nbsp;&lt;-&nbsp;newick2phylog("(((Huey:4.2,Dewey:3.9):3.1,Louie:7.3):1);")
+&#62;&nbsp;mid_pos&nbsp;&lt;-&nbsp;middle(dna_segs[[1]])
+&#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(Inf,&nbsp;-Inf),&nbsp;c(-Inf,&nbsp;Inf),&nbsp;c(1850,&nbsp;2800))
+&#62;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1=c(mid_pos[1],&nbsp;dna_segs[[1]]$end[2]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2=c(NA,&nbsp;dna_segs[[1]]$end[3]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=c(dna_segs[[1]]$name[1],&nbsp;"region1"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rot=c(30,&nbsp;0),&nbsp;col=c("blue",&nbsp;"black"))
+
+</pre>
+
+<div class="p"><!----></div>
+Now plotting these three segments:
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;plot_gene_map(dna_segs=dna_segs,&nbsp;comparisons=comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annot,&nbsp;annotation_height=1.3,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tree=tree,&nbsp;tree_width=2,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="Comparison&nbsp;of&nbsp;Huey,&nbsp;Dewey&nbsp;and&nbsp;Louie")
+&#62;&nbsp;
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-004.png" alt="genoPlotR-004.png" />
+</center>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Getting help</h2>
+
+<div class="p"><!----></div>
+There are various ways to get help with <span class="roman"> genoPlotR</span>. First, you can start 
+the general help in a web browser, and then click on "packages" and 
+find <span class="roman"> genoPlotR</span> in the list. It will provide a list of the functions 
+available. The first link in the list leads to a very general description of
+the package.
+
+<pre>
+&#62;&nbsp;help.start()
+
+</pre>
+Another way of obtaining the list of functions present in the package is to run 
+
+<pre>
+&#62;&nbsp;library(help=genoPlotR)
+
+</pre>
+A lot of examples and help are available in the main functions, i.e. the 
+reading functions (the various <tt>read_dna_seg_from</tt>* and 
+<tt>read_comparison_from</tt>* functions) and the main plotting 
+function, <tt>plot_gene_map</tt>.
+
+<pre>
+&#62;&nbsp;help("read_functions")
+&#62;&nbsp;help("plot_gene_map")
+
+</pre>
+Finally, the web page on R-forge (<a href="http://genoplotr.r-forge.r-project.org/"><tt>http://genoplotr.r-forge.r-project.org/</tt></a>)
+provides ways to get in touch with the <span class="roman"> genoPlotR</span> community and to submit 
+bugs and feature requests.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;Objects in <span class="roman"> genoPlotR</span></h2>
+
+<div class="p"><!----></div>
+This section will give an overview of the different types of <font face="helvetica">R</font> objects in
+<span class="roman"> genoPlotR</span>.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.1">
+3.1</a>&nbsp;&nbsp;<tt>dna_seg</tt></h3>
+
+<div class="p"><!----></div>
+A <tt>dna_seg</tt> object is a collection of genes or elements along a 
+genome, to be represented on a map. 
+
+<div class="p"><!----></div>
+<tt>dna_seg</tt> objects need to have 4 columns, <tt>name</tt>, <tt>start</tt>, 
+<tt>end</tt> and <tt>strand</tt>. Extra columns with names <tt>col</tt>, 
+<tt>lty</tt>, <tt>lwd</tt>, <tt>pch</tt>, <tt>cex</tt>, <tt>gene_type</tt> will 
+be used in the  plotting process. Other extra columns will be kept in 
+the object, but not used.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;names1&nbsp;&lt;-&nbsp;c("feat1",&nbsp;"feat2",&nbsp;"feat3")
+&#62;&nbsp;starts1&nbsp;&lt;-&nbsp;c(2,&nbsp;1000,&nbsp;1050)
+&#62;&nbsp;ends1&nbsp;&lt;-&nbsp;c(600,&nbsp;800,&nbsp;1345)
+&#62;&nbsp;strands1&nbsp;&lt;-&nbsp;c("-",&nbsp;-1,&nbsp;1)
+&#62;&nbsp;cols1&nbsp;&lt;-&nbsp;c("blue",&nbsp;"grey",&nbsp;"red")
+&#62;&nbsp;df1&nbsp;&lt;-&nbsp;data.frame(name=names1,&nbsp;start=starts1,&nbsp;end=ends1,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=strands1,&nbsp;col=cols1)
+&#62;&nbsp;dna_seg1&nbsp;&lt;-&nbsp;dna_seg(df1)
+&#62;&nbsp;str(dna_seg1)
+
+</pre>
+
+<pre>
+Classes&nbsp;‘dna_seg’&nbsp;and&nbsp;'data.frame':	3&nbsp;obs.&nbsp;of&nbsp;&nbsp;10&nbsp;variables:
+&nbsp;$&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;&nbsp;"feat1"&nbsp;"feat2"&nbsp;"feat3"
+&nbsp;$&nbsp;start&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;2&nbsp;1000&nbsp;1050
+&nbsp;$&nbsp;end&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;600&nbsp;800&nbsp;1345
+&nbsp;$&nbsp;strand&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;-1&nbsp;-1&nbsp;1
+&nbsp;$&nbsp;col&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;&nbsp;"blue"&nbsp;"grey"&nbsp;"red"
+&nbsp;$&nbsp;lty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;1&nbsp;1&nbsp;1
+&nbsp;$&nbsp;lwd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;1&nbsp;1&nbsp;1
+&nbsp;$&nbsp;pch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;8&nbsp;8&nbsp;8
+&nbsp;$&nbsp;cex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;1&nbsp;1&nbsp;1
+&nbsp;$&nbsp;gene_type:&nbsp;chr&nbsp;&nbsp;"arrows"&nbsp;"arrows"&nbsp;"arrows"
+
+</pre>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.2">
+3.2</a>&nbsp;&nbsp;<tt>comparison</tt></h3>
+
+<div class="p"><!----></div>
+A <tt>comparison</tt> is a collection of similarities, representing the
+comparison between two DNA segments. 
+
+<div class="p"><!----></div>
+Objects (either data frames or lists) should have at least named
+elements <tt>start1</tt>, <tt>end1</tt>, <tt>start2</tt> and <tt>end2</tt>. 
+In addition, it can use a <tt>col</tt>or column, that will give
+the color of each comparison. Additional numeric columns can be used 
+for automatic color-coding (via <tt>apply_color_scheme</tt>.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;starts1&nbsp;&lt;-&nbsp;c(2,&nbsp;1000,&nbsp;1050)
+&#62;&nbsp;ends1&nbsp;&lt;-&nbsp;c(600,&nbsp;800,&nbsp;1345)
+&#62;&nbsp;starts2&nbsp;&lt;-&nbsp;c(50,&nbsp;800,&nbsp;1200)
+&#62;&nbsp;ends2&nbsp;&lt;-&nbsp;c(900,&nbsp;1100,&nbsp;1322)
+&#62;&nbsp;comparison1&nbsp;&lt;-&nbsp;as.comparison(data.frame(start1=starts1,&nbsp;end1=ends1,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2=starts2,&nbsp;end2=ends2))
+&#62;&nbsp;str(comparison1)
+
+</pre>
+
+<pre>
+Classes&nbsp;‘comparison’&nbsp;and&nbsp;'data.frame':	3&nbsp;obs.&nbsp;of&nbsp;&nbsp;5&nbsp;variables:
+&nbsp;$&nbsp;start1&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;2&nbsp;1000&nbsp;1050
+&nbsp;$&nbsp;end1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;600&nbsp;800&nbsp;1345
+&nbsp;$&nbsp;start2&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;50&nbsp;800&nbsp;1200
+&nbsp;$&nbsp;end2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;900&nbsp;1100&nbsp;1322
+&nbsp;$&nbsp;direction:&nbsp;num&nbsp;&nbsp;1&nbsp;-1&nbsp;1
+
+</pre>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.3">
+3.3</a>&nbsp;&nbsp;<tt>annotation</tt></h3>
+
+<div class="p"><!----></div>
+An <tt>annotation</tt> object is used to annotate a DNA segment. It has 
+labels attached to positions. Each label can be attached to a single 
+position or to a range. 
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;mid_pos&nbsp;&lt;-&nbsp;middle(dna_segs[[1]])
+&#62;&nbsp;annot1&nbsp;&lt;-&nbsp;annotation(x1=mid_pos,&nbsp;text=dna_segs[[1]]$name)
+&#62;&nbsp;str(annot1)
+
+</pre>
+
+<pre>
+Classes&nbsp;‘annotation’&nbsp;and&nbsp;'data.frame':	3&nbsp;obs.&nbsp;of&nbsp;&nbsp;5&nbsp;variables:
+&nbsp;$&nbsp;x1&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;301&nbsp;900&nbsp;1198
+&nbsp;$&nbsp;x2&nbsp;&nbsp;&nbsp;:&nbsp;logi&nbsp;&nbsp;NA&nbsp;NA&nbsp;NA
+&nbsp;$&nbsp;text&nbsp;:&nbsp;chr&nbsp;&nbsp;"feat1"&nbsp;"feat2"&nbsp;"feat3"
+&nbsp;$&nbsp;color:&nbsp;chr&nbsp;&nbsp;"black"&nbsp;"black"&nbsp;"black"
+&nbsp;$&nbsp;rot&nbsp;&nbsp;:&nbsp;num&nbsp;&nbsp;0&nbsp;0&nbsp;0
+
+</pre>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.4">
+3.4</a>&nbsp;&nbsp;<tt>tree</tt></h3>
+
+<div class="p"><!----></div>
+A tree description in Newick format can ba parsed using <span class="roman"> ade4</span> package.
+
+<pre>
+&#62;&nbsp;tree&nbsp;&lt;-&nbsp;newick2phylog("(((A_aaa:4.2,B_bbb:3.9):3.1,C_ccc:7.3):1);")
+&#62;&nbsp;str(tree$leaves)
+
+</pre>
+
+<pre>
+&nbsp;Named&nbsp;num&nbsp;[1:3]&nbsp;4.2&nbsp;3.9&nbsp;7.3
+&nbsp;-&nbsp;attr(*,&nbsp;"names")=&nbsp;chr&nbsp;[1:3]&nbsp;"A_aaa"&nbsp;"B_bbb"&nbsp;"C_ccc"
+
+</pre>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc4">
+4</a>&nbsp;&nbsp;Reading data</h2>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.1">
+4.1</a>&nbsp;&nbsp;DNA segments</h3>
+
+<div class="p"><!----></div>
+Several formats can be read by <span class="roman"> genoPlotR</span> to produce <tt>dna_seg</tt> objects:
+
+<ul>
+<li> EMBL files (<tt>read_dna_seg_from_embl</tt>)
+<div class="p"><!----></div>
+</li>
+
+<li> Genbank files (<tt>read_dna_seg_from_genbank</tt>)
+<div class="p"><!----></div>
+</li>
+
+<li> PTT (protein table) files, tabular versions of Genbank 
+    files)(<tt>read_dna_seg_from_ptt</tt>)
+<div class="p"><!----></div>
+</li>
+
+<li> User generated tabular files (<tt>read_dna_seg_from_ptt</tt>)
+<div class="p"><!----></div>
+</li>
+</ul>
+The function <tt>read_dna_seg_from_file</tt> is a wrapper function, that
+will attempt to guess the correct format of the file.
+
+<div class="p"><!----></div>
+The first three files are common biological formats and can be downloaded 
+from major databases, such as the NCBI (<a href="http://www.ncbi.nlm.nih.gov/"><tt>http://www.ncbi.nlm.nih.gov/</tt></a>) 
+and the EMBL (<a href="http://www.ebi.ac.uk/embl/Access/index.html"><tt>http://www.ebi.ac.uk/embl/Access/index.html</tt></a>). The 
+definition of EMBL and Genbank files can be found at 
+<a href="http://www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html"><tt>http://www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html</tt></a>.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.2">
+4.2</a>&nbsp;&nbsp;Comparisons</h3>
+
+<div class="p"><!----></div>
+<span class="roman"> genoPlotR</span> can read tabular files, either user-generated tab files 
+(<tt>read_comparison_from_tab</tt>), or from BLAST output
+(<tt>read_comparison_from_blast</tt>). To produce files that are readable by 
+<span class="roman"> genoPlotR</span>, the <tt>-m 8</tt> or <tt>9</tt> option should be used in 
+<tt>blastall</tt>, or <tt>-outfmt 6</tt> or 7 with the BLAST+ suite.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.3">
+4.3</a>&nbsp;&nbsp;Mauve output</h3>
+
+<div class="p"><!----></div>
+The backbone output of the Mauve genome aligner 
+(<a href="http://asap.ahabs.wisc.edu/mauve/index.php"><tt>http://asap.ahabs.wisc.edu/mauve/index.php</tt></a>) can be parsed using 
+<tt>read_comparison_from_blast</tt><a href="#tthFtNtAAB" name="tthFrefAAB"><sup>1</sup></a>.
+
+<div class="p"><!----></div>
+The function will return a list consisting of a list of <tt>dna_seg</tt> objects 
+and the corresponding <tt>comparisons</tt>.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc5">
+5</a>&nbsp;&nbsp;Plotting data</h2>
+
+<div class="p"><!----></div>
+There is only one plotting function in <span class="roman"> genoPlotR</span>, <tt>plot_gene_map</tt>.
+Many arguments are available, but here is a list of the most important. Check
+the documentation for a more thorough description.
+
+<ul>
+<br /><tt>dna_segs</tt> A list of DNA segment objects.
+<br /><tt>comparisons</tt> A list of comparisons. Should containt one element
+    less than the previous.
+<br /><tt>tree</tt> An eventual phylogenetic tree to be plotted at the
+    left of the figure.
+<br /><tt>annotations</tt> An annotation object, or a list of annotations. 
+    Will display annotations to the first, or to all DNA segments, respectively.
+<br /><tt>xlims</tt> A list of even-numbered numeric vectors, giving the
+    borders of sub-segments to be plotted. The vector <tt>c(1,5000,8000,6000)</tt>
+    will display two sub-segments (1 to 5000 and 6000 to 8000), the second 
+    being in reverse orientation.
+<br /><tt>main</tt> A title to the plot.
+<br /><tt>scale</tt> Should a scale be displayed at the bottom right of the
+    plot?
+<br /><tt>dna_seg_scale</tt> Allows to control the addition of scales
+    to each segments. If simply <tt>TRUE</tt>, will display a scale on each
+    segment. If a vector, a scale will be displayed for the corresponding 
+    <tt>TRUE</tt> element.
+<br /><tt>global_color_scheme</tt> Allows to recalculate the colors of 
+    the comparisons, to have colors corresponding to the same scale for all 
+    comparisons.
+<br /><tt>plot_new</tt> Turn off to avoid creating a new plot. Escpecially
+    useful to integrate a <span class="roman"> genoPlotR</span> plot in a larger figure.</ul>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc6">
+6</a>&nbsp;&nbsp;Other useful functions</h2>
+
+<div class="p"><!----></div>
+
+<ul>
+<br /><tt>apply_color_scheme</tt> Allows to apply a gray scale or shades
+    of red and blue to a comparison.
+<br /><tt>middle</tt> Useful to get the middle of a gene, especially to
+    create annotations.
+<br />Datasets Type <tt>data(package="genoPlotR")</tt> to get the full list.</ul>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc7">
+7</a>&nbsp;&nbsp;Examples</h2>
+
+<div class="p"><!----></div>
+This section gives step-by-step examples, of gradual complexity. The last
+one shows how to combine several plots and to annotate already generated 
+plots.
+
+<div class="p"><!----></div>
+For all examples, the first step is to load the library.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;library(genoPlotR)
+
+</pre>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.1">
+7.1</a>&nbsp;&nbsp;Example 1: A very simple example</h3>
+
+<div class="p"><!----></div>
+The data used in this example is a dataset included in <span class="roman"> genoPlotR</span>, but
+for the sake of demonstration, it will be recreated from scratch. To retrieve
+data from the package, use <tt>data(three_genes)</tt>.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.1.1">
+1</a>&nbsp;&nbsp;Data generation and a very simple plot</h4>
+
+<div class="p"><!----></div>
+First, three <tt>dna_segs</tt> are generated, from data frames with columns 
+name, start, end, strand and col.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;df1&nbsp;&lt;-&nbsp;data.frame(name=c("feat1",&nbsp;"feat2",&nbsp;"feat3"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start=c(2,&nbsp;1000,&nbsp;1050),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end=c(600,&nbsp;800,&nbsp;1345),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=c(-1,&nbsp;-1,&nbsp;1),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=c("blue",&nbsp;"grey",&nbsp;"red"))
+&#62;&nbsp;dna_seg1&nbsp;&lt;-&nbsp;dna_seg(df1)
+&#62;&nbsp;df2&nbsp;&lt;-&nbsp;data.frame(name=c("feat1",&nbsp;"feat2",&nbsp;"feat3"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start=c(50,&nbsp;800,&nbsp;1200),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end=c(900,&nbsp;1100,&nbsp;1322),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=c(-1,&nbsp;1,&nbsp;1),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=c("blue",&nbsp;"grey",&nbsp;"red"))
+&#62;&nbsp;dna_seg2&nbsp;&lt;-&nbsp;dna_seg(df2)
+&#62;&nbsp;df3&nbsp;&lt;-&nbsp;data.frame(name=c("feat1",&nbsp;"feat2",&nbsp;"feat3"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start=c(1899,&nbsp;2108,&nbsp;2803),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end=c(2034,&nbsp;2732,&nbsp;3620),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strand=c(-1,&nbsp;-1,&nbsp;1),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=rep("blue",&nbsp;3))
+&#62;&nbsp;dna_seg3&nbsp;&lt;-&nbsp;dna_seg(df3)
+&#62;&nbsp;dna_segs&nbsp;&lt;-&nbsp;list(dna_seg1,&nbsp;dna_seg2,&nbsp;dna_seg3)
+
+</pre>
+
+<div class="p"><!----></div>
+Then, create two <tt>comparisons</tt> objects from data frames with columns
+start1, end1, start2, end2 and col. In the first comparison, the starts
+and ends correspond to the genes created above.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;df4&nbsp;&lt;-&nbsp;data.frame(start1=dna_seg1$start,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end1=dna_seg1$end,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2=dna_seg2$start,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end2=dna_seg2$end)
+&#62;&nbsp;comparison1&nbsp;&lt;-&nbsp;comparison(df4)
+&#62;&nbsp;df5&nbsp;&lt;-&nbsp;data.frame(start1=c(50,&nbsp;800),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end1=c(500,&nbsp;1100),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start2=c(1899,&nbsp;2732),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end2=c(2034,&nbsp;2508),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col=c("#67000D",&nbsp;"#08306B"))
+&#62;&nbsp;comparison2&nbsp;&lt;-&nbsp;comparison(df5)
+&#62;&nbsp;comparisons&nbsp;&lt;-&nbsp;list(comparison1,&nbsp;comparison2)
+
+</pre>
+
+<div class="p"><!----></div>
+This constitutes all the material required to create a basic plot.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;plot_gene_map(dna_segs=dna_segs,&nbsp;comparisons=comparisons)
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-016.png" alt="genoPlotR-016.png" />
+</center>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.1.2">
+2</a>&nbsp;&nbsp;A more elaborate plot</h4>
+
+<div class="p"><!----></div>
+Many options can be added to this simple plot. To begin with, the first 
+comparison will be colored in grey scale, using an arbitrary scale passed 
+to the function <tt>apply_color_scheme</tt>.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;comparisons[[1]]$col&nbsp;&lt;-&nbsp;apply_color_scheme(c(0.6,&nbsp;0.4,&nbsp;0.5),&nbsp;"grey")
+
+</pre>
+
+<div class="p"><!----></div>
+Second, names and a phylogenetic tree are prepared. The function 
+<tt>newick2phylog</tt> from the package <span class="roman"> ade4</span> is used to prepare an
+object suitable for <span class="roman"> genoPlotR</span>. The elements of the list of 
+<tt>dna_segs</tt> must be named and correspond to the labels of the
+tree object, to avoid confusion.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;names&nbsp;&lt;-&nbsp;c("Huey",&nbsp;"Dewey",&nbsp;"Louie")
+&#62;&nbsp;names(dna_segs)&nbsp;&lt;-&nbsp;names
+&#62;&nbsp;tree_HDL&nbsp;&lt;-&nbsp;newick2phylog("(((Huey:4.2,Dewey:3.9):3.1,Louie:7.3):1);")
+
+</pre>
+
+<div class="p"><!----></div>
+Third, annotations to the first segment are added. The first gene is annotated
+in its middle (thus the use of <tt>middle</tt> function), while a region 
+comprising the second and third gene are annotated with a square bracket.
+Note the use of a numeric value for <tt>x1</tt> and <tt>NA</tt> for the first
+gene, and the use of two numeric values for the second region.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;mid_pos&nbsp;&lt;-&nbsp;middle(dna_segs[[1]])
+&#62;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1=c(mid_pos[1],&nbsp;dna_segs[[1]]$end[2]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2=c(NA,&nbsp;dna_segs[[1]]$end[3]),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=c(dna_segs[[1]]$name[1],&nbsp;"region1"),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rot=c(30,&nbsp;0),&nbsp;col=c("grey",&nbsp;"black"))
+
+</pre>
+
+<div class="p"><!----></div>
+Finally, the plot is drawn, addind a title, allowing 2 inches for the tree
+width (instead of the default 20% of the plot), and changing the annotation
+space to 1.3 lines (as opposed to 1 by default). The different options can be
+checked by removing/adding the different arguments to <tt>plot_gene_map</tt>. 
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;plot_gene_map(dna_segs=dna_segs,&nbsp;comparisons=comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annot,&nbsp;annotation_height=1.3,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tree=tree_HDL,&nbsp;tree_width=2,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="Comparison&nbsp;of&nbsp;Huey,&nbsp;Dewey&nbsp;and&nbsp;Louie")
+
+</pre>
+
+<div class="p"><!----></div>
+To explore the different options, new windows can be opened by using 
+<tt>x11()</tt> or <tt>window()</tt>, depending on the OS, or saved to files 
+using for example <tt>png()</tt> or <tt>pdf()</tt>. To finish the plot, the 
+function <tt>dev.off()</tt> should be called.
+
+<div class="p"><!----></div>
+
+<center><img src="img/genoPlotR-021.png" alt="genoPlotR-021.png" />
+</center>
+The plot can be saved by adding, in front of the call to 
+<tt>plot_gene_map</tt>, a call to one of the graphical device functions of 
+<font face="helvetica">R</font> (e.g. <tt>pdf()</tt>, <tt>png()</tt>, <tt>jpeg()</tt>). To finish the plot,
+the function <tt>dev.off()</tt> should be called.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.2">
+7.2</a>&nbsp;&nbsp;Example 2: Generating data online</h3>
+
+<div class="p"><!----></div>
+This section will give an example of how data can be retrieved and generated
+online, using the resources available at the NCBI
+<a href="http://www.ncbi.nlm.nih.gov/"><tt>http://www.ncbi.nlm.nih.gov/</tt></a>. This example was devised on 5/3/2010, and
+given the relatively rapid rate of changes in public databases, it is 
+possible that part or all of this example becomes obsolete. Please contact
+the author of this document (lionel.guy@ebc.uu.se) in such a case.
+
+<div class="p"><!----></div>
+In this example, the genomes of <em>Bartonella henselae</em> 
+(RefSeq accession NC_005956) and <em>Bartonella quintana</em> (RefSeq 
+accession NC_005955) will be compared.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.1">
+1</a>&nbsp;&nbsp;Retrieving <tt>dna_seg</tt> data</h4>
+
+<div class="p"><!----></div>
+To retrieve Genbank files, the Entrez Nucleotide Database can be directly 
+queried, provided that the accession number is known. In such a case, the
+database can be accessed from the home page of NCBI 
+(<a href="http://www.ncbi.nlm.nih.gov/"><tt>http://www.ncbi.nlm.nih.gov/</tt></a>), by entering the accession number 
+(e.g. NC_005956) in the search field and by selecting "Nucleotide" in 
+the "Search" list. The Genbank file is then displayed. It can be saved it in 
+a suitable format by clicking on the "Download" link and by selecting 
+"GenBank". 
+
+<div class="p"><!----></div>
+If the accession number is unknown, the nucleotide database can be queried
+for the name of the organism, or accessed via a list 
+(<a href="http://www.ncbi.nlm.nih.gov/genomes/lproks.cgi"><tt>http://www.ncbi.nlm.nih.gov/genomes/lproks.cgi</tt></a>). In that list, the files
+can be directly retrieved from the ftp site of the NCBI (by clicking the letter
+"F" in the corresponding row). Alternatively, it is possible to click 
+on the accession number, which leads to a page summarizing information on
+the queried genome. Access to the page described above is achieved by clicking
+on the accession number linked under the title "Refseq". 
+
+<div class="p"><!----></div>
+Repeat the procedure for the other genome (NC_005955).
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.2">
+2</a>&nbsp;&nbsp;Performing web-based BLAST and retrieving result</h4>
+
+<div class="p"><!----></div>
+The two previously retrieved genomes can be compared with BLAST, more
+precisely using the <tt>bl2seq</tt> feature of BLAST.
+
+<div class="p"><!----></div>
+Access to the BLAST section of the NCBI website is achieved by clicking on
+BLAST in the "Popular resources" section of the NCBI home page, or by using
+a direct link (<a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi"><tt>http://blast.ncbi.nlm.nih.gov/Blast.cgi</tt></a>). A link to
+the "bl2seq" resource is presented in the "Specialized BLAST" section.
+
+<div class="p"><!----></div>
+There, the genomes can be aligned by entering the two genome accession 
+numbers. The other arguments to BLAST can then be modified at will to suit 
+the needs of the comparison. Once the BLAST search is run, the hit table 
+(which can be read by <span class="roman"> genoPlotR</span> can be downloaded by clicking on
+"Download" and "Hit Table(text)" in the result page.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.3">
+3</a>&nbsp;&nbsp;Plotting</h4>
+
+<div class="p"><!----></div>
+Provided that the Genbank files and their comparison have been saved
+under the correct names in the directory where R was started, 
+they can be parsed directly by <span class="roman"> genoPlotR</span>.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;BH&nbsp;&lt;-&nbsp;try(read_dna_seg_from_file("NC_005956.gbk"))
+&#62;&nbsp;BQ&nbsp;&lt;-&nbsp;try(read_dna_seg_from_file("NC_005955.gbk"))
+&#62;&nbsp;BH_vs_BQ&nbsp;&lt;-&nbsp;try(read_comparison_from_blast("NC_005956_vs_NC_005955.blast"))
+
+</pre>
+
+<div class="p"><!----></div>
+The data, or a sample thereof (using <tt>xlims</tt>) can now be plotted.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(1,50000),&nbsp;c(1,50000))
+&#62;&nbsp;plot_gene_map(dna_segs=list(BH,&nbsp;BQ),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comparisons=list(BH_vs_BQ),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="BH&nbsp;vs&nbsp;BQ,&nbsp;comparison&nbsp;of&nbsp;the&nbsp;first&nbsp;50&nbsp;kb",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gene_type="side_blocks",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;scale=FALSE)
+&#62;&nbsp;
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-025.png" alt="genoPlotR-025.png" />
+</center>
+
+     <h3><a name="tth_sEc7.3">
+7.3</a>&nbsp;&nbsp;Example 3: Mauve alignment of four <em>Bartonella</em> genomes</h3>
+
+<div class="p"><!----></div>
+<span class="roman"> genoPlotR</span> is able to parse the backbone file produced by Mauve (for details
+on the format, see <a href="http://asap.ahabs.wisc.edu/mauve-aligner/mauve-user-guid
+e/mauve-output-file-formats.html"><tt>http://asap.ahabs.wisc.edu/mauve-aligner/mauve-user-guid
+e/mauve-output-file-formats.html</tt></a>).
+
+<div class="p"><!----></div>
+The elements of the DNA segments are no longer genes, but Mauve blocks. 
+Similarly, the comparison reflects the correspondances between these blocks. 
+The strand indicates the orientation of the block with respect to a reference,
+which by default is the first genome in the comparison. A single list is 
+returned, which contains two lists, one containing the <tt>dna_seg</tt>s and
+the other one the <tt>comparison</tt>s.
+
+<div class="p"><!----></div>
+The genomes in the backbone file are not named, so it is advised to be 
+cautious in the order of the names given.
+
+<div class="p"><!----></div>
+In this example, 4 genomes of <em>Bartonella</em> have been compared with 
+Mauve 2.3.1. The smaller blocks (smaller than 10 kb) are filtered out, and
+the second genome (which is the largest) is taken as the reference). 
+The data set can also be accessed in the package by running
+<tt>data(mauve_bbone)</tt>. 
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;bbone_file&nbsp;&lt;-&nbsp;system.file('extdata/barto.backbone',&nbsp;package&nbsp;=&nbsp;'genoPlotR')
+&#62;&nbsp;bbone&nbsp;&lt;-&nbsp;read_mauve_backbone(bbone_file,&nbsp;ref=2,&nbsp;filter_low=10000)
+&#62;&nbsp;names&nbsp;&lt;-&nbsp;c("B_bacilliformis",&nbsp;"B_grahamii",&nbsp;"B_henselae",&nbsp;"B_quintana")
+&#62;&nbsp;names(bbone$dna_segs)&nbsp;&lt;-&nbsp;names
+
+</pre>
+
+<div class="p"><!----></div>
+Calculating the lengths by adding the length on both sides of the comparisons
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;for&nbsp;(i&nbsp;in&nbsp;1:length(bbone$comparisons)){
++&nbsp;&nbsp;&nbsp;cmp&nbsp;&lt;-&nbsp;bbone$comparisons[[i]]
++&nbsp;&nbsp;&nbsp;bbone$comparisons[[i]]$length&nbsp;&lt;-&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abs(cmp$end1&nbsp;-&nbsp;cmp$start1)&nbsp;+&nbsp;abs(cmp$end2&nbsp;-&nbsp;cmp$start2)
++&nbsp;}
+
+</pre>
+
+<div class="p"><!----></div>
+Now plotting, using <tt>global_color_scheme</tt> to color the segments 
+according to their lengths.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;plot_gene_map(dna_segs=bbone$dna_segs,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comparisons=bbone$comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global_color_scheme=c("length",&nbsp;"increasing",&nbsp;"red_blue",&nbsp;0.7),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override_color_schemes=TRUE)
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-029.png" alt="genoPlotR-029.png" />
+</center>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.4">
+7.4</a>&nbsp;&nbsp;Example 4: Several sub-segments of four <em>Bartonella</em> genomes</h3>
+
+<div class="p"><!----></div>
+This examples presents how to use the <tt>xlims</tt> argument to represent 
+several sub-segments of the same segment, and how to show them in a reverse
+orientation.
+
+<div class="p"><!----></div>
+The data used here is also a comparison between four <em>Bartonella</em> genomes
+(see above), but the comparison has been performed using BLAST. The dataset
+is available in the package (<tt>barto</tt>).
+
+<div class="p"><!----></div>
+First, the data is loaded and a tree is created. 
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;data(barto)
+&#62;&nbsp;tree_barto&nbsp;&lt;-&nbsp;newick2phylog("(BB:2.5,(BG:1.8,(BH:1,BQ:0.8):1.9):3);")
+
+</pre>
+
+<div class="p"><!----></div>
+The <tt>xlims</tt> argument is then created. It is a list with as many elements
+as there are <tt>dna_seg</tt>s. Each element is an even-numbered numeric 
+vector, containing the left and right border of each sub-segment, 
+consecutively. In the first DNA segment, two sub-segments are shown: between
+1,415,000 and 1,445,000 in a reverse orientation, and between 1,380,000 and
+1,412,000, in "normal" orientation. In the remaining segments, 3, 3, and 1 
+subsegments are shown, respectively, all in normal orientation.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;xlims&nbsp;&lt;-&nbsp;list(c(1445000,&nbsp;1415000,&nbsp;1380000,&nbsp;1412000),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c(&nbsp;&nbsp;10000,&nbsp;&nbsp;&nbsp;45000,&nbsp;&nbsp;&nbsp;50000,&nbsp;&nbsp;&nbsp;83000,&nbsp;90000,&nbsp;120000),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c(&nbsp;&nbsp;15000,&nbsp;&nbsp;&nbsp;36000,&nbsp;&nbsp;&nbsp;90000,&nbsp;&nbsp;120000,&nbsp;74000,&nbsp;&nbsp;98000),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c(&nbsp;&nbsp;&nbsp;5000,&nbsp;&nbsp;&nbsp;82000))
+
+</pre>
+
+<div class="p"><!----></div>
+To complete the example, annotations are added. Genes that have a gene name 
+(i.e. these for which the name is not the locus or synonym name) are used
+to annotate the segment. Only every fourth gene is annotated, to avoid
+overlapping the tags. The function <tt>middle</tt> is used to retrieve the 
+middle of each element of the DNA segments.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;annots&nbsp;&lt;-&nbsp;lapply(barto$dna_segs,&nbsp;function(x){
++&nbsp;&nbsp;&nbsp;mid&nbsp;&lt;-&nbsp;middle(x)
++&nbsp;&nbsp;&nbsp;annot&nbsp;&lt;-&nbsp;annotation(x1=mid,&nbsp;text=x$name,&nbsp;rot=30)
++&nbsp;&nbsp;&nbsp;idx&nbsp;&lt;-&nbsp;grep("^[^B]",&nbsp;annot$text,&nbsp;perl=TRUE)
++&nbsp;&nbsp;&nbsp;annot[idx[idx&nbsp;%%&nbsp;4&nbsp;==&nbsp;0],]&nbsp;
++&nbsp;})
+
+</pre>
+
+<div class="p"><!----></div>
+Finally, plot the result, using scales on each DNA segment, adding a title,
+and not limiting the plotting area to the longest segment, to allow for a better
+placement of the sub-segments.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree=tree_barto,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit_to_longest_dna_seg=FALSE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;scale=FALSE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main="Comparison&nbsp;of&nbsp;homologous&nbsp;segments&nbsp;in&nbsp;4&nbsp;Bartonella&nbsp;genomes"
+)
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-034.png" alt="genoPlotR-034.png" />
+</center>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.5">
+7.5</a>&nbsp;&nbsp;Example 5: Two segments of the Y chromsome in human and chimp</h3>
+
+<div class="p"><!----></div>
+In this example, the ability to plot introns and exons is demontrated.
+
+<div class="p"><!----></div>
+First, data is loaded. The dataset included in the package is used, but any
+Genbank file containing introns and exons can be used. Some annotations are
+added: for each segment, the range of each gene is calculated, and 
+corresponding annotations are created. 
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;data(chrY_subseg)
+&#62;&nbsp;genes_homo&nbsp;&lt;-&nbsp;unique(chrY_subseg$dna_segs[[1]]$gene)
+&#62;&nbsp;x_homo&nbsp;&lt;-&nbsp;sapply(genes_homo,&nbsp;function(x)
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range(chrY_subseg$dna_segs[[1]]
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[chrY_subseg$dna_segs[[1]]$gene&nbsp;==&nbsp;x,])
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+&#62;&nbsp;annot_homo&nbsp;&lt;-&nbsp;annotation(x1=x_homo[1,],&nbsp;x2=x_homo[2,],
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=dimnames(x_homo)[[2]])
+&#62;&nbsp;genes_pan&nbsp;&lt;-&nbsp;unique(chrY_subseg$dna_segs[[2]]$gene)
+&#62;&nbsp;x_pan&nbsp;&lt;-&nbsp;sapply(genes_pan,&nbsp;function(x)
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range(chrY_subseg$dna_segs[[2]]
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[chrY_subseg$dna_segs[[2]]$gene&nbsp;==&nbsp;x,])
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+&#62;&nbsp;annot_pan&nbsp;&lt;-&nbsp;annotation(x1=x_pan[1,],&nbsp;x2=x_pan[2,],
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=dimnames(x_pan)[[2]])
+
+</pre>
+
+<div class="p"><!----></div>
+The segments can be directly plotted, passing the annotations as a list.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;main&nbsp;&lt;-&nbsp;"Comparison&nbsp;of&nbsp;two&nbsp;subsegments&nbsp;in&nbsp;H.&nbsp;sapiens&nbsp;and&nbsp;P.&nbsp;troglodytes"
+&#62;&nbsp;plot_gene_map(chrY_subseg$dna_segs,&nbsp;chrY_subseg$comparison,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=list(annot_homo,&nbsp;annot_pan),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;main=main,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale=FALSE)
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-037.png" alt="genoPlotR-037.png" />
+</center>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.6">
+7.6</a>&nbsp;&nbsp;Example 6: Combining several <span class="roman"> genoPlotR</span> figures and annotating the
+figure</h3>
+
+<div class="p"><!----></div>
+In this example, some of the previous plots are combined in a single, 
+multi-panel figure. Using the tools present in the <span class="roman"> grid</span> package, the
+plot is annotated further. More information is available in the documentation
+of the <span class="roman"> grid</span> package.
+
+<div class="p"><!----></div>
+The example here uses <font face="helvetica">R</font> objects built in the previous examples, which 
+should thus be run first.
+
+<div class="p"><!----></div>
+First, a <tt>viewport</tt> that will contain all plots is pushed in a new page.
+The plot is divided in three rows, of relative heights 1, 1.3 and 0.8.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;pushViewport(viewport(layout=grid.layout(3,1,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;heights=unit(c(1,1.3,0.8),&nbsp;rep("null",&nbsp;3))),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name="overall_vp"))
+
+</pre>
+
+<div class="p"><!----></div>
+The three panels A to C, containing the result of the above examples 4 to 6 
+are pushed into viewports, calling <tt>upViewport()</tt> after each plot to 
+come back to the main viewport. After the last plot, <tt>upViewport(2)</tt>
+is called to go up 2 viewports, coming back to the root viewport. Each time,
+the option <tt>plot_new=FALSE</tt> is used, to avoid plotting in a new 
+page every single panel.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;##&nbsp;Panel&nbsp;A
+&#62;&nbsp;pushViewport(viewport(layout.pos.row=1,&nbsp;name="panelA"))
+&#62;&nbsp;plot_gene_map(dna_segs=bbone$dna_segs,&nbsp;comparisons=bbone$comparisons,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=c(FALSE,&nbsp;FALSE,&nbsp;FALSE,&nbsp;TRUE),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale=FALSE,&nbsp;main="A",&nbsp;main_pos="left",&nbsp;plot_new=FALSE)
+&#62;&nbsp;upViewport()
+&#62;&nbsp;##&nbsp;Panel&nbsp;B
+&#62;&nbsp;pushViewport(viewport(layout.pos.row=2,&nbsp;name="panelB"))
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=annots,&nbsp;tree=tree_barto,&nbsp;xlims=xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit_to_longest_dna_seg=FALSE,&nbsp;scale=FALSE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;main="B",&nbsp;main_pos="left",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotation_height=0.6,&nbsp;annotation_cex=0.5,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plot_new=FALSE)
+&#62;&nbsp;upViewport()
+&#62;&nbsp;##&nbsp;Panel&nbsp;C
+&#62;&nbsp;pushViewport(viewport(layout.pos.row=3,&nbsp;name="panelC"))
+&#62;&nbsp;plot_gene_map(chrY_subseg$dna_segs,&nbsp;chrY_subseg$comparison,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations=list(annot_homo,&nbsp;annot_pan),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale=TRUE,&nbsp;scale=FALSE,&nbsp;main="C",&nbsp;main_pos="left",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plot_new=FALSE)
+&#62;&nbsp;upViewport(0)
+
+</pre>
+
+<div class="p"><!----></div>
+The commands <tt>current.vpTree()</tt> and <tt>grid.ls()</tt> can be used to see the
+ current 
+viewport structure, and to see all object names.
+
+<pre>
+&#62;&nbsp;grid_list&nbsp;&lt;-&nbsp;grid.ls(grob=TRUE,&nbsp;viewports=TRUE,&nbsp;print=FALSE)
+&#62;&nbsp;str(grid_list)
+
+</pre>
+
+<pre>
+List&nbsp;of&nbsp;6
+&nbsp;$&nbsp;name&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1339]&nbsp;"ROOT"&nbsp;"overall_vp"&nbsp;"panelA"&nbsp;"oma"&nbsp;...
+&nbsp;$&nbsp;gDepth&nbsp;:&nbsp;num&nbsp;[1:1339]&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;0&nbsp;...
+&nbsp;$&nbsp;vpDepth:&nbsp;num&nbsp;[1:1339]&nbsp;0&nbsp;1&nbsp;2&nbsp;3&nbsp;4&nbsp;5&nbsp;6&nbsp;6&nbsp;5&nbsp;6&nbsp;...
+&nbsp;$&nbsp;gPath&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1339]&nbsp;""&nbsp;""&nbsp;""&nbsp;""&nbsp;...
+&nbsp;$&nbsp;vpPath&nbsp;:&nbsp;chr&nbsp;[1:1339]&nbsp;""&nbsp;"ROOT"&nbsp;"ROOT::overall_vp"&nbsp;"ROOT::overall_vp::panelA"
+&nbsp;...
+&nbsp;$&nbsp;type&nbsp;&nbsp;&nbsp;:&nbsp;chr&nbsp;[1:1339]&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;"vpListing"&nbsp;...
+&nbsp;-&nbsp;attr(*,&nbsp;"class")=&nbsp;chr&nbsp;"flatGridListing"
+
+</pre>
+
+<pre>
+&#62;&nbsp;current.vpTree()
+
+</pre>
+
+<pre>
+viewport[ROOT]-&#62;(viewport[overall_vp]-&#62;(viewport[panelA]-&#62;(viewport[oma]-&#62;(viewp
+ort[oma_layout]-&#62;(viewport[main],&nbsp;viewport[frame]-&#62;(viewport[tree_outer]-&#62;(viewp
+ort[tree]-&#62;(viewport[labels])),&nbsp;viewport[plotarea_outer]-&#62;(viewport[plotarea]-&#62;(
+viewport[map]-&#62;(viewport[comparison.1],&nbsp;viewport[comparison.2],&nbsp;viewport[compari
+son.3],&nbsp;viewport[seg_plot.1],&nbsp;viewport[seg_plot.2],&nbsp;viewport[seg_plot.3],&nbsp;viewpo
+rt[seg_plot.4],&nbsp;viewport[scale_and_dna_seg.1]-&#62;(viewport[dna_seg.1.1]),&nbsp;viewport
+[scale_and_dna_seg.2]-&#62;(viewport[dna_seg.2.1]),&nbsp;viewport[scale_and_dna_seg.3]-&#62;(
+viewport[dna_seg.3.1]),&nbsp;viewport[scale_and_dna_seg.4]-&#62;(viewport[dna_seg_scale.4
+.1],&nbsp;viewport[dna_seg.4.1])))))))),&nbsp;viewport[panelB]-&#62;(viewport[oma]-&#62;(viewport[
+oma_layout]-&#62;(viewport[main],&nbsp;viewport[frame]-&#62;(viewport[tree_outer]-&#62;(viewport[
+tree]-&#62;(viewport[treeFrame]-&#62;(viewport[GRID.VP.19]-&#62;(viewport[GRID.VP.21]-&#62;(view
+port[tree.labels]),&nbsp;viewport[GRID.VP.20]-&#62;(viewport[tree.branches]))))),&nbsp;viewpor
+t[plotarea_outer]-&#62;(viewport[plotarea]-&#62;(viewport[map]-&#62;(viewport[comparison.1],
+&nbsp;viewport[comparison.2],&nbsp;viewport[comparison.3],&nbsp;viewport[seg_plot.1],&nbsp;viewport[
+seg_plot.2],&nbsp;viewport[seg_plot.3],&nbsp;viewport[seg_plot.4],&nbsp;viewport[scale_and_dna_
+seg.1]-&#62;(viewport[dna_seg_scale.1.1],&nbsp;viewport[dna_seg_scale.1.2],&nbsp;viewport[dna_
+seg.1.1],&nbsp;viewport[annotation.1.1],&nbsp;viewport[gap.1.2],&nbsp;viewport[dna_seg.1.2],&nbsp;vi
+ewport[annotation.1.2]),&nbsp;viewport[scale_and_dna_seg.2]-&#62;(viewport[gap.2.2],&nbsp;view
+port[gap.2.3],&nbsp;viewport[dna_seg_scale.2.1],&nbsp;viewport[dna_seg_scale.2.2],&nbsp;viewpor
+t[dna_seg_scale.2.3],&nbsp;viewport[dna_seg.2.1],&nbsp;viewport[dna_seg.2.2],&nbsp;viewport[dna
+_seg.2.3],&nbsp;viewport[annotation.2.1],&nbsp;viewport[annotation.2.2],&nbsp;viewport[annotati
+on.2.3]),&nbsp;viewport[scale_and_dna_seg.3]-&#62;(viewport[gap.3.2],&nbsp;viewport[gap.3.3],&nbsp;
+viewport[dna_seg_scale.3.1],&nbsp;viewport[dna_seg_scale.3.2],&nbsp;viewport[dna_seg_scale
+.3.3],&nbsp;viewport[dna_seg.3.1],&nbsp;viewport[annotation.3.1],&nbsp;viewport[dna_seg.3.2],&nbsp;v
+iewport[annotation.3.2],&nbsp;viewport[dna_seg.3.3],&nbsp;viewport[annotation.3.3]),&nbsp;viewp
+ort[scale_and_dna_seg.4]-&#62;(viewport[annotation.4.1],&nbsp;viewport[dna_seg_scale.4.1]
+,&nbsp;viewport[dna_seg.4.1])))))))),&nbsp;viewport[panelC]-&#62;(viewport[oma]-&#62;(viewport[oma
+_layout]-&#62;(viewport[main],&nbsp;viewport[frame]-&#62;(viewport[plotarea_outer]-&#62;(viewport
+[plotarea]-&#62;(viewport[map]-&#62;(viewport[comparison.1],&nbsp;viewport[seg_plot.1],&nbsp;viewp
+ort[seg_plot.2],&nbsp;viewport[scale_and_dna_seg.1]-&#62;(viewport[dna_seg_scale.1.1],&nbsp;vi
+ewport[dna_seg.1.1],&nbsp;viewport[annotation.1.1]),&nbsp;viewport[scale_and_dna_seg.2]-&#62;(
+viewport[dna_seg_scale.2.1],&nbsp;viewport[dna_seg.2.1],&nbsp;viewport[annotation.2.1]))))
+))))))&nbsp;
+
+</pre>
+
+<div class="p"><!----></div>
+Despite the complexity of the viewport structure, it is possible to identify
+the previously defined panel A, B and C. Using the <tt>downViewport</tt> 
+commands, it will be possible to find and modify elements of the plots. 
+First, the labels of panel A will be modified to have the names in italics
+and to replace the underscores by a dot and a space. The second label is 
+also removed. Note the use of <tt>grid.edit</tt> and <tt>grid.remove</tt>. 
+Warning: the whole figure is redrawn for each use of the edition 
+function, it can thus become relatively long.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;downViewport("panelA")
+&#62;&nbsp;for&nbsp;(i&nbsp;in&nbsp;1:length(names)){
++&nbsp;&nbsp;&nbsp;new_label&nbsp;&lt;-&nbsp;sub("_",&nbsp;".&nbsp;",&nbsp;names[[i]])
++&nbsp;&nbsp;&nbsp;grid.edit(paste("label",&nbsp;i,&nbsp;sep="."),&nbsp;label=new_label,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gp=gpar(fontface="italic"))
++&nbsp;}
+&#62;&nbsp;grid.remove("label.2")
+&#62;&nbsp;upViewport(0)
+
+</pre>
+
+<div class="p"><!----></div>
+In a second time, a red rectangle will be placed around one subsegment of
+panel B.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;downViewport("panelB")
+&#62;&nbsp;downViewport("dna_seg.3.2")
+&#62;&nbsp;grid.rect(height&nbsp;=&nbsp;unit(2.2,&nbsp;"npc"),&nbsp;gp=gpar(col="red",&nbsp;lwd=2,&nbsp;fill=0))
+&#62;&nbsp;upViewport(0)
+
+</pre>
+
+<pre>
+&#62;&nbsp;dev.off()
+
+</pre>
+
+<center>
+<img src="img/ex6.png" alt="ex6.png" /> 
+</center>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.7">
+7.7</a>&nbsp;&nbsp;Example 7: Using user-defined <tt>gene_type</tt> and <tt>seg_plot</tt>
+</h3>
+In this example, the use of personalized <tt>gene_type</tt>s and of 
+<tt>seg_plots</tt> to show data next to DNA segments is demonstrated. The 
+same data as in example 4 is used.
+
+<div class="p"><!----></div>
+A graphical function is defined, to represent triangles instead of arrows 
+for genes. The triangles are oriented in function of their strand and the 
+transparency is set differently according to a length cut-off, passed with 
+the function. As required, the function has only two arguments, a <tt>gene</tt> 
+which is a row of a <tt>dna_seg</tt>, and the dots (...). Any extra argument 
+passed to <tt>plot_gene_map</tt> will be passed in turn to the 
+<tt>gene_type</tt>-defining function.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;starGrob&nbsp;&lt;-&nbsp;function(gene,&nbsp;...){
++&nbsp;&nbsp;&nbsp;##&nbsp;Coordinates&nbsp;for&nbsp;the&nbsp;star
++&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;sin(((0:5)/2.5)*pi)*(gene$end-gene$start)/2&nbsp;+&nbsp;(gene$end+gene$start)/2
++&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;cos(((0:5)/2.5)*pi)*gene$strand*0.5&nbsp;+&nbsp;0.5
++&nbsp;&nbsp;&nbsp;idx&nbsp;&lt;-&nbsp;c(1,&nbsp;3,&nbsp;5,&nbsp;2,&nbsp;4,&nbsp;1)
++&nbsp;&nbsp;&nbsp;##&nbsp;Attribute&nbsp;line_col&nbsp;only&nbsp;if&nbsp;present&nbsp;in&nbsp;the&nbsp;gene
++&nbsp;&nbsp;&nbsp;line_col&nbsp;&lt;-&nbsp;if&nbsp;(!is.null(gene$line_col))&nbsp;gene$line_col&nbsp;else&nbsp;gene$col
++&nbsp;&nbsp;&nbsp;##&nbsp;Having&nbsp;a&nbsp;conditional&nbsp;transparency,&nbsp;depending&nbsp;on&nbsp;a&nbsp;length&nbsp;cut-off
++&nbsp;&nbsp;&nbsp;##&nbsp;passed&nbsp;via&nbsp;dots
++&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;&lt;-&nbsp;list(...)$length_cutoff
++&nbsp;&nbsp;&nbsp;if&nbsp;(!is.null(length_cutoff)){
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alpha&nbsp;&lt;-&nbsp;if&nbsp;((gene$end-gene$start)&nbsp;&lt;&nbsp;length_cutoff)&nbsp;&nbsp;0.3&nbsp;else&nbsp;&nbsp;0.8
++&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;alpha&nbsp;&lt;-&nbsp;1
++&nbsp;&nbsp;&nbsp;
++&nbsp;&nbsp;&nbsp;##&nbsp;Grobs
++&nbsp;&nbsp;&nbsp;g&nbsp;&lt;-&nbsp;polygonGrob(x[idx],&nbsp;y[idx],&nbsp;gp=gpar(fill=gene$col,&nbsp;col=line_col,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lty=gene$lty,&nbsp;lwd=gene$lwd,&nbsp;alpha=alpha),
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default.units="native")
++&nbsp;&nbsp;&nbsp;t&nbsp;&lt;-&nbsp;textGrob(label="***",&nbsp;x=(gene$end+gene$start)/2,&nbsp;y=0.5,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default.units="native")
++&nbsp;&nbsp;&nbsp;gList(g,&nbsp;t)
++&nbsp;}
+
+</pre>
+
+<div class="p"><!----></div>
+To make use of that, the <tt>gene_type</tt> column of the <tt>dna_segs</tt> must b
+e replaced. To make use of the supplementary argument <tt>line_col</tt>, a column
+ is added to the <tt>dna_seg</tt> object. Finally, plot the result.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;barto$dna_segs[[2]]$gene_type&nbsp;&lt;-&nbsp;"starGrob"
+&#62;&nbsp;barto$dna_segs[[4]]$gene_type&nbsp;&lt;-&nbsp;"starGrob"
+&#62;&nbsp;line_col&nbsp;&lt;-&nbsp;rep(1:20,&nbsp;(nrow(barto$dna_segs[[3]])&nbsp;%%&nbsp;20)+1)
+&#62;&nbsp;barto$dna_segs[[2]]$line_col&nbsp;&lt;-&nbsp;line_col[1:nrow(barto$dna_segs[[2]])]
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims&nbsp;=&nbsp;xlims,&nbsp;
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dna_seg_scale&nbsp;=&nbsp;TRUE,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_cutoff&nbsp;=&nbsp;600)
+
+</pre>
+
+<center>
+<img src="img/genoPlotR-047.png" alt="genoPlotR-047.png" />
+</center>
+
+<div class="p"><!----></div>
+Now, let's plot some random data along with the DNA segment. A standard 
+<tt>grid</tt> function returning a grob is used, but it is possible to use 
+personalized functions, as long as they return <tt>grob</tt> or <tt>gList</tt> 
+objects. For example, the function <tt>starGrob</tt> defined in the previous 
+exercise could be modified to be used here.
+
+<div class="p"><!----></div>
+The <tt>seg_plot</tt> objects are first defined, with the following structure:
+
+<pre>
+&#62;&nbsp;seg_plots&nbsp;&lt;-&nbsp;lapply(barto$dna_segs,&nbsp;function(ds){
++&nbsp;&nbsp;&nbsp;x&nbsp;&lt;-&nbsp;seq(1,&nbsp;range(ds)[2],&nbsp;by=1000)
++&nbsp;&nbsp;&nbsp;y&nbsp;&lt;-&nbsp;jitter(seq(100,&nbsp;300,&nbsp;length=length(x)),&nbsp;amount=50)
++&nbsp;&nbsp;&nbsp;seg_plot(func=linesGrob,&nbsp;args=list(x=x,&nbsp;y=y,&nbsp;gp=gpar(col=grey(0.3),&nbsp;lty=2)))
++&nbsp;})
+&#62;&nbsp;str(seg_plots[[1]])
+
+</pre>
+
+<pre>
+List&nbsp;of&nbsp;5
+&nbsp;$&nbsp;func&nbsp;:function&nbsp;(x&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;y&nbsp;=&nbsp;unit(c(0,&nbsp;1),&nbsp;"npc"),&nbsp;default.u
+nits&nbsp;=&nbsp;"npc",&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;arrow&nbsp;=&nbsp;NULL,&nbsp;name&nbsp;=&nbsp;NULL,&nbsp;gp&nbsp;=&nbsp;gpar(),&nbsp;vp&nbsp;=&nbsp;NULL)&nbsp;&nbsp;
+&nbsp;$&nbsp;args&nbsp;:List&nbsp;of&nbsp;4
+&nbsp;&nbsp;..$&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;[1:1445]&nbsp;1&nbsp;1001&nbsp;2001&nbsp;3001&nbsp;4001&nbsp;...
+&nbsp;&nbsp;..$&nbsp;y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;num&nbsp;[1:1445]&nbsp;92.8&nbsp;149.3&nbsp;116.8&nbsp;117.5&nbsp;72.7&nbsp;...
+&nbsp;&nbsp;..$&nbsp;gp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:List&nbsp;of&nbsp;2
+&nbsp;&nbsp;..&nbsp;..$&nbsp;col:&nbsp;chr&nbsp;"#4D4D4D"
+&nbsp;&nbsp;..&nbsp;..$&nbsp;lty:&nbsp;num&nbsp;2
+&nbsp;&nbsp;..&nbsp;..-&nbsp;attr(*,&nbsp;"class")=&nbsp;chr&nbsp;"gpar"
+&nbsp;&nbsp;..$&nbsp;default.units:&nbsp;chr&nbsp;"native"
+&nbsp;$&nbsp;xargs:&nbsp;chr&nbsp;[1:5]&nbsp;"x"&nbsp;"x0"&nbsp;"x1"&nbsp;"x2"&nbsp;...
+&nbsp;$&nbsp;yargs:&nbsp;chr&nbsp;[1:5]&nbsp;"y"&nbsp;"y0"&nbsp;"y1"&nbsp;"y2"&nbsp;...
+&nbsp;$&nbsp;ylim&nbsp;:&nbsp;NULL
+&nbsp;-&nbsp;attr(*,&nbsp;"class")=&nbsp;chr&nbsp;[1:2]&nbsp;"seg_plot"&nbsp;"list"
+
+</pre>
+
+<div class="p"><!----></div>
+Each <tt>seg_plot</tt> element has a <tt>func</tt> argument, giving the function 
+to use to plot the data, here the <tt>grid</tt> function <tt>linesGrob</tt>. The
+arguments that are passed to this function are contained in the <tt>args</tt> 
+argument, a list. Notice the use of <tt>gp=gpar(...)</tt>. 
+
+<div class="p"><!----></div>
+The result can then be plotted, and modulated using the arguments 
+<tt>seg_plot_height</tt>, <tt>seg_plot_height_unit</tt>, <tt>seg_plot_yaxis
+</tt>,
+and <tt>seg_plot_yaxis_cex</tt>.
+
+<div class="p"><!----></div>
+
+<pre>
+&#62;&nbsp;plot_gene_map(barto$dna_segs,&nbsp;barto$comparisons,&nbsp;tree&nbsp;=&nbsp;tree_barto,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;annotations&nbsp;=&nbsp;annots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlims&nbsp;=&nbsp;xlims,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plots&nbsp;=&nbsp;seg_plots,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_height&nbsp;=&nbsp;0.5,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_height_unit&nbsp;=&nbsp;"null",
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_yaxis&nbsp;=&nbsp;2,
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg_plot_yaxis_cex&nbsp;=&nbsp;0.7)
+
+</pre>
+<img src="img/genoPlotR-050.png" alt="genoPlotR-050.png" />
+<hr /><h3>Footnotes:</h3>
+
+<div class="p"><!----></div>
+<a name="tthFtNtAAB"></a><a href="#tthFrefAAB"><sup>1</sup></a>Tested with Mauve 2.3.1
