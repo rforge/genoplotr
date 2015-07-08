@@ -1,6 +1,9 @@
-import("methods")
 import("grid")
 import("ade4")
+import("methods")
+importFrom("grDevices", "grey", "rainbow", "rgb")
+importFrom("stats", "median", "optim", "weighted.mean")
+importFrom("utils", "read.table")
 export(
   plot_gene_map,
 
