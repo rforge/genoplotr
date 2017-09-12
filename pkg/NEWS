@@ -1,6 +1,10 @@
 genoPlotR changes
 =================
 
+0.8.7 - 2017-09-13
+------------------
+Fixing the citation to conform to CRAN guidelines.
+
 0.8.6 - 2017-05-15
 ------------------
 Previous version created warnings with R 3.4.0. Removed the inst/doc
