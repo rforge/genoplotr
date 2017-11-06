@@ -1,9 +1,12 @@
 genoPlotR changes
 =================
 
-0.8.7 - 2017-09-13
+0.8.7 - 2017-11-06
 ------------------
-Fixing the citation to conform to CRAN guidelines.
+Small bug fixes:
+- Changed CITATION to comply with as.person() requirements
+- Corrected a line too long in dna_segs.Rd
+- Corrected broken links in the vignette
 
 0.8.6 - 2017-05-15
 ------------------

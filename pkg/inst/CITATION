@@ -1,6 +1,8 @@
 citHeader("To cite genoPlotR in publications use:")
 citEntry(entry = "article",
-         author = "Lionel  Guy, Jens Roat Kultima and Siv G. E. Andersson",
+         author = c(person("Lionel", "Guy"),
+                    person("Jens", "Roat Kultima"),
+                    person("Siv G. E.", "Andersson")),
          title = "genoPlotR: comparative gene and genome visualization in R",
 	 journal = "Bioinformatics",
 	 volume = "26",
