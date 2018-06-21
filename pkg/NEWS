@@ -1,6 +1,12 @@
 genoPlotR changes
 =================
 
+0.8.8 - 2018-02-21
+------------------
+Small fix:
+- pkg/man/genoPlotR-package.Rd had to be modified not to be unsynched with
+  DESCRIPTION
+
 0.8.7 - 2017-11-06
 ------------------
 Small bug fixes:
