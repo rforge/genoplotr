@@ -1,8 +1,8 @@
 Package: genoPlotR
 Type: Package
 Title: Plot Publication-Grade Gene and Genome Maps 
-Version: 0.8.10
-Date: 2020-12-10
+Version: 0.8.11
+Date: 2021-01-05
 Author: Lionel Guy <lionel.guy@imbim.uu.se>
 URL: http://genoplotr.r-forge.r-project.org/
 Depends: R (>= 2.10.0), ade4, grid
